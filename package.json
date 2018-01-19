@@ -1,0 +1,33 @@
+{
+  "name": "meal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.156.0",
+    "body-parser": "^1.18.2",
+    "composable-middleware": "^0.3.0",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "firebase": "^4.6.2",
+    "fs": "0.0.1-security",
+    "gm": "^1.23.0",
+    "jsonwebtoken": "^8.1.0",
+    "log4js": "^2.3.12",
+    "moment": "^2.19.2",
+    "mysql": "^2.15.0",
+    "node-schedule": "^1.2.5",
+    "passport": "^0.4.0",
+    "server.js": "^1.0.0",
+    "supervisor": "^0.12.0",
+    "underscore": "^1.8.3"
+  }
+}
