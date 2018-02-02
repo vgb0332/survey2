@@ -7,7 +7,7 @@ var log4js = require('log4js');
 var schedule = require('node-schedule');
 var storageRef;
 // var storage = firebaseApp.storage();
-
+var db = require('./db.js');
 log4js.configure({
   appenders: {
     out : { type: 'console' },
@@ -96,8 +96,8 @@ app.use(function(req, res, next) {
   res.render('404page');
   // res.send("오류페이지")
 });
-
-app.listen(port, function() {
-    console.log('server listening on port: '+ port);
-});
-
+// db.sequelize.sync({ force: false }).then(function() {
+  app.listen(port, function() {
+      console.log('server listening on port: '+ port);
+  });
+// });
