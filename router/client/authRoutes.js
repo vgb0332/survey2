@@ -16,7 +16,7 @@ module.exports = function(app,logger){
         // var userJson = JSON.parse(userString);
         // console.log(userJson);
         // var userTemp = data.userData()[0];
-
+        console.log("로그인 영역 입장")
         db.users.findOne({where : {req.body.email}}).then((result)=>{
 
             if(result){
