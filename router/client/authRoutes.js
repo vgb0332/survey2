@@ -18,12 +18,12 @@ module.exports = function(app,logger){
         // var userTemp = data.userData()[0];
         console.log("로그인 영역 입장")
         db.users.findOne({where : {email : req.body.email}}).then((result)=>{
-            console.log(result)
+           
             if(result){
                 const userData = result.dataValues;
                 console.log("로그인 한 사용자");
                 console.log(userData);
-
+                console.log(req.body);
                 if(req.body.password == userData.password){
 
                     var token = jwt.sign({
