@@ -10,18 +10,27 @@ if (env === 'production') {
     dialect: 'postgresl',
   });
 }else {
-  // sequelize = new Sequelize('hotel','hotel','dprhotel', {
-  //   host :'hotel.cq4818dpp8x6.ap-northeast-2.rds.amazonaws.com',
-  //   dialect : 'mysql',
-  //   port : 3306,
-  //   define: {
-  //     charset: 'utf8',
-  //     collate: 'utf8_general_ci',
-  //     timestamps: true
-  //  }
-  //root
-  //rlarjsgml
-  // });
+
+  /*
+
+  HOST 가 막혔을 떄
+  INSERT INTO mysql.user (host,user,authentication_string,ssl_cipher, x509_issuer, x509_subject) VALUES ('111.222.%','root',password('패스워드'),'','','');
+  GRANT ALL PRIVILEGES ON *.* TO 'root'@'111.222.%';
+
+    sequelize = new Sequelize('hotel','hotel','dprhotel', {
+    host :'hotel.cq4818dpp8x6.ap-northeast-2.rds.amazonaws.com',
+    dialect : 'mysql',
+    port : 3306,
+    define: {
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+      timestamps: true
+   }
+  root
+  rlarjsgml
+  });
+  */
+
   sequelize = new Sequelize('pooodingDev','root','rlarjsgml', {
     host :'52.79.220.217',
     dialect : 'mysql',
