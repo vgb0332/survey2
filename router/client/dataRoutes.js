@@ -39,7 +39,7 @@ module.exports = function(app,logger){
     	
     })
 
-    app.push("client/pushContent",middleware.authMiddleWare(),(req,res)=>{
+    app.post("client/pushContent",middleware.authMiddleWare(),(req,res)=>{
 
     	console.log(req.body);
     	db.datas.create(req.body).then((err,result)=>{
