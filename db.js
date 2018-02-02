@@ -20,11 +20,22 @@ if (env === 'production') {
   //     timestamps: true
   //  }
   // });
+    sequelize = new Sequelize('','','', {
+    host :'',
+    dialect : 'mysql',
+    port : 3306,
+    define: {
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+      timestamps: true
+   }
+  });
 }
 
 var db = {};
 
 db.users = sequelize.import(__dirname + '/models/users.js');
+db.datas = sequelize.import(__dirname + '/models/datas.js');
 
 
 db.sequelize = sequelize;
