@@ -1,4 +1,7 @@
 module.exports = function(sequelize, DataTypes){
+
+  var date = new Date();
+  
   return sequelize.define('users', {
     id: {
       type : DataTypes.INTEGER,
@@ -20,6 +23,16 @@ module.exports = function(sequelize, DataTypes){
     },
     loginDate : {
       type: DataTypes.STRING,
+      allowNull: true
+    },
+    createdAt : {
+      type: DataTypes.STRING,
+      defaultValue : date,
+      allowNull: true
+    },
+    updatedAt : {
+      type: DataTypes.STRING,
+      defaultValue : date,
       allowNull: true
     },
     option01 : {
