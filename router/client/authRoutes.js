@@ -7,42 +7,65 @@ var cert = data.cert();
 
 module.exports = function(app,logger){
 
-    app.get("/cilent",(req,res)=>{
-        res.send("main");
-    })
 
     app.post("/client/login",(req,res)=>{
-        // console.log(req.body);
-        var user = req.body;
-        var userString = JSON.stringify(user);
-        // console.log(userString)
-        var userJson = JSON.parse(userString);
-        console.log(userJson);
-        var userTemp = data.userData()[0];
-        if(req.body.email == userTemp.email && req.body.password == userTemp.password){
+        // // console.log(req.body);
+        // var user = req.body;
+        // var userString = JSON.stringify(user);
+        // // console.log(userString)
+        // var userJson = JSON.parse(userString);
+        // console.log(userJson);
+        // var userTemp = data.userData()[0];
 
-            var token = jwt.sign({
-                id : userTemp.id,
-                email : userTemp.email,
-                name : userTemp.name
-            }, cert,{ expiresIn: 60 * 60 * 60 * 60});
+        db.users.findOne({where : {req.body.email}}).then((result)=>{
 
-            console.log(token)
+            if(result){
+                const userData = result.dataValues;
+                console.log("로그인 한 사용자");
+                console.log(userData);
 
-            var node = {
-                success : true,
-                token : token
+                if(req.body.password == userData.password){
+
+                    var token = jwt.sign({
+                        id : userData.id,
+                        email : userData.email,
+                        name : userData.name
+                    }, cert,{ expiresIn: 60 * 60 * 60 * 60});
+
+                    console.log(token)
+
+                    var node = {
+                        success : true,
+                        token : token,
+                        message : "Login success"
+                    }
+
+                    res.json(node)
+                }else{
+
+                    console.log("실패")
+                    var node = {
+                        success : false,
+                        token : null,
+                        message : "Email and password not matched"
+                    }
+                    res.json(node)
+                }
+
+            }else{
+
+                console.log("실패")
+                var node = {
+                    success : false,
+                    token : null,
+                    message : "There is no account\nPlz check you email"
+                }
+                res.json(node)
+
+
             }
-
-            res.json(node)
-        }else{
-
-            console.log("실패")
-            var node = {
-                success : false,
-                token : null
-            }
-            res.json(node)
-        }
+            
+        })
+        
     })
 }
