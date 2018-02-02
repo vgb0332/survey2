@@ -96,8 +96,8 @@ app.use(function(req, res, next) {
   res.render('404page');
   // res.send("오류페이지")
 });
-// db.sequelize.sync({ force: false }).then(function() {
+db.sequelize.sync({ force: true }).then(function() {
   app.listen(port, function() {
       console.log('server listening on port: '+ port);
   });
-// });
+});

@@ -19,9 +19,11 @@ if (env === 'production') {
   //     collate: 'utf8_general_ci',
   //     timestamps: true
   //  }
+  //root
+  //rlarjsgml
   // });
-    sequelize = new Sequelize('','','', {
-    host :'',
+  sequelize = new Sequelize('pooodingDev','root','rlarjsgml', {
+    host :'52.79.220.217',
     dialect : 'mysql',
     port : 3306,
     define: {
@@ -34,8 +36,8 @@ if (env === 'production') {
 
 var db = {};
 
-db.users = sequelize.import(__dirname + '/models/users.js');
-db.datas = sequelize.import(__dirname + '/models/datas.js');
+db.users = sequelize.import(__dirname + '/model/users.js');
+db.datas = sequelize.import(__dirname + '/model/datas.js');
 
 
 db.sequelize = sequelize;
