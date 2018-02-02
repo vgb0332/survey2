@@ -43,7 +43,7 @@ module.exports = function(app,logger){
                     res.json(node)
                 }else{
 
-                    console.log("실패")
+                    console.log("비밀번호 불일치")
                     var node = {
                         success : false,
                         token : null,
@@ -54,7 +54,7 @@ module.exports = function(app,logger){
 
             }else{
 
-                console.log("실패")
+                console.log("데이터 노존재")
                 var node = {
                     success : false,
                     token : null,
