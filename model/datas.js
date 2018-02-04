@@ -6,6 +6,10 @@ module.exports = function(sequelize, DataTypes){
       primaryKey: true,
       allowNull: false
     },
+    authId : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     tag : {
       type: DataTypes.STRING,
       allowNull: true
