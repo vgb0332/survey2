@@ -40,7 +40,7 @@ module.exports = function(app,logger){
     })
 
     //middleware.authMiddleWare(),
-    app.post("client/pushContent",(req,res)=>{
+    app.post("/client/pushContent",(req,res)=>{
     	console.log(req.body);
     	db.datas.create(req.body).then((err,result)=>{
     		var node = {
