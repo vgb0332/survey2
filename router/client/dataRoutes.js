@@ -150,7 +150,7 @@ module.exports = function(app,logger){
 	})
 	// select P.gtitle, P.gdesc 	from posts P
 	// where match(gtitle, gdesc) against('로고') limit 10;
-	app.post("/client/getTagData",(req,res)=>{
+	app.get("/client/getTagData",(req,res)=>{
 		db.sequelize.query('select * from datas where match(tag,title) against("'+req.body.tag+'") ').spread((result)=>{
 			var resultArray = [];
     		for(var rs in result){
