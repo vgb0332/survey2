@@ -18,6 +18,11 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    theme : {
+      type: DataTypes.STRING,
+      defaultValue : 'normal',
+      allowNull: true
+    },
     content : {
       type: DataTypes.STRING,
       allowNull: true
