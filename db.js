@@ -31,8 +31,8 @@ if (env === 'production') {
   });
   */
 
-  sequelize = new Sequelize('pooodingDev','root','rlarjsgml', {
-    host :'52.79.220.217',
+  sequelize = new Sequelize('maemidb','maemi','maemi2018', {
+    host :'maemidb.cckdluzejj0f.us-west-2.rds.amazonaws.com',
     dialect : 'mysql',
     port : 3306,
     define: {
@@ -45,8 +45,8 @@ if (env === 'production') {
 
 var db = {};
 
-db.users = sequelize.import(__dirname + '/model/users.js');
-db.datas = sequelize.import(__dirname + '/model/datas.js');
+db.USERS = sequelize.import(__dirname + '/model/USERS.js');
+db.BLOCK_ISSUES = sequelize.import(__dirname + '/model/BLOCK_ISSUES.js');
 
 
 db.sequelize = sequelize;

@@ -2,44 +2,38 @@ module.exports = function(sequelize, DataTypes){
 
   var date = new Date();
   
-  return sequelize.define('users', {
-    id: {
+  return sequelize.define('USERS', {
+    ID: {
       type : DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false
     },
-    email : {
+    UID : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    password : {
+    USER_NAME : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    name : {
+    USER_NICK : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    loginDate : {
+    PASSWORD : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    createdAt : {
-      type: DataTypes.STRING,
-      defaultValue : date,
-      allowNull: true
-    },
-    updatedAt : {
-      type: DataTypes.STRING,
-      defaultValue : date,
-      allowNull: true
-    },
-    option01 : {
+    LOGIN_DATE : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    option02 : {
+    OPTION01 : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    OPTION02 : {
       type: DataTypes.STRING,
       allowNull: true
     }

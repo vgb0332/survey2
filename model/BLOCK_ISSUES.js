@@ -1,47 +1,41 @@
 module.exports = function(sequelize, DataTypes){
-  return sequelize.define('datas', {
-    id: {
+  return sequelize.define('BLOCK_ISSUES', {
+    ID: {
       type : DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false
     },
-    authId : {
+    UID : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    tag : {
+    BLOCK_ISSUE_THEME : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    title : {
+    BLOCK_ISSUE_CATEGORY : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    theme : {
-      type: DataTypes.STRING,
-      defaultValue : 'normal',
-      allowNull: true
-    },
-    content : {
+    BLOCK_ISSUE_CONTENT : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    category : {
-      //CODE or Snippet
+    BLOCK_ISSUE_IMAGE : {
+      type: DataTypes.STRING,
+      defaultValue : 'no',
+      allowNull: true
+    },
+    CREATE_DATE: {
       type: DataTypes.STRING,
       allowNull: true
     },
-    date : {
-      //CODE or Snippet
+    OPTION01 : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    option01 : {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    option02 : {
+    OPTION02 : {
       type: DataTypes.STRING,
       allowNull: true
     }
