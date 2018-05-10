@@ -13,6 +13,10 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    EMAIL : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     USER_NAME : {
       type: DataTypes.STRING,
       allowNull: true
@@ -25,7 +29,15 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    SALT : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     LOGIN_DATE : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    POINT : {
       type: DataTypes.STRING,
       allowNull: true
     },

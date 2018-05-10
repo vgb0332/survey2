@@ -1,71 +1,74 @@
-var jwt = require('jsonwebtoken');
-var db = require('../../db.js');
-var data = require('../../data/user');
-var cert = data.cert();
-
-
+const jwt = require('jsonwebtoken');
+const db = require('../../db.js');
+const data = require('../../data/user');
+var bkfd2Password = require("pbkdf2-password");
+var hasher = bkfd2Password();
 
 module.exports = (app,logger)=>{
 
+    app.post("/client/regist", async (req,res) => {
 
-    app.post("/client/login",(req,res)=>{
-        // // console.log(req.body);
-        // var user = req.body;
-        // var userString = JSON.stringify(user);
-        // // console.log(userString)
-        // var userJson = JSON.parse(userString);
-        // console.log(userJson);
-        // var userTemp = data.userData()[0];
-        console.log("로그인 영역 입장")
-        db.USERS.findOne({where : {email : req.body.email}}).then((result)=>{
-           
-            if(result){
-                const userData = result.dataValues;
-                console.log("로그인 한 사용자");
-                console.log(userData);
-                console.log(req.body);
-                if(req.body.password == userData.password){
+        var userData = {
+            UID : data.getRandomString(),
+            EMAIL : req.body.EMAIL,
+            USER_NAME : req.body.USER_NAME == '' ? "설정요망" : req.body.USER_NAME,
+            USER_NICK : req.body.USER_NICK,
+            PASSWORD : req.body.PASSWORD,
+            SALT : '',
+            POINT : '0'
+        }
 
-                    var token = jwt.sign({
-                        id : userData.id,
-                        email : userData.email,
-                        name : userData.name
-                    }, cert,{ expiresIn: 60 * 60 * 60 * 60});
-
-                    console.log(token)
-
-                    var node = {
-                        success : true,
-                        token : token,
-                        message : "Login success"
+        let validationResult = data.signupValidationCheck(userData);
+        await hasher({password:userData.PASSWORD}, async (err, pass, salt, hash) => {
+            userData.SALT = salt
+            userData.PASSWORD = hash
+            console.log(userData)
+            await db.USERS.create(userData).then((err,result)=>{
+                res.send({
+                    success : 200,
+                    message : "회원 가입 성공",
+                    data : {
+                        EMAIL : userData.EMAIL,
+                        USER_NICK : userData.USER_NICK
                     }
+                })
+            }).catch((err)=>{
+                console.log(err);
+                res.send({
+                    success : 400,
+                    message : err
+                })
+            })
+        });
+    })
 
+    app.post("/client/login", async (req,res)=>{
+
+        let result = await db.USERS.findOne({where : {EMAIL : req.body.EMAIL}})
+        
+        if(result){
+            const userData = result.dataValues;
+            await hasher({password:req.body.PASSWORD, salt:userData.SALT}, async function (err, pass, salt, hash) {
+                console.log(hash);
+                console.log(userData.PASSWORD)
+                if(hash == userData.PASSWORD){
+                    let token = jwt.sign({ id : userData.ID, email : userData.EMAIL,name : userData.USER_NICK}, 
+                        data.cert(),{ expiresIn: 60 * 60 * 60 * 60});
+                    await db.USERS.update({LOGIN_DATE : data.getNow()},{where : {UID : userData.UID}});
+                    let node = { success : true, token : token, message : "Login success"}
                     res.json(node)
                 }else{
-
                     console.log("비밀번호 불일치")
-                    var node = {
-                        success : false,
-                        token : null,
-                        message : "Email and password not matched"
-                    }
+                    let node = { success : false, token : null, message : "Email and password not matched" }
                     res.json(node)
                 }
+            });
+        }else{
+            console.log("데이터 노존재")
+            let node = { success : false, token : null, message : "There is no account\nPlz check you email" }
+            res.json(node)
+        }
 
-            }else{
-
-                console.log("데이터 노존재")
-                var node = {
-                    success : false,
-                    token : null,
-                    message : "There is no account\nPlz check you email"
-                }
-                res.json(node)
-
-
-            }
-            
-        })
         
     })
 }

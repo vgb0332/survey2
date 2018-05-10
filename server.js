@@ -99,7 +99,7 @@ passport.deserializeUser(function(user, done) {
 
 require('./router/client/mainRoutes.js')(app,loggerClient);
 require('./router/client/authRoutes.js')(app,loggerClient);
-require('./router/client/dataRoutes.js')(app,loggerClient);
+require('./router/client/blockRoutes.js')(app,loggerClient);
 
 
 
