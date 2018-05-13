@@ -6,7 +6,7 @@ var hasher = bkfd2Password();
 
 module.exports = (app,logger)=>{
 
-    app.post("/client/regist", async (req,res) => {
+    app.post("/API/REGIST", async (req,res) => {
 
         var userData = {
             UID : data.getRandomString(),
@@ -61,7 +61,7 @@ module.exports = (app,logger)=>{
         }
     })
 
-    app.post("/client/login", async (req,res)=>{
+    app.post("/API/LOGIN", async (req,res)=>{
 
         let result = await db.USERS.findOne({where : {EMAIL : req.body.EMAIL}})
         
