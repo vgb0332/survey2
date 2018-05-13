@@ -18,28 +18,47 @@ module.exports = (app,logger)=>{
             POINT : '0'
         }
 
-        let validationResult = data.signupValidationCheck(userData);
-        await hasher({password:userData.PASSWORD}, async (err, pass, salt, hash) => {
-            userData.SALT = salt
-            userData.PASSWORD = hash
-            console.log(userData)
-            await db.USERS.create(userData).then((err,result)=>{
-                res.send({
-                    success : 200,
-                    message : "회원 가입 성공",
-                    data : {
-                        EMAIL : userData.EMAIL,
-                        USER_NICK : userData.USER_NICK
-                    }
-                })
-            }).catch((err)=>{
-                console.log(err);
+        let checkEmail = await db.USERS.findOne({where : {EMAIL : userData.EMAIL}});
+        let checkNick = await db.USERS.findOne({where : {USER_NICK : userData.USER_NICK}});
+        if(checkEmail){
+            console.log("있는 이메일");
+            res.send({
+                success : 400,
+                message : "이미 있는 메일이에용"
+            })
+        }else{
+            if(checkNick){
+                console.log("있는 닉네임")
                 res.send({
                     success : 400,
-                    message : err
+                    message : "이미 있는 닉네임 이에용"
                 })
-            })
-        });
+            }else{
+                console.log("회원가입 가능");
+                let validationResult = data.signupValidationCheck(userData);
+                await hasher({password:userData.PASSWORD}, async (err, pass, salt, hash) => {
+                    userData.SALT = salt
+                    userData.PASSWORD = hash
+                    console.log(userData)
+                    await db.USERS.create(userData).then((err,result)=>{
+                        res.send({
+                            success : 200,
+                            message : "회원 가입 성공",
+                            data : {
+                                EMAIL : userData.EMAIL,
+                                USER_NICK : userData.USER_NICK
+                            }
+                        })
+                    }).catch((err)=>{
+                        console.log(err);
+                        res.send({
+                            success : 400,
+                            message : err
+                        })
+                    })
+                });
+            }
+        }
     })
 
     app.post("/client/login", async (req,res)=>{
