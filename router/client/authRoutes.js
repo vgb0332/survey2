@@ -87,7 +87,5 @@ module.exports = (app,logger)=>{
             let node = { success : false, token : null, message : "There is no account\nPlz check you email" }
             res.json(node)
         }
-
-        
     })
 }

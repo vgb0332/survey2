@@ -6,6 +6,10 @@ module.exports = function(sequelize, DataTypes){
       primaryKey: true,
       allowNull: false
     },
+    PUID : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     UID : {
       type: DataTypes.STRING,
       allowNull: true
