@@ -24,6 +24,11 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    SHOW : {
+      type: DataTypes.STRING,
+      defaultValue : 'SHOW',
+      allowNull: true
+    },
     BLOCK_ISSUE_THEME : {
       type: DataTypes.STRING,
       allowNull: true

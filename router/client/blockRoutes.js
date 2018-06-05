@@ -30,7 +30,7 @@ module.exports = (app,logger)=>{
 		let newData = req.body;
 		delete newData.TOKEN;
 		newData.UID = decoded.uid;
-		newData.CREATED_DATE = functions.getNowTimeFormat();
+		newData.CREATE_DATE = functions.getNowTimeFormat();
 		newData.PID = functions.randomString();
 		console.log(newData)
 		
@@ -41,8 +41,11 @@ module.exports = (app,logger)=>{
 			console.log(err);
 			responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
 		})
+	})
 
-		
+	app.post("/API/DISABLE_ISSUEBLOCK", async (req,res)=>{
+		console.log("[DISABLE ISSUE BLOCK]");
+		console.log(req.body);
 		
 	})
 
