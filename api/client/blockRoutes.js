@@ -77,7 +77,7 @@ module.exports = (app,auth,logger)=>{
 			BLOCK_ISSUES_IMAGE: req.body.BLOCK_ISSUES_IMAGE,
 			BLOCK_ISSUES_VIDEO: req.body.BLOCK_ISSUES_VIDEO,
 			BLOCK_ISSUES_ISSUE_LOCATION: req.body.BLOCK_ISSUES_ISSUE_LOCATION,
-			UPDATE_DATE = functions.getNowTimeFormat()
+			UPDATE_DATE : functions.getNowTimeFormat()
 
 		},{
 			where : {
