@@ -4,7 +4,7 @@ const data = require('../../data/user');
 var bkfd2Password = require("pbkdf2-password");
 var hasher = bkfd2Password();
 
-module.exports = (app,logger)=>{
+module.exports = (app,auth,logger)=>{
 
     app.post("/API/REGIST", async (req,res) => {
 

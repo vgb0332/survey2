@@ -1,6 +1,6 @@
 var db = require('../../db.js');
 
-module.exports = (app,logger)=>{
+module.exports = (app,auth,logger)=>{
 
     app.get("/API",(req,res)=>{
         console.log("[API 호출 가즈아!!!!]")

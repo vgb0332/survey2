@@ -5,6 +5,10 @@ var session = require('express-session');
 var passport = require('passport');
 var log4js = require('log4js');
 var schedule = require('node-schedule');
+
+var auth = require('./config/jwtValidator.js');
+
+
 var storageRef;
 // var storage = firebaseApp.storage();
 var db = require('./db.js');
@@ -97,10 +101,10 @@ passport.deserializeUser(function(user, done) {
 
 
 
-require('./router/client/mainRoutes.js')(app,loggerClient);
-require('./router/client/authRoutes.js')(app,loggerClient);
-require('./router/client/blockRoutes.js')(app,loggerClient);
-require('./router/client/imageRoutes.js')(app,loggerClient);
+require('./router/client/mainRoutes.js')(app,auth,loggerClient);
+require('./router/client/authRoutes.js')(app,auth,loggerClient);
+require('./router/client/blockRoutes.js')(app,auth,loggerClient);
+require('./router/client/imageRoutes.js')(app,auth,loggerClient);
 
 
 

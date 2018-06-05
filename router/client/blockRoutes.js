@@ -5,8 +5,9 @@ const data = require('../../data/user');
 const multiparty = require('multiparty');
 var responseHelper = require('../../lib/responseHelper')
 var functions = require('../../lib/functions')
-var FileUpload = require('../../lib/aws/fileUpload')
-module.exports = (app,logger)=>{
+var FileUpload = require('../../lib/aws/fileUpload');
+
+module.exports = (app,auth,logger)=>{
 
 	/*
 
@@ -22,18 +23,10 @@ module.exports = (app,logger)=>{
 	*/
 
 
-	app.post("/API/CREATE_ISSUEBLOCK",async(req,res)=>{
+	app.post("/API/CREATE_ISSUEBLOCK",auth.authCheck(),async(req,res)=>{
 		console.log("[CREATE ISSUE BLOCK]");
 		console.log(req.body);
-		var decoded = jwt.verify(req.body.TOKEN,data.cert(),(err, decoded) => {
-			console.log(decoded) // bar
-			return decoded
-		}).catch((err)=>{
-			cosnole.log("[TOKEN ERROR]");
-			console.log(err)
-			responseHelper.err_send(401,'BLOCK CREATE ERROR(인증이 필요합니다)', res);
-		});
-		
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
 		//console.log(decoded.uid) // bar
 		let newData = req.body;
 		delete newData.TOKEN;
@@ -47,14 +40,13 @@ module.exports = (app,logger)=>{
 		}).catch((err)=>{
 			console.log("[BLOCK CREATE ERROR]")
 			console.log(err);
-			responseHelper.err_send(400,'BLOCK CREATE ERROR(요청 값을 다시 확인하세요)', res);
+			responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
 		})
 	})
 
 	app.post("/API/DISABLE_ISSUEBLOCK", async (req,res)=>{
 		console.log("[DISABLE ISSUE BLOCK]");
 		console.log(req.body);
-
 	})
 
 
