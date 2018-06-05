@@ -31,13 +31,18 @@ module.exports = (app,logger)=>{
 		delete newData.TOKEN;
 		newData.UID = decoded.uid;
 		newData.CREATED_DATE = functions.getNowTimeFormat();
+		newData.PID = functions.randomString();
 		console.log(newData)
 		
-		// await db.BLOCK_ISSUES.create().then((err,result)=>{
+		await db.BLOCK_ISSUES.create(newData).then((err,result)=>{
+			responseHelper.success_send(200, {success : true}, res);
+		}).catch((err)=>{
+			console.log("[BLOCK CREATE ERROR]")
+			console.log(err);
+			responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
+		})
 
-		// })
-
-		responseHelper.success_send(200, {success : true}, res);
+		
 		
 	})
 
