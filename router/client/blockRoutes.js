@@ -24,7 +24,7 @@ module.exports = (app,logger)=>{
 
 	app.post("/API/CREATE_ISSUEBLOCK",async(req,res)=>{
 		console.log("[CREATE ISSUE BLOCK]");
-		console.log(req.body);
+		console.log(req);
 		
 		
 	})
