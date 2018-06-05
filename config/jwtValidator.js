@@ -1,6 +1,6 @@
 var url = require('url');
 var compose = require('composable-middleware');
-const data = require('../../data/user');
+const data = require('../data/user');
 
 function authCheck() {
     return compose()
