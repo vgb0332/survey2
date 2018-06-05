@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 var db = require('../../db.js');
 var middleware = require('../../middlewares/authenticate.js');
-var cert = "asldjkhf12409uaslkjllkn23lrn9f";
+const data = require('../../data/user');
 const multiparty = require('multiparty');
 var responseHelper = require('../../lib/responseHelper')
 var functions = require('../../lib/functions')
@@ -25,6 +25,13 @@ module.exports = (app,logger)=>{
 	app.post("/API/CREATE_ISSUEBLOCK",async(req,res)=>{
 		console.log("[CREATE ISSUE BLOCK]");
 		console.log(req.body);
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		console.log(decoded) // bar
+		
+		// await db.BLOCK_ISSUES.create().then((err,result)=>{
+
+		// })
+
 		responseHelper.success_send(200, {success : true}, res);
 		
 	})

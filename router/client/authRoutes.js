@@ -71,7 +71,7 @@ module.exports = (app,logger)=>{
                 console.log(hash);
                 console.log(userData.PASSWORD)
                 if(hash == userData.PASSWORD){
-                    let token = jwt.sign({ id : userData.ID, email : userData.EMAIL,name : userData.USER_NICK}, 
+                    let token = jwt.sign({ uid : userData.UID, email : userData.EMAIL,name : userData.USER_NICK}, 
                         data.cert(),{ expiresIn: 60 * 60 * 60 * 60});
                     await db.USERS.update({LOGIN_DATE : data.getNow()},{where : {UID : userData.UID}});
                     let node = { success : true, token : token, message : "Login success"}
