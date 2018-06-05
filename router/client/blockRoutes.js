@@ -26,7 +26,12 @@ module.exports = (app,logger)=>{
 		console.log("[CREATE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
-		console.log(decoded) // bar
+		//console.log(decoded.uid) // bar
+		let newData = req.body;
+		delete newData.TOKEN;
+		newData.UID = decoded.uid;
+		newData.CREATED_DATE = functions.getNowTimeFormat();
+		console.log(newData)
 		
 		// await db.BLOCK_ISSUES.create().then((err,result)=>{
 
