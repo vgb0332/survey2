@@ -101,10 +101,10 @@ passport.deserializeUser(function(user, done) {
 
 
 
-require('./router/client/mainRoutes.js')(app,auth,loggerClient);
-require('./router/client/authRoutes.js')(app,auth,loggerClient);
-require('./router/client/blockRoutes.js')(app,auth,loggerClient);
-require('./router/client/imageRoutes.js')(app,auth,loggerClient);
+require('./api/client/mainRoutes.js')(app,auth,loggerClient);
+require('./api/client/authRoutes.js')(app,auth,loggerClient);
+require('./api/client/blockRoutes.js')(app,auth,loggerClient);
+require('./api/client/imageRoutes.js')(app,auth,loggerClient);
 
 
 
