@@ -62,6 +62,10 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    UPDATE_DATE: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     OPTION01 : {
       type: DataTypes.STRING,
       allowNull: true
