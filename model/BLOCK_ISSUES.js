@@ -6,11 +6,21 @@ module.exports = function(sequelize, DataTypes){
       primaryKey: true,
       allowNull: false
     },
-    PUID : {
+    //이슈 블럭인지 답글블럭인지 구별
+    //issue or reply
+    FLAG : {
       type: DataTypes.STRING,
       allowNull: true
     },
     UID : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    PPID : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    PID : {
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -22,13 +32,25 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    BLOCK_ISSUE_HASHTAG : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     BLOCK_ISSUE_CONTENT : {
       type: DataTypes.STRING,
       allowNull: true
     },
     BLOCK_ISSUE_IMAGE : {
       type: DataTypes.STRING,
-      defaultValue : 'no',
+      defaultValue : 'https://s3.ap-northeast-2.amazonaws.com/maemistore/image/space01.jpg',
+      allowNull: true
+    },
+    BLOCK_ISSUE_VIDEO : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    BLOCK_ISSUE_LOCATION : {
+      type: DataTypes.STRING,
       allowNull: true
     },
     CREATE_DATE: {
