@@ -1,7 +1,7 @@
 var url = require('url');
 var compose = require('composable-middleware');
 const data = require('../data/user');
-
+var responseHelper = require('../lib/responseHelper')
 function authCheck() {
     return compose()
         // Validate jwt
