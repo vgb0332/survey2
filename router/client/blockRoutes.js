@@ -25,7 +25,7 @@ module.exports = (app,logger)=>{
 	app.post("/API/CREATE_ISSUEBLOCK",async(req,res)=>{
 		console.log("[CREATE ISSUE BLOCK]");
 		console.log(req.body);
-		
+		responseHelper.success_send(200, res);
 		
 	})
 
