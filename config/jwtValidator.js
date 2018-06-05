@@ -12,7 +12,7 @@ function authCheck() {
             console.log("[pass token]");
             console.log(token);
             if(token == undefined) token = 'error';
-            
+
             try {
                 var decoded = jwt.verify(token, data.cert());
                 console.log("[pass token decode]");
@@ -22,7 +22,7 @@ function authCheck() {
                 // err
                 console.log("[pass token error]");
                 console.log(err);
-                responseHelper.err_code(401,'BLOCK CREATE ERROR(권한이 없습니다)', res);
+                res.send({success : false, message : 'token이 유효하지 않습니다'})
             }
   
   
