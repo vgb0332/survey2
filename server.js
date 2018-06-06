@@ -43,14 +43,14 @@ var cors = require('cors')
 var app = express();
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://52.79.128.87:3000',
   credentials: true,
 
 }
 app.use(cors(corsOptions))
 
 app.use(function(req, res, next) {
-  var allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:80', 'http://localhost:80'];
+  var allowedOrigins = ['http://52.79.128.87:3000', 'http://localhost:3000', 'http://127.0.0.1:80', 'http://localhost:80'];
   var origin = req.headers.origin;
   if(allowedOrigins.indexOf(origin) > -1){
        res.setHeader('Access-Control-Allow-Origin', origin);
