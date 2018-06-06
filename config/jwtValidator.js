@@ -4,12 +4,17 @@ const data = require('../data/user');
 var responseHelper = require('../lib/responseHelper');
 var jwt = require('jsonwebtoken');
 
-function authCheck() {
+function authCheck(range) {
     return compose()
         // Validate jwt
         .use(function(req, res, next) {
-  
+            
+            var pathName = url.parse(req.url).pathname;
+            console.log(pathName);
             let token = req.body.TOKEN;
+
+            if(range == 'all') next();
+
             console.log("[pass token]");
             console.log(token);
             if(token == undefined) token = 'error';

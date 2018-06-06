@@ -49,7 +49,7 @@ module.exports = (app,auth,logger)=>{
 
 	*/
 
-	app.get("/API/SPREAD_BLOCK", async (req,res)=>{
+	app.get("/API/SPREAD_BLOCK", auth.authCheck('all'), async (req,res)=>{
 
 		let blocks = [];
 		console.log("[SPREAD BLOCK]");
@@ -60,7 +60,7 @@ module.exports = (app,auth,logger)=>{
 
 	})
 
-	app.post("/API/CREATE_ISSUEBLOCK",auth.authCheck(),async(req,res)=>{
+	app.post("/API/CREATE_ISSUEBLOCK",auth.authCheck('auth'),async(req,res)=>{
 		console.log("[CREATE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
@@ -87,7 +87,7 @@ module.exports = (app,auth,logger)=>{
 		})
 	})
 
-	app.post("/API/DISABLE_BLOCK", auth.authCheck(), async (req,res)=>{
+	app.post("/API/DISABLE_BLOCK", auth.authCheck('auth'), async (req,res)=>{
 		console.log("[DISABLE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
@@ -106,7 +106,7 @@ module.exports = (app,auth,logger)=>{
 
 	});
 
-	app.post("/API/ABLE_BLOCK", auth.authCheck(), async (req,res)=>{
+	app.post("/API/ABLE_BLOCK", auth.authCheck('auth'), async (req,res)=>{
 		console.log("[ABLE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
@@ -125,7 +125,7 @@ module.exports = (app,auth,logger)=>{
 
 	});
 
-	app.post("/API/UPDATE_BLOCK", auth.authCheck(), async (req,res)=>{
+	app.post("/API/UPDATE_BLOCK", auth.authCheck('auth'), async (req,res)=>{
 		console.log("[UPDATE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
@@ -160,7 +160,7 @@ module.exports = (app,auth,logger)=>{
 	PPID : 글쓴 곳에서 전달받아 다시 전달
 	*/
 
-	app.post("/API/CREATE_REPLYBLOCK",auth.authCheck(),async(req,res)=>{
+	app.post("/API/CREATE_REPLYBLOCK",auth.authCheck('auth'),async(req,res)=>{
 		console.log("[CREATE REPLY BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
@@ -192,13 +192,13 @@ module.exports = (app,auth,logger)=>{
 
 	*/
 
-	app.post("/API/VOTE_UP",auth.authCheck(),async (req,res)=>{
+	app.post("/API/VOTE_UP",auth.authCheck('auth'),async (req,res)=>{
 		console.log("[VOTE_UP]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
 	})
 
-	app.post("/API/VOTE_CANCEL",auth.authCheck(),async (req,res)=>{
+	app.post("/API/VOTE_CANCEL",auth.authCheck('auth'),async (req,res)=>{
 		console.log("[VOTE_DOWN]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
