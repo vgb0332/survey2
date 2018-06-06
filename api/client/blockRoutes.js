@@ -73,12 +73,13 @@ module.exports = (app,auth,logger)=>{
 				PID : PID
 			}
 		})
+		let save_logs =await functions.save_log(newData.UID, "[DISABLE ISSUE BLOCK]");
 		responseHelper.success_send(200, {success : true}, res);
 
 	});
 
 	app.post("/API/ABLE_BLOCK", auth.authCheck(), async (req,res)=>{
-		console.log("[DISABLE ISSUE BLOCK]");
+		console.log("[ABLE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
 		let UID = decoded.uid;
@@ -91,12 +92,13 @@ module.exports = (app,auth,logger)=>{
 				PID : PID
 			}
 		})
+		let save_logs =await functions.save_log(newData.UID, "[ABLE ISSUE BLOCK]");
 		responseHelper.success_send(200, {success : true}, res);
 
 	});
 
 	app.post("/API/UPDATE_BLOCK", auth.authCheck(), async (req,res)=>{
-		console.log("[DISABLE ISSUE BLOCK]");
+		console.log("[UPDATE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
 		let UID = decoded.uid;
@@ -117,6 +119,8 @@ module.exports = (app,auth,logger)=>{
 				PID : PID
 			}
 		})
+
+		let save_logs =await functions.save_log(newData.UID, "[UPDATE ISSUE BLOCK]");
 		responseHelper.success_send(200, {success : true}, res);
 
 	})
@@ -142,8 +146,9 @@ module.exports = (app,auth,logger)=>{
 		newData.UPDATE_DATE = functions.getNowTimeFormat();
 		console.log(newData)
 		
-		await db.BLOCK_ISSUES.create(newData).then((err,result)=>{
-			responseHelper.success_send(200, {success : true}, res);
+		await db.BLOCK_ISSUES.create(newData).then(async (err,result)=>{
+			let save_logs =await functions.save_log(newData.UID, "[CREATE REPLY BLOCK]");
+			await responseHelper.success_send(200, {success : true}, res);
 		}).catch((err)=>{
 			console.log("[BLOCK CREATE ERROR]")
 			console.log(err);
