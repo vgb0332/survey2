@@ -6,7 +6,24 @@ const multiparty = require('multiparty');
 var responseHelper = require('../../lib/responseHelper')
 var functions = require('../../lib/functions')
 var FileUpload = require('../../lib/aws/fileUpload');
-
+function makeArray(data){
+	let resultArray = [];
+	for(var rs in data){
+	  if(data.hasOwnProperty(rs)){
+		resultArray.push(data[rs].dataValues);
+	  }
+	}
+	return resultArray;
+  }
+  function makeSpreadArray(data){
+	let resultArray = [];
+	for(var rs in data){
+	  if(data.hasOwnProperty(rs)){
+		resultArray.push(data[rs]);
+	  }
+	}
+	return resultArray;
+  }
 module.exports = (app,auth,logger)=>{
 
 	/*
@@ -31,6 +48,17 @@ module.exports = (app,auth,logger)=>{
 	ISSUE BLOCK
 
 	*/
+
+	app.get("/API/SPREAD_BLOCK", async (req,res)=>{
+
+		let blocks = [];
+		console.log("[SPREAD BLOCK]");
+		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW'}}).then((result)=>{ blocks= makeArray(result); });
+		console.log(blocks);
+
+		res.send({success : 200, data : blocks})
+
+	})
 
 	app.post("/API/CREATE_ISSUEBLOCK",auth.authCheck(),async(req,res)=>{
 		console.log("[CREATE ISSUE BLOCK]");
