@@ -15,13 +15,22 @@ module.exports = (app,auth,logger)=>{
 		20180510 UPDATE
 		@Issue Block Create
 		@Reply Block Create
-		@Issue Block Delete
-		@Reply Block Delete
-		@Issue Block Update
-		@Reply Block Update
+		@Block Hide
+		@Block Show
+		@Block Update
+		
+		@vote UP
+		@vote CANCEL
 
 	*/
 
+
+
+	/*
+
+	ISSUE BLOCK
+
+	*/
 
 	app.post("/API/CREATE_ISSUEBLOCK",auth.authCheck(),async(req,res)=>{
 		console.log("[CREATE ISSUE BLOCK]");
@@ -30,22 +39,27 @@ module.exports = (app,auth,logger)=>{
 		//console.log(decoded.uid) // bar
 		let newData = req.body;
 		delete newData.TOKEN;
+		newData.FLAG = 'root';
 		newData.UID = decoded.uid;
 		newData.PID = functions.randomString();
 		newData.CREATE_DATE = functions.getNowTimeFormat();
 		newData.UPDATE_DATE = functions.getNowTimeFormat();
 		console.log(newData)
 		
-		await db.BLOCK_ISSUES.create(newData).then((err,result)=>{
-			responseHelper.success_send(200, {success : true}, res);
-		}).catch((err)=>{
-			console.log("[BLOCK CREATE ERROR]")
+		await db.BLOCK_ISSUES.create(newData).then(async (err,result)=>{
+
+			let save_logs =await functions.save_log(newData.UID, "[CREATE ISSUE BLOCK]");
+			await responseHelper.success_send(200, {success : true}, res);
+
+		}).catch(async (err)=>{
+			console.log("[ISSUE BLOCK CREATE ERROR]")
 			console.log(err);
-			responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
+			let save_logs =await functions.save_log(newData.UID, "[ISSUE BLOCK CREATE ERROR]");
+			await responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
 		})
 	})
 
-	app.post("/API/DISABLE_ISSUEBLOCK", auth.authCheck(), async (req,res)=>{
+	app.post("/API/DISABLE_BLOCK", auth.authCheck(), async (req,res)=>{
 		console.log("[DISABLE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
@@ -63,7 +77,25 @@ module.exports = (app,auth,logger)=>{
 
 	});
 
-	app.post("/API/UPDATE_ISSUEBLOCK", auth.authCheck(), async (req,res)=>{
+	app.post("/API/ABLE_BLOCK", auth.authCheck(), async (req,res)=>{
+		console.log("[DISABLE ISSUE BLOCK]");
+		console.log(req.body);
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		let UID = decoded.uid;
+		let PID = req.body.PID;
+		await db.BLOCK_ISSUES.update({
+			SHOW : 'SHOW'
+		},{
+			where : {
+				UID : UID,
+				PID : PID
+			}
+		})
+		responseHelper.success_send(200, {success : true}, res);
+
+	});
+
+	app.post("/API/UPDATE_BLOCK", auth.authCheck(), async (req,res)=>{
 		console.log("[DISABLE ISSUE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
@@ -87,6 +119,56 @@ module.exports = (app,auth,logger)=>{
 		})
 		responseHelper.success_send(200, {success : true}, res);
 
+	})
+
+
+	/*
+
+	REPLY BLOCK
+	PPID : 글쓴 곳에서 전달받아 다시 전달
+	*/
+
+	app.post("/API/CREATE_REPLYBLOCK",auth.authCheck(),async(req,res)=>{
+		console.log("[CREATE REPLY BLOCK]");
+		console.log(req.body);
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		//console.log(decoded.uid)
+		let newData = req.body;
+		delete newData.TOKEN;
+		newData.UID = decoded.uid;
+		newData.PID = functions.randomString();
+		newData.FLAG = 'reply';
+		newData.CREATE_DATE = functions.getNowTimeFormat();
+		newData.UPDATE_DATE = functions.getNowTimeFormat();
+		console.log(newData)
+		
+		await db.BLOCK_ISSUES.create(newData).then((err,result)=>{
+			responseHelper.success_send(200, {success : true}, res);
+		}).catch((err)=>{
+			console.log("[BLOCK CREATE ERROR]")
+			console.log(err);
+			responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
+		})
+	})
+
+
+	/*
+
+	VOTE UP
+	VOTE CANCEL
+
+	*/
+
+	app.post("/API/VOTE_UP",auth.authCheck(),async (req,res)=>{
+		console.log("[VOTE_UP]");
+		console.log(req.body);
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+	})
+
+	app.post("/API/VOTE_CANCEL",auth.authCheck(),async (req,res)=>{
+		console.log("[VOTE_DOWN]");
+		console.log(req.body);
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
 	})
 
 

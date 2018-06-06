@@ -47,6 +47,8 @@ var db = {};
 
 db.USERS = sequelize.import(__dirname + '/model/USERS.js');
 db.BLOCK_ISSUES = sequelize.import(__dirname + '/model/BLOCK_ISSUES.js');
+db.VOTE_HISTORIES = sequelize.import(__dirname + '/model/VOTE_HISTORIES.js');
+db.LOGS = sequelize.import(__dirname + '/model/LOGS.js');
 
 
 db.sequelize = sequelize;

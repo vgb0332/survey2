@@ -3,6 +3,7 @@ var compose = require('composable-middleware');
 const data = require('../data/user');
 var responseHelper = require('../lib/responseHelper');
 var jwt = require('jsonwebtoken');
+
 function authCheck() {
     return compose()
         // Validate jwt
@@ -14,9 +15,10 @@ function authCheck() {
             if(token == undefined) token = 'error';
 
             try {
-                var decoded = jwt.verify(token, data.cert());
+                let decoded = jwt.verify(token, data.cert());
                 console.log("[pass token decode]");
                 console.log(decoded);
+                
                 next();
             } catch(err) {
                 // err
