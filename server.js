@@ -8,7 +8,6 @@ var schedule = require('node-schedule');
 
 var auth = require('./config/jwtValidator.js');
 
-
 var storageRef;
 // var storage = firebaseApp.storage();
 var db = require('./db.js');
@@ -38,15 +37,14 @@ var gm = require('gm');
 
 // AWS.config.region = 'ap-northeast-2';
 var fs = require('fs');
-
-var cors = require('cors')
+var cors = require('cors');
 var app = express();
 
 const corsOptions = {
   origin: 'http://52.79.128.87:3000',
   credentials: true,
-
 }
+
 app.use(cors(corsOptions))
 
 app.use(function(req, res, next) {

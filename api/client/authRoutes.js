@@ -88,4 +88,18 @@ module.exports = (app,auth,logger)=>{
             res.json(node)
         }
     })
+
+    app.post("/API/USER_PROFILE", auth.authCheck('auth'), async (req,res)=>{
+
+        let blocks = [];
+        let info = [];
+        var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		console.log("[SPREAD BLOCK]");
+        await db.BLOCK_ISSUES.findAll({where : {UID : decoded.uid}}).then((result)=>{ blocks= makeArray(result); });
+        await db.USERS.findAll({where : {UID : decoded.uid}}).then((result)=>{ info= makeArray(result); });
+
+
+		res.send({success : 200, data : {info : info, blocks : blocks}})
+
+	})
 }

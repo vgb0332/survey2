@@ -10,6 +10,7 @@ function makeArray(data){
 	let resultArray = [];
 	for(var rs in data){
 	  if(data.hasOwnProperty(rs)){
+		  //console.log(data[rs].dataValues)
 		resultArray.push(data[rs].dataValues);
 	  }
 	}
@@ -51,12 +52,71 @@ module.exports = (app,auth,logger)=>{
 
 	app.get("/API/SPREAD_BLOCK", auth.authCheck('all'), async (req,res)=>{
 
-		let blocks = [];
-		console.log("[SPREAD BLOCK]");
-		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW'}}).then((result)=>{ blocks= makeArray(result); });
-		console.log(blocks);
+		let ParentBlocks = [];
+		let ChildBlocks = [];
+		let resultBlocks = [];
 
-		res.send({success : 200, data : blocks})
+		console.log("[SPREAD BLOCK]");
+		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',FLAG : 'issue'}}).then((result)=>{ ParentBlocks= makeArray(result); });
+		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',FLAG : 'reply'}}).then((result)=>{ ChildBlocks= makeArray(result); });
+
+		for(var i=0; i<ParentBlocks.length; i++){
+			// console.log("[Parent PID]")
+			// console.log(ParentBlocks[i].PID)
+			let tempBlocks = {
+				ParentBlockPID : ParentBlocks[i].PID,
+				ParentBlocks : ParentBlocks[i],
+				ChildBlocks : []
+			}
+			for(var j=0; j<ChildBlocks.length; j++){
+				console.log("=======================")
+				console.log(tempBlocks.ParentBlockPID);
+				console.log(ChildBlocks[j].PPID)
+				if(tempBlocks.ParentBlockPID == ChildBlocks[j].PPID){
+					tempBlocks.ChildBlocks.push(ChildBlocks[j]);
+				}
+			}
+			resultBlocks.push(tempBlocks);
+		}
+
+		console.log(resultBlocks)
+
+		res.send({success : 200, data : resultBlocks})
+
+	})
+
+	app.post("/API/DETAIL_BLOCK", auth.authCheck('all'), async (req,res)=>{
+
+		let ParentBlocks = [];
+		let ChildBlocks = [];
+		let resultBlocks = [];
+
+		console.log("[SPREAD BLOCK]");
+		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',PID : req.body.PID}}).then((result)=>{ ParentBlocks= makeArray(result); });
+		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',PPID : req.body.PID}}).then((result)=>{ ChildBlocks= makeArray(result); });
+
+		for(var i=0; i<ParentBlocks.length; i++){
+			// console.log("[Parent PID]")
+			// console.log(ParentBlocks[i].PID)
+			let tempBlocks = {
+				ParentBlockPID : ParentBlocks[i].PID,
+				ParentBlocks : ParentBlocks[i],
+				ChildBlocks : []
+			}
+			for(var j=0; j<ChildBlocks.length; j++){
+				console.log("=======================")
+				console.log(tempBlocks.ParentBlockPID);
+				console.log(ChildBlocks[j].PPID)
+				if(tempBlocks.ParentBlockPID == ChildBlocks[j].PPID){
+					tempBlocks.ChildBlocks.push(ChildBlocks[j]);
+				}
+			}
+			resultBlocks.push(tempBlocks);
+		}
+
+		console.log(resultBlocks)
+
+		res.send({success : 200, data : resultBlocks})
 
 	})
 
@@ -187,21 +247,80 @@ module.exports = (app,auth,logger)=>{
 
 	/*
 
+	VOTE CHECK
 	VOTE UP
 	VOTE CANCEL
 
 	*/
 
+	app.post("/API/VOTE_CHECK",auth.authCheck('auth'),async (req,res)=>{
+		
+		console.log(req.body);
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+
+		db.VOTE_HISTORIES.findOne({where : {PID : req.body.PID,UID : decoded.UID}}).then((result)=>{
+			if(result){
+				res.send({success : 400, message : '이미 투표를 한 블럭'});
+			}else{
+				res.send({success : 200, message : '투표 가능한 블럭'});
+			}
+		})
+	})
+
 	app.post("/API/VOTE_UP",auth.authCheck('auth'),async (req,res)=>{
 		console.log("[VOTE_UP]");
 		console.log(req.body);
-		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+		let newVote = {
+			UID : decoded.UID,
+			PID : req.body.PID
+		}
+
+		db.VOTE_HISTORIES.create(newVote).then((err,result)=>{
+			db.BLOCK_ISSUES.findOne({where : {PID : newVote.PID}}).then((result)=>{
+				let nowVoteCount = Number(result.VOTED);
+				console.log(nowVoteCount);
+				let newVoteCount = nowVoteCount + 1;
+				console.log(newVoteCount);
+				db.BLOCK_ISSUES.update({
+					VOTED : newVoteCount
+				},{
+					where : {
+						PID : newVote.PID
+					}
+				})
+				responseHelper.success_send(200, {success : true}, res);
+			})
+			
+		}).catch((err)=>{
+			console.log(err);
+			responseHelper.err_send(400,'BLOCK CREATE ERROR(UID:token & PID check again)', res);
+		})
+		
 	})
 
-	app.post("/API/VOTE_CANCEL",auth.authCheck('auth'),async (req,res)=>{
+	app.post("/API/VOTE_DOWN",auth.authCheck('auth'),async (req,res)=>{
 		console.log("[VOTE_DOWN]");
 		console.log(req.body);
-		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+		db.VOTE_HISTORIES.destroy({ where : {PID : req.body.PID, UID : decoded.uid}}).then((err,result)=>{
+			db.BLOCK_ISSUES.findOne({where : {PID : req.body.PID}}).then((result)=>{
+				let nowVoteCount = Number(result.VOTED);
+				console.log(nowVoteCount);
+				let newVoteCount = nowVoteCount - 1;
+				console.log(newVoteCount);
+				db.BLOCK_ISSUES.update({
+					VOTED : newVoteCount
+				},{
+					where : {
+						PID : req.body.PID
+					}
+				})
+				responseHelper.success_send(200, {success : true}, res);
+			})
+		}).catch((err)=>{
+			responseHelper.err_send(400,'BLOCK CREATE ERROR(UID:token & PID check again)', res);
+		})
 	})
 
 

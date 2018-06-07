@@ -9,14 +9,16 @@ function authCheck(range) {
         // Validate jwt
         .use(function(req, res, next) {
             
-            var pathName = url.parse(req.url).pathname;
-            console.log(pathName);
-            console.log(range)
-            let token = req.body.TOKEN;
+           
 
             if(range == 'all'){
                 next();
             }else{
+                var pathName = url.parse(req.url).pathname;
+                console.log(pathName);
+                console.log(range)
+                let token = req.body.TOKEN;
+                
                 console.log("[pass token]");
                 console.log(token);
                 if(token == undefined) token = 'error';
