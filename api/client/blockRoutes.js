@@ -127,7 +127,7 @@ module.exports = (app,auth,logger)=>{
 		//console.log(decoded.uid) // bar
 		let newData = req.body;
 		delete newData.TOKEN;
-		newData.FLAG = 'root';
+		newData.FLAG = 'issue';
 		newData.UID = decoded.uid;
 		newData.PID = functions.randomString();
 		newData.CREATE_DATE = functions.getNowTimeFormat();
