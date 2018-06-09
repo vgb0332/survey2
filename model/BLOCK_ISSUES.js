@@ -66,7 +66,17 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
-    VOTED: {
+    VOTE_UP: {
+      type: DataTypes.STRING,
+      defaultValue : '0',
+      allowNull: true
+    },
+    VOTE_DOWN: {
+      type: DataTypes.STRING,
+      defaultValue : '0',
+      allowNull: true
+    },
+    VIEWS: {
       type: DataTypes.STRING,
       defaultValue : '0',
       allowNull: true

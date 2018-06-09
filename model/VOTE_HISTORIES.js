@@ -17,6 +17,10 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
+      FLAG : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       POINT : {
         type: DataTypes.STRING,
         allowNull: true

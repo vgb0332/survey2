@@ -96,6 +96,17 @@ module.exports = (app,auth,logger)=>{
 
 		console.log("[SPREAD BLOCK]");
 		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PID = '"+req.body.PID+"'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
+
+		//VIEW update
+		let updateViewCount = Number(ParentBlocks[0].VIEWS) + 1;
+		db.BLOCK_ISSUES.update({
+			VIEWS : updateViewCount
+		},{
+			where : {
+				PID : req.body.PID
+			}
+		})
+	
 		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PPID = '"+req.body.PID+"'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
 
 		for(var i=0; i<ParentBlocks.length; i++){
@@ -148,7 +159,7 @@ module.exports = (app,auth,logger)=>{
 			console.log("[ISSUE BLOCK CREATE ERROR]")
 			console.log(err);
 			let save_logs =await functions.save_log(newData.UID, "[ISSUE BLOCK CREATE ERROR]");
-			await responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
+			await responseHelper.err_send('BLOCK CREATE ERROR(CHECK AGAIN)', res);
 		})
 	})
 
@@ -245,7 +256,7 @@ module.exports = (app,auth,logger)=>{
 		}).catch((err)=>{
 			console.log("[BLOCK CREATE ERROR]")
 			console.log(err);
-			responseHelper.err_send(400,'BLOCK CREATE ERROR(CHECK AGAIN)', res);
+			responseHelper.err_send('BLOCK CREATE ERROR(CHECK AGAIN)', res);
 		})
 	})
 
@@ -263,7 +274,11 @@ module.exports = (app,auth,logger)=>{
 		console.log(req.body);
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
 
-		db.VOTE_HISTORIES.findOne({where : {PID : req.body.PID,UID : decoded.UID}}).then((result)=>{
+		//FLAG : UP or DOWN
+		db.VOTE_HISTORIES.findOne({where : {
+			PID : req.body.PID,
+			UID : decoded.UID,
+			FLAG : req.body.FLAG}}).then((result)=>{
 			if(result){
 				res.send({success : 400, message : '이미 투표를 한 블럭'});
 			}else{
@@ -278,17 +293,18 @@ module.exports = (app,auth,logger)=>{
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
 		let newVote = {
 			UID : decoded.UID,
-			PID : req.body.PID
+			PID : req.body.PID,
+			FLAG : req.body.FLAG
 		}
 
 		db.VOTE_HISTORIES.create(newVote).then((err,result)=>{
 			db.BLOCK_ISSUES.findOne({where : {PID : newVote.PID}}).then((result)=>{
-				let nowVoteCount = Number(result.VOTED);
+				let nowVoteCount = Number(result.VOTE_UP);
 				console.log(nowVoteCount);
 				let newVoteCount = nowVoteCount + 1;
 				console.log(newVoteCount);
 				db.BLOCK_ISSUES.update({
-					VOTED : newVoteCount
+					VOTE_UP : newVoteCount
 				},{
 					where : {
 						PID : newVote.PID
@@ -299,7 +315,7 @@ module.exports = (app,auth,logger)=>{
 			
 		}).catch((err)=>{
 			console.log(err);
-			responseHelper.err_send(400,'BLOCK CREATE ERROR(UID:token & PID check again)', res);
+			responseHelper.err_send('BLOCK CREATE ERROR(UID:token & PID check again)', res);
 		})
 		
 	})
@@ -308,14 +324,20 @@ module.exports = (app,auth,logger)=>{
 		console.log("[VOTE_DOWN]");
 		console.log(req.body);
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
-		db.VOTE_HISTORIES.destroy({ where : {PID : req.body.PID, UID : decoded.uid}}).then((err,result)=>{
+		let newVote = {
+			UID : decoded.UID,
+			PID : req.body.PID,
+			FLAG : req.body.FLAG
+		}
+
+		db.VOTE_HISTORIES.create(newVote).then((err,result)=>{
 			db.BLOCK_ISSUES.findOne({where : {PID : req.body.PID}}).then((result)=>{
-				let nowVoteCount = Number(result.VOTED);
+				let nowVoteCount = Number(result.VOTE_DOWN);
 				console.log(nowVoteCount);
-				let newVoteCount = nowVoteCount - 1;
+				let newVoteCount = nowVoteCount + 1;
 				console.log(newVoteCount);
 				db.BLOCK_ISSUES.update({
-					VOTED : newVoteCount
+					VOTE_DOWN : newVoteCount
 				},{
 					where : {
 						PID : req.body.PID
@@ -324,7 +346,7 @@ module.exports = (app,auth,logger)=>{
 				responseHelper.success_send(200, {success : true}, res);
 			})
 		}).catch((err)=>{
-			responseHelper.err_send(400,'BLOCK CREATE ERROR(UID:token & PID check again)', res);
+			responseHelper.err_send('BLOCK CREATE ERROR(UID:token & PID check again)', res);
 		})
 	})
 
