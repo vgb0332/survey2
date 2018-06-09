@@ -89,13 +89,20 @@ module.exports = (app,auth,logger)=>{
         }
     })
 
-    app.post("/API/USER_PROFILE", auth.authCheck('auth'), async (req,res)=>{
+    app.post("/API/USER_PROFILE", auth.authCheck('all'), async (req,res)=>{
 
         let blocks = [];
         let info = [];
-        var decoded = jwt.verify(req.body.TOKEN,data.cert());
+        let UID = '';
+        if(req.body.UID == ''){
+            let decoded = jwt.verify(req.body.TOKEN,data.cert());
+            UID = decoded.uid;
+        }else{
+            UID = req.body.UID
+        }
+        
 		console.log("[SPREAD BLOCK]");
-        await db.BLOCK_ISSUES.findAll({where : {UID : decoded.uid}}).then((result)=>{ blocks= makeArray(result); });
+        await db.BLOCK_ISSUES.findAll({where : {UID : UID}}).then((result)=>{ blocks= makeArray(result); });
         await db.USERS.findAll({where : {UID : decoded.uid}}).then((result)=>{ info= makeArray(result); });
 
 
