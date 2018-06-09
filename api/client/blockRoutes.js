@@ -23,6 +23,7 @@ function makeArray(data){
 		resultArray.push(data[rs]);
 	  }
 	}
+	console.log(resultArray)
 	return resultArray;
   }
 module.exports = (app,auth,logger)=>{
@@ -57,8 +58,8 @@ module.exports = (app,auth,logger)=>{
 		let resultBlocks = [];
 
 		console.log("[SPREAD BLOCK]");
-		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',FLAG : 'issue'}}).then((result)=>{ ParentBlocks= makeArray(result); });
-		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',FLAG : 'reply'}}).then((result)=>{ ChildBlocks= makeArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'issue'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'reply'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
 
 		for(var i=0; i<ParentBlocks.length; i++){
 			// console.log("[Parent PID]")
@@ -92,8 +93,8 @@ module.exports = (app,auth,logger)=>{
 		let resultBlocks = [];
 
 		console.log("[SPREAD BLOCK]");
-		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',PID : req.body.PID}}).then((result)=>{ ParentBlocks= makeArray(result); });
-		await db.BLOCK_ISSUES.findAll({where : {SHOW : 'SHOW',PPID : req.body.PID}}).then((result)=>{ ChildBlocks= makeArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PID = '"+req.body.PID+"'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PPID = '"+req.body.PID+"'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
 
 		for(var i=0; i<ParentBlocks.length; i++){
 			// console.log("[Parent PID]")
