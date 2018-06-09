@@ -104,6 +104,7 @@ module.exports = (app,auth,logger)=>{
 			let tempBlocks = {
 				ParentBlockPID : ParentBlocks[i].PID,
 				ParentBlocks : ParentBlocks[i],
+				ChildBlockCount : 0,
 				ChildBlocks : []
 			}
 			for(var j=0; j<ChildBlocks.length; j++){
@@ -112,6 +113,7 @@ module.exports = (app,auth,logger)=>{
 				console.log(ChildBlocks[j].PPID)
 				if(tempBlocks.ParentBlockPID == ChildBlocks[j].PPID){
 					tempBlocks.ChildBlocks.push(ChildBlocks[j]);
+					tempBlocks.ChildBlockCount += 1;
 				}
 			}
 			resultBlocks.push(tempBlocks);
