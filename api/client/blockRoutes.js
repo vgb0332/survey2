@@ -152,11 +152,8 @@ module.exports = (app,auth,logger)=>{
 		
 		await db.BLOCK_ISSUES.create(newData).then(async (err,result)=>{
 
-			console.log("[이슈블락 생성]");
-			console.log(result)
-
 			let save_logs =await functions.save_log(newData.UID, "[CREATE ISSUE BLOCK]");
-			await responseHelper.success_send(200, {success : true}, res);
+			await responseHelper.success_send(200, {success : true, PID : newData.PID}, res);
 
 		}).catch(async (err)=>{
 			console.log("[ISSUE BLOCK CREATE ERROR]")
@@ -255,7 +252,7 @@ module.exports = (app,auth,logger)=>{
 		
 		await db.BLOCK_ISSUES.create(newData).then(async (err,result)=>{
 			let save_logs =await functions.save_log(newData.UID, "[CREATE REPLY BLOCK]");
-			await responseHelper.success_send(200, {success : true}, res);
+			await responseHelper.success_send(200, {success : true,PID : newData.PID}, res);
 		}).catch((err)=>{
 			console.log("[BLOCK CREATE ERROR]")
 			console.log(err);
