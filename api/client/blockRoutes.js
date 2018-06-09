@@ -152,6 +152,9 @@ module.exports = (app,auth,logger)=>{
 		
 		await db.BLOCK_ISSUES.create(newData).then(async (err,result)=>{
 
+			console.log("[이슈블락 생성]");
+			console.log(result)
+
 			let save_logs =await functions.save_log(newData.UID, "[CREATE ISSUE BLOCK]");
 			await responseHelper.success_send(200, {success : true}, res);
 
@@ -335,6 +338,56 @@ module.exports = (app,auth,logger)=>{
 				let nowVoteCount = Number(result.VOTE_DOWN);
 				console.log(nowVoteCount);
 				let newVoteCount = nowVoteCount + 1;
+				console.log(newVoteCount);
+				db.BLOCK_ISSUES.update({
+					VOTE_DOWN : newVoteCount
+				},{
+					where : {
+						PID : req.body.PID
+					}
+				})
+				responseHelper.success_send(200, {success : true}, res);
+			})
+		}).catch((err)=>{
+			responseHelper.err_send('BLOCK CREATE ERROR(UID:token & PID check again)', res);
+		})
+	})
+
+	app.post("/API/VOTE_UP_CANCEL",auth.authCheck('auth'),async (req,res)=>{
+		console.log("[VOTE_DOWN]");
+		console.log(req.body);
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+
+		db.VOTE_HISTORIES.destroy({where : {UID : decoded.UID, PID : req.body.PID, FLAG : req.body.FLAG}}).then((err,result)=>{
+			db.BLOCK_ISSUES.findOne({where : {PID : req.body.PID}}).then((result)=>{
+				let nowVoteCount = Number(result.VOTE_DOWN);
+				console.log(nowVoteCount);
+				let newVoteCount = nowVoteCount - 1;
+				console.log(newVoteCount);
+				db.BLOCK_ISSUES.update({
+					VOTE_UP : newVoteCount
+				},{
+					where : {
+						PID : req.body.PID
+					}
+				})
+				responseHelper.success_send(200, {success : true}, res);
+			})
+		}).catch((err)=>{
+			responseHelper.err_send('BLOCK CREATE ERROR(UID:token & PID check again)', res);
+		})
+	})
+
+	app.post("/API/VOTE_DOWN_CANCEL",auth.authCheck('auth'),async (req,res)=>{
+		console.log("[VOTE_DOWN]");
+		console.log(req.body);
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+
+		db.VOTE_HISTORIES.destroy({where : {UID : decoded.UID, PID : req.body.PID, FLAG : req.body.FLAG}}).then((err,result)=>{
+			db.BLOCK_ISSUES.findOne({where : {PID : req.body.PID}}).then((result)=>{
+				let nowVoteCount = Number(result.VOTE_DOWN);
+				console.log(nowVoteCount);
+				let newVoteCount = nowVoteCount - 1;
 				console.log(newVoteCount);
 				db.BLOCK_ISSUES.update({
 					VOTE_DOWN : newVoteCount
