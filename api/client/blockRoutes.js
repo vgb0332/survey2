@@ -76,7 +76,7 @@ module.exports = (app,auth,logger)=>{
 				console.log(ChildBlocks[j].PPID)
 				if(tempBlocks.ParentBlockPID == ChildBlocks[j].PPID){
 					tempBlocks.ChildBlocks.push(ChildBlocks[j]);
-					ChildBlockCount+=1;
+					tempBlocks.ChildBlockCount+=1;
 				}
 			}
 			resultBlocks.push(tempBlocks);
