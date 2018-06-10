@@ -12,8 +12,10 @@ function authCheck(range) {
            
 
             if(range == 'all'){
+                console.log("[전체 접근 가능]")
                 next();
             }else{
+                console.log("[특정인만 접근 가능]")
                 var pathName = url.parse(req.url).pathname;
                 console.log(pathName);
                 console.log(range)

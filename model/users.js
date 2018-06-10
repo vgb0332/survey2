@@ -41,6 +41,10 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    FOLLOW_COUNT : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     OPTION01 : {
       type: DataTypes.STRING,
       allowNull: true

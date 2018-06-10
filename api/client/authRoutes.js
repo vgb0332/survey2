@@ -108,5 +108,78 @@ module.exports = (app,auth,logger)=>{
 
 		res.send({success : 200, data : {info : info, blocks : blocks}})
 
-	})
+    })
+    
+    app.post("/API/FOLLOW", auth.authCheck('auth'), async (req,res)=>{
+        let decoded = jwt.verify(req.body.TOKEN,data.cert());
+        
+        let newFollow = {
+            UID : decoded.UID,
+            FID : req.body.FID
+        }
+
+        db.FOLLOWS.create(newFollow).then((err,result)=>{
+            
+            db.USERS.findOne({where : {UID : newFollow.FID}}).then((result)=>{
+                let newFollowCount = Number(result.FOLLOW_COUNT) + 1;
+                db.USERS.update({
+                    FOLLOW_COUNT : newFollowCount
+                },{
+                    where : {
+                        UID : newFollow.FID
+                    }
+                });
+                res.send({success : 200})
+            })
+
+
+        }).catch((err)=>{
+            console.log(err);
+            res.send({success : 400})
+        })
+        
+        
+
+
+        
+    })
+
+    app.post("/API/UNFOLLOW", auth.authCheck('auth'), async (req,res)=>{
+        let decoded = jwt.verify(req.body.TOKEN,data.cert());
+        let UID = decoded.UID;
+        let FID = req.body.FID;
+
+        db.FOLLOWS.destroy({where : {UID : UID, FID : FID}}).then((err,result)=>{
+            db.USERS.findOne({where : {UID : FID}}).then((result)=>{
+                let newFollowCount = Number(result.FOLLOW_COUNT) - 1;
+                db.USERS.update({
+                    FOLLOW_COUNT : newFollowCount
+                },{
+                    where : {
+                        UID : newFollow.FID
+                    }
+                });
+                res.send({success : 200})
+            })
+        }).catch((err)=>{
+            console.log(err);
+            res.send({success : 400})
+        })
+        
+    })
+
+    app.post("/API/UNFOLLOW_CHECK", auth.authCheck('auth'), async (req,res)=>{
+        let decoded = jwt.verify(req.body.TOKEN,data.cert());
+        let UID = decoded.UID;
+        let FID = req.body.FID;
+
+        db.FOLLOWS.findOne({where : {UID : UID, FID : FID}}).then((result)=>{
+            if(result){
+                res.send({success : 400,message : 'FOLLOW 불가능'})
+            }else{
+                res.send({success : 200,message : 'FOLLOW 가능'})
+            }
+        })
+        
+    })
 }

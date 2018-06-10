@@ -58,8 +58,8 @@ module.exports = (app,auth,logger)=>{
 		let resultBlocks = [];
 
 		console.log("[SPREAD BLOCK]");
-		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'issue'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
-		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'reply'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'issue'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT, t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'reply'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
 
 		for(var i=0; i<ParentBlocks.length; i++){
 			// console.log("[Parent PID]")
@@ -95,7 +95,7 @@ module.exports = (app,auth,logger)=>{
 		let resultBlocks = [];
 
 		console.log("[SPREAD BLOCK]");
-		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PID = '"+req.body.PID+"'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PID = '"+req.body.PID+"'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
 
 		//VIEW update
 		let updateViewCount = Number(ParentBlocks[0].VIEWS) + 1;
@@ -107,7 +107,7 @@ module.exports = (app,auth,logger)=>{
 			}
 		})
 	
-		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PPID = '"+req.body.PID+"'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PPID = '"+req.body.PID+"'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
 
 		for(var i=0; i<ParentBlocks.length; i++){
 			// console.log("[Parent PID]")
