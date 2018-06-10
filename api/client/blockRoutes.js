@@ -71,9 +71,9 @@ module.exports = (app,auth,logger)=>{
 				ChildBlocks : []
 			}
 			for(var j=0; j<ChildBlocks.length; j++){
-				console.log("=======================")
-				console.log(tempBlocks.ParentBlockPID);
-				console.log(ChildBlocks[j].PPID)
+				// console.log("=======================")
+				// console.log(tempBlocks.ParentBlockPID);
+				// console.log(ChildBlocks[j].PPID)
 				if(tempBlocks.ParentBlockPID == ChildBlocks[j].PPID){
 					tempBlocks.ChildBlocks.push(ChildBlocks[j]);
 					tempBlocks.ChildBlockCount+=1;
@@ -82,7 +82,7 @@ module.exports = (app,auth,logger)=>{
 			resultBlocks.push(tempBlocks);
 		}
 
-		console.log(resultBlocks)
+		// console.log(resultBlocks)
 
 		res.send({success : 200, data : resultBlocks})
 
@@ -119,9 +119,9 @@ module.exports = (app,auth,logger)=>{
 				ChildBlocks : []
 			}
 			for(var j=0; j<ChildBlocks.length; j++){
-				console.log("=======================")
-				console.log(tempBlocks.ParentBlockPID);
-				console.log(ChildBlocks[j].PPID)
+				// console.log("=======================")
+				// console.log(tempBlocks.ParentBlockPID);
+				// console.log(ChildBlocks[j].PPID)
 				if(tempBlocks.ParentBlockPID == ChildBlocks[j].PPID){
 					tempBlocks.ChildBlocks.push(ChildBlocks[j]);
 					tempBlocks.ChildBlockCount += 1;
@@ -130,7 +130,7 @@ module.exports = (app,auth,logger)=>{
 			resultBlocks.push(tempBlocks);
 		}
 
-		console.log(resultBlocks)
+		// console.log(resultBlocks)
 
 		res.send({success : 200, data : resultBlocks})
 
