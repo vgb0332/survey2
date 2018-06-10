@@ -291,6 +291,8 @@ module.exports = (app,auth,logger)=>{
 		console.log("[VOTE_UP]");
 		console.log(req.body);
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+		console.log("[토큰 분해]");
+		console.log(decoded)
 		let newVote = {
 			UID : decoded.UID,
 			PID : req.body.PID,
