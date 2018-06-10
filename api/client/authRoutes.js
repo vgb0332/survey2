@@ -190,7 +190,7 @@ module.exports = (app,auth,logger)=>{
         
     })
 
-    app.post("/API/UNFOLLOW_CHECK", auth.authCheck('auth'), async (req,res)=>{
+    app.post("/API/FOLLOW_CHECK", auth.authCheck('auth'), async (req,res)=>{
         let decoded = jwt.verify(req.body.TOKEN,data.cert());
         let UID = decoded.uid;
         let FID = req.body.FID;
