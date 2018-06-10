@@ -3,7 +3,26 @@ const db = require('../../db.js');
 const data = require('../../data/user');
 var bkfd2Password = require("pbkdf2-password");
 var hasher = bkfd2Password();
-
+function makeArray(data){
+	let resultArray = [];
+	for(var rs in data){
+	  if(data.hasOwnProperty(rs)){
+		  //console.log(data[rs].dataValues)
+		resultArray.push(data[rs].dataValues);
+	  }
+	}
+	return resultArray;
+  }
+  function makeSpreadArray(data){
+	let resultArray = [];
+	for(var rs in data){
+	  if(data.hasOwnProperty(rs)){
+		resultArray.push(data[rs]);
+	  }
+	}
+	console.log(resultArray)
+	return resultArray;
+  }
 module.exports = (app,auth,logger)=>{
 
     app.post("/API/REGIST", async (req,res) => {
