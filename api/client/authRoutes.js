@@ -124,7 +124,7 @@ module.exports = (app,auth,logger)=>{
         
 		console.log("[SPREAD BLOCK]");
         await db.BLOCK_ISSUES.findAll({where : {UID : UID}}).then((result)=>{ blocks= makeArray(result); });
-        await db.USERS.findAll({where : {UID : decoded.uid}}).then((result)=>{ info= makeArray(result); });
+        await db.USERS.findAll({where : {UID : UID}}).then((result)=>{ info= makeArray(result); });
         await db.sequelize.query("select * from USERs t1 join FOLLOWs t2 on t1.UID = t2.UID ").spread((result)=>{ follows= makeSpreadArray(result); });
 
 
