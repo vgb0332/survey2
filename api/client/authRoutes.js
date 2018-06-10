@@ -114,8 +114,9 @@ module.exports = (app,auth,logger)=>{
         let info = [];
         let follows = [];
         let UID = '';
+        let decoded;
         if(req.body.UID == ''){
-            let decoded = jwt.verify(req.body.TOKEN,data.cert());
+            decoded = jwt.verify(req.body.TOKEN,data.cert());
             UID = decoded.uid;
         }else{
             UID = req.body.UID
