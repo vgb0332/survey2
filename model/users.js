@@ -43,6 +43,7 @@ module.exports = function(sequelize, DataTypes){
     },
     FOLLOW_COUNT : {
       type: DataTypes.STRING,
+      defaultValue: '0',
       allowNull: true
     },
     OPTION01 : {
