@@ -277,7 +277,7 @@ module.exports = (app,auth,logger)=>{
 		//FLAG : UP or DOWN
 		db.VOTE_HISTORIES.findOne({where : {
 			PID : req.body.PID,
-			UID : decoded.UID,
+			UID : decoded.uid,
 			FLAG : req.body.FLAG}}).then((result)=>{
 			if(result){
 				res.send({success : 400, message : '이미 투표를 한 블럭'});
@@ -294,7 +294,7 @@ module.exports = (app,auth,logger)=>{
 		console.log("[토큰 분해]");
 		console.log(decoded)
 		let newVote = {
-			UID : decoded.UID,
+			UID : decoded.uid,
 			PID : req.body.PID,
 			FLAG : req.body.FLAG
 		}
@@ -327,7 +327,7 @@ module.exports = (app,auth,logger)=>{
 		console.log(req.body);
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
 		let newVote = {
-			UID : decoded.UID,
+			UID : decoded.uid,
 			PID : req.body.PID,
 			FLAG : req.body.FLAG
 		}
@@ -357,7 +357,7 @@ module.exports = (app,auth,logger)=>{
 		console.log(req.body);
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
 
-		db.VOTE_HISTORIES.destroy({where : {UID : decoded.UID, PID : req.body.PID, FLAG : req.body.FLAG}}).then((err,result)=>{
+		db.VOTE_HISTORIES.destroy({where : {UID : decoded.uid, PID : req.body.PID, FLAG : req.body.FLAG}}).then((err,result)=>{
 			db.BLOCK_ISSUES.findOne({where : {PID : req.body.PID}}).then((result)=>{
 				let nowVoteCount = Number(result.VOTE_DOWN);
 				console.log(nowVoteCount);
@@ -382,7 +382,7 @@ module.exports = (app,auth,logger)=>{
 		console.log(req.body);
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
 
-		db.VOTE_HISTORIES.destroy({where : {UID : decoded.UID, PID : req.body.PID, FLAG : req.body.FLAG}}).then((err,result)=>{
+		db.VOTE_HISTORIES.destroy({where : {UID : decoded.uid, PID : req.body.PID, FLAG : req.body.FLAG}}).then((err,result)=>{
 			db.BLOCK_ISSUES.findOne({where : {PID : req.body.PID}}).then((result)=>{
 				let nowVoteCount = Number(result.VOTE_DOWN);
 				console.log(nowVoteCount);

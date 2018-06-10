@@ -133,7 +133,7 @@ module.exports = (app,auth,logger)=>{
         let decoded = jwt.verify(req.body.TOKEN,data.cert());
         
         let newFollow = {
-            UID : decoded.UID,
+            UID : decoded.uid,
             FID : req.body.FID
         }
 
@@ -165,7 +165,7 @@ module.exports = (app,auth,logger)=>{
 
     app.post("/API/UNFOLLOW", auth.authCheck('auth'), async (req,res)=>{
         let decoded = jwt.verify(req.body.TOKEN,data.cert());
-        let UID = decoded.UID;
+        let UID = decoded.uid;
         let FID = req.body.FID;
 
         db.FOLLOWS.destroy({where : {UID : UID, FID : FID}}).then((err,result)=>{
@@ -189,7 +189,7 @@ module.exports = (app,auth,logger)=>{
 
     app.post("/API/UNFOLLOW_CHECK", auth.authCheck('auth'), async (req,res)=>{
         let decoded = jwt.verify(req.body.TOKEN,data.cert());
-        let UID = decoded.UID;
+        let UID = decoded.uid;
         let FID = req.body.FID;
 
         db.FOLLOWS.findOne({where : {UID : UID, FID : FID}}).then((result)=>{
