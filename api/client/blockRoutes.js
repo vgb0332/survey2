@@ -359,7 +359,7 @@ module.exports = (app,auth,logger)=>{
 
 		db.VOTE_HISTORIES.destroy({where : {UID : decoded.uid, PID : req.body.PID, FLAG : req.body.FLAG}}).then((err,result)=>{
 			db.BLOCK_ISSUES.findOne({where : {PID : req.body.PID}}).then((result)=>{
-				let nowVoteCount = Number(result.VOTE_DOWN);
+				let nowVoteCount = Number(result.VOTE_UP);
 				console.log(nowVoteCount);
 				let newVoteCount = nowVoteCount - 1;
 				console.log(newVoteCount);
