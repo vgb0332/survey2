@@ -50,6 +50,7 @@ db.BLOCK_ISSUES = sequelize.import(__dirname + '/model/BLOCK_ISSUES.js');
 db.VOTE_HISTORIES = sequelize.import(__dirname + '/model/VOTE_HISTORIES.js');
 db.LOGS = sequelize.import(__dirname + '/model/LOGS.js');
 db.FOLLOWS = sequelize.import(__dirname + '/model/FOLLOWS.js');
+db.SCRAPS = sequelize.import(__dirname + '/model/SCRAPS.js');
 
 
 db.sequelize = sequelize;

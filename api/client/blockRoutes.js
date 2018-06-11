@@ -402,6 +402,61 @@ module.exports = (app,auth,logger)=>{
 		})
 	})
 
+	app.post("/API/BLOCK_SCRAP_CHECK",auth.authCheck('auth'),async (req,res)=>{
+		console.log("[BLOCK_SCRAP CEHCK]");
+		console.log(req.body);
+
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+		let UID = decoded.uid;
+		let PID = req.body.PID;
+		
+		db.SCRAPS.findOne({where: { UID : UID, PID : PID}}).then((result)=>{
+			if(result){
+				res.send({success : 400, message : '이미 스크랩 한 블럭'});
+			}else{
+				res.send({success : 200, message : '스크랩 가능한 블럭'});
+			}
+		})
+		
+		
+	})
+
+	app.post("/API/BLOCK_SCRAP",auth.authCheck('auth'),async (req,res)=>{
+		console.log("[BLOCK_SCRAP]");
+		console.log(req.body);
+
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+		let scrap = {
+			UID : decoded.uid,
+			PID : req.body.PID
+		}
+
+		db.SCRAPS.create(scrap).then((err,result)=>{
+			responseHelper.success_send(200, {success : true}, res);
+		}).catch((err)=>{
+			console.log(err);
+			
+		})
+		
+	})
+
+	app.post("/API/BLOCK_SCRAP_CANCEL",auth.authCheck('auth'),async (req,res)=>{
+		console.log("[BLOCK_SCRAP CANCEL]");
+		console.log(req.body);
+
+		let decoded = jwt.verify(req.body.TOKEN,data.cert());
+		let UID = decoded.uid;
+		let PID = req.body.PID;
+
+		db.SCRAPS.destroy({where : {UID : UID,PID : PID}}).then((err,result)=>{
+			responseHelper.success_send(200, {success : true}, res);
+		}).catch((err)=>{
+			console.log(err);
+			responseHelper.err_send('스크랩 삭제에 실패했습니다. 다시 시도해주세요', res);
+		})
+		
+	})
+
 
 }
 

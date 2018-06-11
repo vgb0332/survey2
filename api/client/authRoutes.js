@@ -113,6 +113,7 @@ module.exports = (app,auth,logger)=>{
         let blocks = [];
         let info = [];
         let follows = [];
+        let scraps = [];
         let UID = '';
         let decoded;
         if(req.body.UID == ''){
@@ -126,9 +127,9 @@ module.exports = (app,auth,logger)=>{
         await db.BLOCK_ISSUES.findAll({where : {UID : UID}}).then((result)=>{ blocks= makeArray(result); });
         await db.USERS.findAll({where : {UID : UID}}).then((result)=>{ info= makeArray(result); });
         await db.sequelize.query("select * from USERs t1 join FOLLOWs t2 on t1.UID = t2.UID ").spread((result)=>{ follows= makeSpreadArray(result); });
+        await db.sequelize.query("select * from SCRAPs t1 join BLOCK_ISSUEs t2 on t1.PID = t2.PID where t1.UID = '"+UID+"'").spread((result)=>{ scraps= makeSpreadArray(result); });
 
-
-		res.send({success : 200, data : {info : info, blocks : blocks,follows : follows}})
+		res.send({success : 200, data : {info : info, blocks : blocks,follows : follows,scraps : scraps}})
 
     })
     
