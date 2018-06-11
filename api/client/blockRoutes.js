@@ -428,7 +428,8 @@ module.exports = (app,auth,logger)=>{
 		let decoded = jwt.verify(req.body.TOKEN,data.cert());
 		let scrap = {
 			UID : decoded.uid,
-			PID : req.body.PID
+			PID : req.body.PID,
+			SCRAP_DATE : functions.getNowTimeFormat()
 		}
 
 		db.SCRAPS.create(scrap).then((err,result)=>{
