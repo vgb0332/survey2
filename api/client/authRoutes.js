@@ -135,7 +135,7 @@ module.exports = (app,auth,logger)=>{
 
     app.post("/API/USER_PROFILE_UPDATE", auth.authCheck('auth'), async (req,res)=>{
         let decoded = jwt.verify(req.body.TOKEN,data.cert());
-        
+        console.log(req.body)
         await db.USERS.update({
             USER_NAME : req.body.USER_NAME,
             USER_NICK : req.body.USER_NICK,
