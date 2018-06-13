@@ -25,6 +25,14 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    USER_IAMGE : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    USER_DESCRIPTION : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     PASSWORD : {
       type: DataTypes.STRING,
       allowNull: true

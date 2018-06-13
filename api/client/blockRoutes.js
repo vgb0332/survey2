@@ -58,8 +58,8 @@ module.exports = (app,auth,logger)=>{
 		let resultBlocks = [];
 
 		console.log("[SPREAD BLOCK]");
-		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'issue'").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
-		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT, t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'reply'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'issue' order by t1.ID DESC").spread((result)=>{ ParentBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT, t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and FLAG = 'reply' order by t1.ID DESC").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
 
 		for(var i=0; i<ParentBlocks.length; i++){
 			// console.log("[Parent PID]")
@@ -81,6 +81,10 @@ module.exports = (app,auth,logger)=>{
 			}
 			resultBlocks.push(tempBlocks);
 		}
+
+		/**
+		 * sorting : 최신순, 인기순, 지역순, 추천, 
+		 */
 
 		// console.log(resultBlocks)
 
@@ -107,7 +111,7 @@ module.exports = (app,auth,logger)=>{
 			}
 		})
 	
-		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PPID = '"+req.body.PID+"'").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
+		await db.sequelize.query("select t1.*, t2.EMAIL,t2.USER_NAME,t2.USER_NICK,t2.LOGIN_DATE,t2.FOLLOW_COUNT,t2.createdAt from BLOCK_ISSUEs t1 join USERs t2 on t1.UID = t2.UID where t1.SHOW = 'SHOW' and PPID = '"+req.body.PID+"' order by t1.ID DESC").spread((result)=>{ ChildBlocks= makeSpreadArray(result); });
 
 		for(var i=0; i<ParentBlocks.length; i++){
 			// console.log("[Parent PID]")
@@ -455,7 +459,6 @@ module.exports = (app,auth,logger)=>{
 			console.log(err);
 			responseHelper.err_send('스크랩 삭제에 실패했습니다. 다시 시도해주세요', res);
 		})
-		
 	})
 
 
