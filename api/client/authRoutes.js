@@ -33,6 +33,8 @@ module.exports = (app,auth,logger)=>{
             USER_NAME : req.body.USER_NAME == '' ? "설정요망" : req.body.USER_NAME,
             USER_NICK : req.body.USER_NICK,
             PASSWORD : req.body.PASSWORD,
+            USER_IMAGE : '',
+            USER_DESCRIPTION : '',
             SALT : '',
             POINT : '0'
         }
@@ -136,7 +138,12 @@ module.exports = (app,auth,logger)=>{
     app.post("/API/USER_PROFILE_UPDATE", auth.authCheck('auth'), async (req,res)=>{
         let decoded = jwt.verify(req.body.TOKEN,data.cert());
         console.log(req.body)
-        await db.USERS.update(req.body,{
+        await db.USERS.update({
+            USER_NAME : req.body.USER_NAME,
+            USER_NICK : req.body.USER_NICK,
+            USER_IMAGE : req.body.USER_IMAGE,
+            USER_DESCRIPTION : req.body.USER_DESCRIPTION
+        },{
             where : {
                 UID : decoded.uid
             }
