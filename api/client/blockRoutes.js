@@ -152,7 +152,7 @@ module.exports = (app,auth,logger)=>{
 		newData.PID = functions.randomString();
 		newData.CREATE_DATE = functions.getNowTimeFormat();
 		newData.UPDATE_DATE = functions.getNowTimeFormat();
-		console.log(newData)
+		console.log(newData) 
 		
 		await db.BLOCK_ISSUES.create(newData).then(async (err,result)=>{
 
@@ -165,6 +165,46 @@ module.exports = (app,auth,logger)=>{
 			let save_logs =await functions.save_log(newData.UID, "[ISSUE BLOCK CREATE ERROR]");
 			await responseHelper.err_send('BLOCK CREATE ERROR(CHECK AGAIN)', res);
 		})
+	})
+
+	app.post("/API/CREATE_SAVE",auth.authCheck('auth'),async(req,res)=>{
+		console.log("[CREATE SAVE BLOCK]");
+		console.log(req.body);
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		//console.log(decoded.uid) // bar
+		let newData = req.body;
+		delete newData.TOKEN;
+		newData.FLAG = req.body.FLAG;
+		newData.UID = decoded.uid;
+		newData.PID = functions.randomString();
+		newData.CREATE_DATE = functions.getNowTimeFormat();
+		newData.UPDATE_DATE = functions.getNowTimeFormat();
+		console.log(newData)
+		
+		await db.SAVES.create(newData).then(async (err,result)=>{
+
+			let save_logs =await functions.save_log(newData.UID, "[CREATE SAVE BLOCK]");
+			await responseHelper.success_send(200, {success : true, PID : newData.PID}, res);
+
+		}).catch(async (err)=>{
+			console.log("[SAVE BLOCK CREATE ERROR]")
+			console.log(err);
+			let save_logs =await functions.save_log(newData.UID, "[SAVE BLOCK CREATE ERROR]");
+			await responseHelper.err_send('SAVE BLOCK CREATE ERROR(CHECK AGAIN)', res);
+		})
+	})
+
+	app.post("/API/DELETE_SAVE",auth.authCheck('auth'),async(req,res)=>{
+		console.log("[CREATE SAVE BLOCK]");
+		console.log(req.body);
+		var decoded = jwt.verify(req.body.TOKEN,data.cert());
+		db.SAVES.destroy({where : {UID : decoded.uid, PID : req.body.PID}}).then((err,result)=>{
+			res.send({success : 200, message : '세이브 데이터 삭제 완료'});
+		}).catch((err)=>{
+			res.send({success : 200, message : err});
+			responseHelper.err_send('SAVE DELETE ERROR(UID:token & PID check again)', res);
+		})
+
 	})
 
 	app.post("/API/DISABLE_BLOCK", auth.authCheck('auth'), async (req,res)=>{
