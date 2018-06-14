@@ -138,18 +138,13 @@ module.exports = (app,auth,logger)=>{
     app.post("/API/USER_PROFILE_UPDATE", auth.authCheck('auth'), async (req,res)=>{
         let decoded = jwt.verify(req.body.TOKEN,data.cert());
         console.log(req.body)
-        await db.USERS.update({
-            USER_NAME : req.body.USER_NAME,
-            USER_NICK : req.body.USER_NICK,
-            USER_IMAGE : req.body.USER_IMAGE,
-            USER_DESCRIPTION : req.body.USER_DESCRIPTION
-        },{
-            where : {
-                UID : decoded.uid
-            }
+
+        await db.sequelize.query("update USERs set USER_NAME='"+req.body.USER_NAME+"', USER_NICK='"+req.body.USER_NICK+"', USER_IMAGE='"+req.body.USER_IMAGE+"', USER_DESCRIPTION='"+req.body.USER_DESCRIPTION+"' where UID='"+decoded.uid+"'").spread((result)=>{
+            res.send({success : 200})
         })
 
-        res.send({success : 200})
+
+        
     })
     
     app.post("/API/FOLLOW", auth.authCheck('auth'), async (req,res)=>{
