@@ -131,7 +131,7 @@ module.exports = (app,auth,logger)=>{
         await db.sequelize.query("select * from USERs where UID='"+UID+"'").then((result)=>{ info= makeSpreadArray(result); });
         await db.sequelize.query("select * from USERs t1 join FOLLOWs t2 on t1.UID = t2.UID ").spread((result)=>{ follows= makeSpreadArray(result); });
         await db.sequelize.query("select * from SCRAPs t1 join BLOCK_ISSUEs t2 on t1.PID = t2.PID where t1.UID = '"+UID+"'").spread((result)=>{ scraps= makeSpreadArray(result); });
-        await db.sequelize.query("select * from SAVEs where UID = '"+UID+"'").spread((result)=>{ saves= makeSpreadArray(result); });
+        await db.sequelize.query("select * from SAVES where UID = '"+UID+"'").spread((result)=>{ saves= makeSpreadArray(result); });
 
 		res.send({success : 200, data : {info : info[0], blocks : blocks,follows : follows,scraps : scraps,saves : saves}})
 
@@ -144,8 +144,6 @@ module.exports = (app,auth,logger)=>{
         await db.sequelize.query("update USERs set USER_NAME='"+req.body.USER_NAME+"', USER_NICK='"+req.body.USER_NICK+"', USER_IMAGE='"+req.body.USER_IMAGE+"', USER_DESCRIPTION='"+req.body.USER_DESCRIPTION+"' where UID='"+decoded.uid+"'").spread((result)=>{
             res.send({success : 200})
         })
-
-
         
     })
     
