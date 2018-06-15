@@ -167,7 +167,7 @@ module.exports = (app,auth,logger)=>{
 		})
 	})
 
-	app.post("/API/CREATE_SAVE",auth.authCheck('auth'),async(req,res)=>{
+	app.post("/API/CREATE_SAVE",auth.authCheck('all'),async(req,res)=>{
 		console.log("[CREATE SAVE BLOCK]");
 		console.log(req.body);
 		var decoded = jwt.verify(req.body.TOKEN,data.cert());
