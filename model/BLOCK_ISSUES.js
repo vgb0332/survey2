@@ -58,6 +58,10 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.STRING,
       allowNull: true
     },
+    BLOCK_ISSUE_WRITE_TIME: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     CREATE_DATE: {
       type: DataTypes.STRING,
       allowNull: true
