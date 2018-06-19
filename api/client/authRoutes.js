@@ -62,13 +62,13 @@ module.exports = (app,auth,logger)=>{
                     userData.PASSWORD = hash
                     console.log(userData)
                     await db.USERS.create(userData).then((err,result)=>{
+                        let token = jwt.sign({ uid : userData.UID, email : userData.EMAIL,name : userData.USER_NICK}, 
+                            data.cert(),{ expiresIn: 60 * 60 * 60 * 60});
                         res.send({
                             success : 200,
                             message : "회원 가입 성공",
-                            data : {
-                                EMAIL : userData.EMAIL,
-                                USER_NICK : userData.USER_NICK
-                            }
+                            token : token,
+                            data : userData
                         })
                     }).catch((err)=>{
                         console.log(err);
