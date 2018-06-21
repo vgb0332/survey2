@@ -41,14 +41,14 @@ var cors = require('cors');
 var app = express();
 
 const corsOptions = {
-  origin: 'http://52.79.128.87',
+  origin: 'http://www.maemi.com',
   credentials: true,
 }
 
 app.use(cors(corsOptions))
 
 app.use(function(req, res, next) {
-  var allowedOrigins = ['http://52.79.128.87', 'http://localhost:3000', 'http://127.0.0.1:80', 'http://localhost:80','http://127.0.0.1:8020','http://localhost:8020','http://localhost','http://127.0.0.1'];
+  var allowedOrigins = ['http://52.79.128.87','http://maemi.com' ,'http://localhost:3000', 'http://127.0.0.1:80', 'http://localhost:80','http://127.0.0.1:8020','http://localhost:8020','http://localhost','http://127.0.0.1'];
   var origin = req.headers.origin;
   if(allowedOrigins.indexOf(origin) > -1){
        res.setHeader('Access-Control-Allow-Origin', origin);
