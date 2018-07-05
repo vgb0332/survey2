@@ -45,4 +45,17 @@ module.exports = (app,logger)=>{
         
         
     })
+
+
+
+    app.post("/api/user/image", async (req,res)=>{
+        let date = new Date();
+        logger.info("/api/user/image ::: POST ::: Date ::: "+date);
+        db.license_images.create(req.body).then((err,result)=>{
+            res.send({success: 200})
+        }).catch((err)=>{
+            console.log(err);
+            res.send({sucess : 400, message : err})
+        })
+    })
 }
