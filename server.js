@@ -40,25 +40,25 @@ var fs = require('fs');
 var cors = require('cors');
 var app = express();
 
-const corsOptions = {
-  origin: 'http://www.maemi.com',
-  credentials: true,
-}
+// const corsOptions = {
+//   origin: 'http://localhost:80',
+//   credentials: true,
+// }
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 
-app.use(function(req, res, next) {
-  var allowedOrigins = ['http://52.79.128.87','http://maemi.com' ,'http://localhost:3000', 'http://127.0.0.1:80', 'http://localhost:80','http://127.0.0.1:8020','http://localhost:8020','http://localhost','http://127.0.0.1'];
-  var origin = req.headers.origin;
-  if(allowedOrigins.indexOf(origin) > -1){
-       res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  // res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', true);
-  return next();
-});
+// app.use(function(req, res, next) {
+//   var allowedOrigins = ['http://52.79.128.87','http://maemi.com' ,'http://localhost:3000', 'http://127.0.0.1:80', 'http://localhost:80','http://127.0.0.1:8020','http://localhost:8020','http://localhost','http://127.0.0.1'];
+//   var origin = req.headers.origin;
+//   if(allowedOrigins.indexOf(origin) > -1){
+//        res.setHeader('Access-Control-Allow-Origin', origin);
+//   }
+//   // res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   res.header('Access-Control-Allow-Credentials', true);
+//   return next();
+// });
 // Configure view engine to render EJS templates.
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/views');
@@ -97,12 +97,15 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
+require('./api/apidoc.js')(app);
 
+require('./api/admin/vehicleRoutes.js')(app,loggerAdmin);
 
-require('./api/client/mainRoutes.js')(app,auth,loggerClient);
-require('./api/client/authRoutes.js')(app,auth,loggerClient);
-require('./api/client/blockRoutes.js')(app,auth,loggerClient);
-require('./api/client/imageRoutes.js')(app,auth,loggerClient);
+require('./api/client/vehicleRoutes.js')(app,loggerClient);
+require('./api/client/mainRoutes.js')(app,loggerClient);
+require('./api/client/imageRoutes.js')(app,loggerClient);
+require('./api/client/loginRoutes.js')(app,loggerClient);
+require('./api/client/registRoutes.js')(app,loggerClient);
 
 
 

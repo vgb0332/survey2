@@ -1,99 +1,86 @@
 module.exports = function(sequelize, DataTypes){
-    return sequelize.define('SAVES', {
-      ID: {
+
+    var date = new Date();
+
+    return sequelize.define('vehicles', {
+      id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      //이슈 블럭인지 답글블럭인지 구별
-      //issue or reply
-      FLAG : {
+      bodyType : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      UID : {
+      carType : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      PPID : {
+      colorExterior : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      PID : {
+      colorInterior : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      SHOW : {
-        type: DataTypes.STRING,
-        defaultValue : 'SHOW',
-        allowNull: true
-      },
-      BLOCK_ISSUE_THEME : {
+      cylinder : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      BLOCK_ISSUE_CATEGORY : {
+      door : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      BLOCK_ISSUE_HASHTAG : {
+      drivetrain : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      BLOCK_ISSUE_CONTENT : {
+      features : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      BLOCK_ISSUE_IMAGE : {
-        type: DataTypes.STRING,
-        defaultValue : 'https://s3.ap-northeast-2.amazonaws.com/maemistore/image/space01.jpg',
-        allowNull: true
-      },
-      BLOCK_ISSUE_VIDEO : {
+      fuel : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      BLOCK_ISSUE_LOCATION : {
+      fuelEconomy : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      BLOCK_ISSUE_WRITE_TIME: {
+      latitude : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      CREATE_DATE: {
+      longitude : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      UPDATE_DATE: {
+      make : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      VOTE_UP: {
-        type: DataTypes.STRING,
-        defaultValue : '0',
-        allowNull: true
-      },
-      VOTE_DOWN: {
-        type: DataTypes.STRING,
-        defaultValue : '0',
-        allowNull: true
-      },
-      VIEWS: {
-        type: DataTypes.STRING,
-        defaultValue : '0',
-        allowNull: true
-      },
-      OPTION01 : {
+      model : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      OPTION02 : {
+      trim : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      subscriptionStart : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      option01 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      option02 : {
         type: DataTypes.STRING,
         allowNull: true
       }
       
     });
   }
-  

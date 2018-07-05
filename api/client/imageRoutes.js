@@ -6,9 +6,9 @@ var cert = "asldjkhf12409uaslkjllkn23lrn9f";
 const multiparty = require('multiparty');
 var responseHelper = require('../../lib/responseHelper')
 var FileUpload = require('../../lib/aws/fileUpload')
-module.exports = (app,auth,logger)=>{
+module.exports = (app,logger)=>{
 
-        app.post("/API/IMAGE_UPLOAD", async (req,res)=>{
+        app.post("/api/image_upload", async (req,res)=>{
             console.log('(POST) controller/api/upload.js :: /upload/image called');
             let form = new multiparty.Form();
             form.parse(req, (err, fields, files) => {

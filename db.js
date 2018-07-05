@@ -31,8 +31,8 @@ if (env === 'production') {
   });
   */
 
-  sequelize = new Sequelize('maemidb','maemi','maemi2018', {
-    host :'maemidb.cckdluzejj0f.us-west-2.rds.amazonaws.com',
+  sequelize = new Sequelize('subscriptionapi','trive','trive2018', {
+    host :'subscriptionapi.cqmfchpb5ca0.ap-northeast-2.rds.amazonaws.com',
     dialect : 'mysql',
     port : 3306,
     define: {
@@ -45,13 +45,11 @@ if (env === 'production') {
 
 var db = {};
 
-db.USERS = sequelize.import(__dirname + '/model/USERS.js');
-db.BLOCK_ISSUES = sequelize.import(__dirname + '/model/BLOCK_ISSUES.js');
-db.SAVES = sequelize.import(__dirname + '/model/SAVES.js');
-db.VOTE_HISTORIES = sequelize.import(__dirname + '/model/VOTE_HISTORIES.js');
-db.LOGS = sequelize.import(__dirname + '/model/LOGS.js');
-db.FOLLOWS = sequelize.import(__dirname + '/model/FOLLOWS.js');
-db.SCRAPS = sequelize.import(__dirname + '/model/SCRAPS.js');
+db.users = sequelize.import(__dirname + '/model/users.js');
+db.license_images = sequelize.import(__dirname + '/model/license_images.js');
+db.vehicles = sequelize.import(__dirname + '/model/vehicles.js');
+db.vehicle_images = sequelize.import(__dirname + '/model/vehicle_images.js');
+
 
 
 db.sequelize = sequelize;

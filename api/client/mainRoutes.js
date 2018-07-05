@@ -1,9 +1,10 @@
 var db = require('../../db.js');
 
-module.exports = (app,auth,logger)=>{
+module.exports = (app,logger)=>{
 
-    app.get("/API",(req,res)=>{
+    app.get("/api",(req,res)=>{
+        let date = new Date();
         console.log("[API 호출 가즈아!!!!]")
-        res.send("SIBAL SEX");
+        res.send("Trive API: "+date);
     })
 }

@@ -2,63 +2,62 @@ module.exports = function(sequelize, DataTypes){
 
   var date = new Date();
   
-  return sequelize.define('USERS', {
-    ID: {
+  return sequelize.define('users', {
+    id: {
       type : DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false
     },
-    UID : {
+    name : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    EMAIL : {
+    phone : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    USER_NAME : {
+    email : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    USER_NICK : {
+    salt : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    USER_IMAGE : {
+    password : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    USER_DESCRIPTION : {
+    birthYear : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    PASSWORD : {
+    birthMonth : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    SALT : {
+    birthDay : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    LOGIN_DATE : {
+    subscriptionType : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    POINT : {
+    licenseFront : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    FOLLOW_COUNT : {
-      type: DataTypes.STRING,
-      defaultValue: '0',
-      allowNull: true
-    },
-    OPTION01 : {
+    licenseBack : {
       type: DataTypes.STRING,
       allowNull: true
     },
-    OPTION02 : {
+    option01 : {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    option02 : {
       type: DataTypes.STRING,
       allowNull: true
     }

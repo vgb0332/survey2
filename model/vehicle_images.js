@@ -2,26 +2,26 @@ module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
     
-    return sequelize.define('FOLLOWS', {
-      ID: {
+    return sequelize.define('vehicle_images', {
+      id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      UID : {
+      vid : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      FID : {
+      image : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      OPTION01 : {
+      option01 : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      OPTION02 : {
+      option02 : {
         type: DataTypes.STRING,
         allowNull: true
       }

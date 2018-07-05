@@ -2,34 +2,31 @@ module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
     
-    return sequelize.define('VOTE_HISTORIES', {
-      ID: {
+    return sequelize.define('license_images', {
+      id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      UID : {
+      uid : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      PID : {
+      //front or backend
+      position : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      FLAG : {
+      license_image : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      POINT : {
+      option01 : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      OPTION01 : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      OPTION02 : {
+      option02 : {
         type: DataTypes.STRING,
         allowNull: true
       }
