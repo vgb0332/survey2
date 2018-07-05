@@ -29,7 +29,7 @@ var loggerClient = log4js.getLogger('client');
 // var Strategy = require('passport-facebook').Strategy;
 var _ = require('underscore');
 
-var port = process.env.PORT || 3005;
+var port = process.env.PORT || 80;
 var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var mysql = require('mysql');
