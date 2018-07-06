@@ -31,8 +31,8 @@ if (env === 'production') {
   });
   */
 
-  sequelize = new Sequelize('subscriptionapi','trive','trive2018', {
-    host :'subscriptionapi.cqmfchpb5ca0.ap-northeast-2.rds.amazonaws.com',
+  sequelize = new Sequelize('ushouse','ushouse01','ushouse', {
+    host :'1.201.141.91',
     dialect : 'mysql',
     port : 3306,
     define: {
@@ -45,10 +45,7 @@ if (env === 'production') {
 
 var db = {};
 
-db.users = sequelize.import(__dirname + '/model/users.js');
-db.license_images = sequelize.import(__dirname + '/model/license_images.js');
-db.vehicles = sequelize.import(__dirname + '/model/vehicles.js');
-db.vehicle_images = sequelize.import(__dirname + '/model/vehicle_images.js');
+db.places = sequelize.import(__dirname + '/model/places.js');
 
 
 

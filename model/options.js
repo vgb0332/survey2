@@ -1,75 +1,71 @@
 module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
-
-    return sequelize.define('vehicles', {
+    
+    return sequelize.define('options', {
       id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      bodyType : {
+      place_code : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      carType : {
+      place_shape : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      colorExterior : {
+      place_address : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      colorInterior : {
+      place_x : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      cylinder : {
+      place_y : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      door : {
+      place_structure : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      drivetrain : {
+      place_floor : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      features : {
+      place_width : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      fuel : {
+      place_fee : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      fuelEconomy : {
+      place_feature : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      latitude : {
+      place_regist_date : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      longitude : {
+      place_status : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      make : {
+      place_checkin : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      model : {
+      place_checkout : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      trim : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      subscriptionStart : {
+      place_pre_checkout_ : {
         type: DataTypes.STRING,
         allowNull: true
       },

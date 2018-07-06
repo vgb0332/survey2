@@ -97,15 +97,19 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
-require('./api/apidoc.js')(app);
+// require('./api/apidoc.js')(app);
 
-require('./api/admin/vehicleRoutes.js')(app,loggerAdmin);
+require('./router/admin/bookingManage.js')(app,loggerAdmin);
+require('./router/admin/placeManage.js')(app,loggerAdmin);
+require('./router/admin/serviceManage.js')(app,loggerAdmin);
+require('./router/admin/userManage.js')(app,loggerAdmin);
 
-require('./api/client/vehicleRoutes.js')(app,loggerClient);
-require('./api/client/mainRoutes.js')(app,loggerClient);
-require('./api/client/imageRoutes.js')(app,loggerClient);
-require('./api/client/loginRoutes.js')(app,loggerClient);
-require('./api/client/registRoutes.js')(app,loggerClient);
+require('./router/client/listRoutes.js')(app,loggerClient);
+require('./router/client/loginRoutes.js')(app,loggerClient);
+require('./router/client/mainRoutes.js')(app,loggerClient);
+require('./router/client/mypageRoutes.js')(app,loggerClient);
+require('./router/client/registRoutes.js')(app,loggerClient);
+require('./router/client/serviceRoutes.js')(app,loggerClient);
 
 
 
@@ -115,7 +119,7 @@ app.use(function(req, res, next) {
   res.render('404page');
   // res.send("오류페이지")
 });
-db.sequelize.sync({ force: false }).then(function() {
+db.sequelize.sync({ force: true }).then(function() {
   app.listen(port, function() {
       console.log('server listening on port: '+ port);
   });

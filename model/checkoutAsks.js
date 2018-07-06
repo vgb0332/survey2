@@ -2,7 +2,7 @@ module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
     
-    return sequelize.define('license_images', {
+    return sequelize.define('checkoutAsks', {
       id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
@@ -13,12 +13,31 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
-      //front or backend
-      position : {
+      name : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      license_image : {
+      email : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      phonenumber : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      theme : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      checkout_date : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      message : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      request_date : {
         type: DataTypes.STRING,
         allowNull: true
       },

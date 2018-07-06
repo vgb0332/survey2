@@ -2,12 +2,16 @@ module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
     
-    return sequelize.define('users', {
+    return sequelize.define('services', {
       id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
+      },
+      service_name : {
+        type: DataTypes.STRING,
+        allowNull: true
       },
       uid : {
         type: DataTypes.STRING,
@@ -25,7 +29,27 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
-      grade : {
+      theme : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      content : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      place_code : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      place_name : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      place_address : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      request_date : {
         type: DataTypes.STRING,
         allowNull: true
       },
