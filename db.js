@@ -17,6 +17,15 @@ if (env === 'production') {
   INSERT INTO mysql.user (host,user,authentication_string,ssl_cipher, x509_issuer, x509_subject) VALUES ('111.222.%','root',password('패스워드'),'','','');
   GRANT ALL PRIVILEGES ON *.* TO 'root'@'111.222.%';
 
+  iptables -I INPUT -p tcp --dport 3306 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+  iptables -I OUTPUT -p tcp --sport 3306 -m state --state ESTABLISHED -j ACCEPT
+
+  show variables like 'skip_networking';
+
+출처: http://bryan7.tistory.com/428 [민서네집]
+
+
     sequelize = new Sequelize('hotel','hotel','dprhotel', {
     host :'hotel.cq4818dpp8x6.ap-northeast-2.rds.amazonaws.com',
     dialect : 'mysql',

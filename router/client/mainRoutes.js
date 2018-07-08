@@ -9,6 +9,12 @@ var FileUpload = require('../../lib/aws/fileUpload');
 
 module.exports = (app,logger)=>{
 
+    //main.html
+    app.get("/", async (req,res)=>{
+
+        res.render("client/main");
+
+    })
 
 
 }
