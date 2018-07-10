@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html>
+  <% include ../common/head.ejs %>
+  <style>
+      .th-style{
+        background-color: #eee !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        width: 20% !important;
+      }
+      .th-input-p{
+        width : 30%;background-color: #fff
+      }
+      .th-input-c{
+        width : 100%; height: 35px;border: none;outline: none;
+      }
+
+  </style>
+  <body>
+        <% include ../common/sidebar.ejs %>
+        <div class="page">
+                <% include ../common/header.ejs %>
+          <!-- Counts Section -->
+          <section class="dashboard-counts section-padding">
+            <div class="container-fluid">
+                <!-- Main content -->
+            <section class="content">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+               <div class="box-header with-border">
+                 
+                 <div class="row" style="margin-top : 30px;">
+                   <div class="col-xs-6"><h3 class="box-title" style="border-left : 5px solid #333;font-weight : 700;margin-left: 10px;">&nbsp
+                     
+                     입고 상품 관리
+                   
+                   </h3></div>
+                   <div class="col-xs-6">
+                     <span style="float : right;margin-right : 20px;">
+                         
+                           Admin > 상품 관리 > 입고 상품 관리
+                         
+                     </span>
+                   </div>
+                 </div>
+                 <hr style="border : 1px solid #000;">
+                 <br/>
+               
+                        <table class="table table-bordered" style="width : 100%">
+                            <tbody>
+                
+                                <tr>
+                                    <th class='th-style' scope="col"> 상품명
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 브랜드명
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 매입 출처
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 성별
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 색상
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 입고일
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col">  이미지
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 옷 카테고리
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 단가
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 판매가
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 최저가
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 할인가
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 매입 수량
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col" style="color : red">입고 결정
+                                    </th>
+                                    <th class='th-input-p' scope="col" style="text-align: center !important;
+                                    vertical-align: middle !important;"> 
+                                        입고 결정 / 반환 결정
+                                    </th>
+                                </tr>
+                                
+                            
+                            </tbody>
+                             
+                        </table>
+
+                        <table class="table table-bordered reject" style="width : 100%;">
+                                <tbody>
+                    
+                                    <tr>
+                                        <th class='th-style' scope="col" style="width: 20% !important"> 반환 사유
+                                        </th>
+                                        <th class='th-input-p' scope="col" style="width: 80% !important;height: 150px;">
+                                            <textarea class='th-input-c rejectReason' type="text" disabled style="height: 100%;"></textarea>
+                                        </th>
+                                      
+                                    </tr>
+    
+                                   
+                                </tbody>
+                                 
+                        </table>
+
+                        <table class="table table-bordered" style="width : 100%">
+                                <tbody>
+                    
+                                    <tr>
+                                        <th class='th-style' scope="col"> 고객 이름
+                                        </th>
+                                        <th class='th-input-p' scope="col">
+                                            <input class='th-input-c' type="text"/>
+                                        </th>
+                                       <th class='th-style' scope="col"> 고객 아이디
+                                        </th>
+                                        <th class='th-input-p' scope="col">
+                                            <input class='th-input-c' type="text"/>
+                                        </th>
+                                    </tr>
+    
+                                    <tr>
+                                        <th class='th-style' scope="col"> 지급 포인트
+                                        </th>
+                                        <th class='th-input-p' scope="col">
+                                            <input class='th-input-c' type="text"/>
+                                        </th>
+                                       <th class='th-style' scope="col"> 고객 이메일
+                                        </th>
+                                        <th class='th-input-p' scope="col">
+                                            <input class='th-input-c' type="text"/>
+                                        </th>
+                                    </tr>
+    
+                                    <tr>
+                                        <th class='th-style' scope="col"> 고객 전화번호
+                                        </th>
+                                        <th class='th-input-p' scope="col">
+                                            <input class='th-input-c' type="text"/>
+                                        </th>
+                                       <th scope="col" colspan="2" style="text-align: right;background-color: #fff">
+                                          
+                                        </th>
+                                       
+                                    </tr>
+         
+                                </tbody>
+                                 
+                            </table>
+
+                            <div class="row" style="margin-top : 30px;">
+                                    <div class="col-xs-6"><h3 class="box-title" style="border-left : 5px solid #333;font-weight : 700;margin-left: 10px;">&nbsp
+                                      
+                                      매장 출고
+                                    
+                                    </h3></div>
+                                    
+                                  </div>
+                                  <hr style="border : 1px solid #000;">
+
+
+                            <table class="table table-bordered reject" style="width : 100%;">
+                                    <tbody>
+                        
+                                        <tr style="position: relative;">
+                                            <th class='th-style' scope="col" style="width: 20% !important"> A 매장
+                                            </th>
+                                            <th class='th-input-p' scope="col" style="width: 80% !important;height: 100px;">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        출고 갯수 : <select name="state" id="state" style="width : 100px;margin-left : 10px;">
+       
+                                                        <option value="0" >0</option>
+                                                        <option value="1" >1</option>
+                                                        <option value="2" >2</option>
+                                                        <option value="3" >3</option>
+                                                        <option value="4" >4</option>
+                                                        <option value="5" >5</option>
+                                                        <option value="6" >6</option>
+                                                        <option value="7" >7</option>
+                                                        <option value="8" >8</option>
+                                                        <option value="9" >9</option>
+                                                        <option value="10" >10</option>
+                                                        
+                                                      </select>
+                                                    &nbsp&nbsp&nbsp
+                                                    비고 :<input type="text" style="width: 300px"/><br/><br/>
+                                                    *매장 주소 : 서울시 영등포구 양평동 4가 281 한강르네상스 오피스텔
+
+                                                    </div>
+                                                    <div class="cold-md-4" >
+                                                         <button class="btn btn-success" style="margin-left: 100px;height: 80px;" onclick="addProduct('A매장','productCode')">상품 출고 등록</button>
+                                                    </div>
+
+                                                </div>
+                                                
+                                               
+                                            </th>
+                                          
+                                        </tr>
+        
+                                       
+                                    </tbody>
+                                     
+                            </table>
+
+                            <table class="table table-bordered reject" style="width : 100%;">
+                                    <tbody>
+                        
+                                        <tr>
+                                            <th class='th-style' scope="col" style="width: 20% !important"> B 매장
+                                            </th>
+                                            <th class='th-input-p' scope="col" style="width: 80% !important;height: 100px;">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            출고 갯수 : <select name="state" id="state" style="width : 100px;margin-left : 10px;">
+           
+                                                            <option value="0" >0</option>
+                                                            <option value="1" >1</option>
+                                                            <option value="2" >2</option>
+                                                            <option value="3" >3</option>
+                                                            <option value="4" >4</option>
+                                                            <option value="5" >5</option>
+                                                            <option value="6" >6</option>
+                                                            <option value="7" >7</option>
+                                                            <option value="8" >8</option>
+                                                            <option value="9" >9</option>
+                                                            <option value="10" >10</option>
+                                                            
+                                                          </select>
+                                                        &nbsp&nbsp&nbsp
+                                                        비고 :<input type="text" style="width: 300px"/><br/><br/>
+                                                        *매장 주소 : 서울시 영등포구 양평동 4가 281 한강르네상스 오피스텔
+    
+                                                        </div>
+                                                        <div class="cold-md-4" >
+                                                             <button class="btn btn-success" style="margin-left: 100px;height: 80px;" onclick="addProduct('A매장','productCode')">상품 출고 등록</button>
+                                                        </div>
+    
+                                                    </div>
+                                                    
+                                                   
+                                                </th>
+                                          
+                                        </tr>
+        
+                                       
+                                    </tbody>
+                                     
+                            </table>
+                
+               
+               
+                 
+               </div>
+               <!-- /.box-header -->
+               
+             </div>
+             <!-- /.error-page -->
+           </section>
+           <!-- /.content -->
+            </div>
+        </section>
+       
+        </div>
+
+    <% include ../common/footerScript.ejs %>
+    <script>
+         $(function() {
+            $('#toggle').bootstrapToggle({
+                on: '입고 결정',
+                off: '반환 결정'
+            });
+            $('#toggle').change(function(){
+                console.log($(this).prop('checked'))
+                if($(this).prop('checked')){
+                  
+                    $(".rejectReason").attr('display',true);
+                }else{
+                    $(".rejectReason").attr('disabled',false);
+                }
+            })
+        });
+
+    </script>
+  </body>
+</html>

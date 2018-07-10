@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <% include ./common/head.ejs %>
+  <body>
+    <div class="page login-page">
+      <div class="container">
+        <div class="form-outer text-center d-flex align-items-center">
+          <div class="form-inner">
+            <div class="logo text-uppercase"><span>S</span><strong class="text-primary">CM</strong></div>
+            <p>업체를 등록할때는 등록하려는 업체(계정)이 본사 계정인지 또는 본사 산하의 관리 업체 대상인지 구분한 후 작성하시길 바랍니다.</p>
+              <br/><br/>
+              <div class="i-checks">
+                  <input id="radioCustom1" type="radio" value="option1" name="a" class="form-control-custom radio-custom">
+                  <label for="radioCustom1">기존 업체 산하몰 등록</label>
+                </div>
+                <div class="i-checks">
+                  <input id="radioCustom2" type="radio" checked="" value="option2" name="a" class="form-control-custom radio-custom">
+                  <label for="radioCustom2">새로운 업체 등록</label>
+                </div><br/><br/>
+
+              <div class="form-group-material C_EXIST" style="display: block">
+                <input id="C_NAME" type="text" name="C_NAME" required data-msg="Please enter a valid email address" class="input-material">
+                <label for="register-email" class="label-material active">업체 이름 </label>
+              </div>
+
+              <div class="form-group-material C_NONEXIST" style="display: none">
+                  <div class="dropdown">
+                    <label for="register-password" class="label-material active" style="float: left;color: #33b35a">업체 선택      </label><br/>
+                    <select name="C_NAME_EXIST" id="C_NAME_EXIST" style="width: 100%; background-color: #fff; color : #333; border: 1px solid #dadada; text-align: left;height: 40px;'">
+                      <%for(var i=0; i<locals.company.length; i++){%>
+                          <option value="<%= locals.company[i].C_NAME %>"><%= locals.company[i].C_NAME %></option>
+                      <%}%>
+                    </select>
+                  </div>
+                </div>
+
+              <div class="form-group-material">
+                  <input id="C_NAME" type="text" name="C_NICK_NAME" required data-msg="Please enter a valid email address" class="input-material">
+                  <label for="register-email" class="label-material active">업체 구분 이름      </label>
+                </div>
+              <div class="form-group-material">
+                <input id="C_EMAIL" type="email" name="C_EMAIL" required data-msg="Please enter a valid email address" class="input-material">
+                <label for="register-email" class="label-material active">업체 이메일      </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_PASSWORD" type="password" name="C_PASSWORD" required data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">비밀번호</label>        </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_PASSWORD_CONFIRM" type="password" name="C_PASSWORD_CONFIRM" required data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">비밀번호 확인        </label>
+              </div>
+              <div class="form-group-material">
+                <div class="dropdown">
+                  <label for="register-password" class="label-material active" style="float: left;color: #33b35a">업체 계정 권한 범위      </label><br/>
+                  <select name="C_AUTH_RANGE" id="C_AUTH_RANGE" style="width: 100%; background-color: #fff; color : #333; border: 1px solid #dadada; text-align: left;height: 40px;'">
+                  
+                        <option value="super">super</option>
+                        <option value="root">root</option>
+                        <option value="limit">limit</option>
+                  </select>
+
+                </div>
+                
+              </div>
+              <div class="form-group-material">
+                <input id="C_CONTACT01" type="text" name="C_CONTACT01" required data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">업체 연락처 1      </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_CONTACT02" type="text" name="C_CONTACT02" data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">업체 연락처 2      </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_ADDRESS" type="text" name="C_ADDRESS" required data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">업체 주소  </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_LICENSE_NUMBER" type="text" name="C_LICENSE_NUMBER" data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">업체 사업자번호  </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_SITE" type="text" name="C_SITE" required data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">업체 사이트  </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_MANAGE" type="text" name="C_MANAGER" required data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">담당자    </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_MANAGE_CONTACT" type="text" name="C_MANAGER_CONTACT" required data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">담당자 연락처  </label>
+              </div>
+              <div class="form-group-material">
+                <input id="C_INFO" type="text" name="C_INFO" data-msg="Please enter your password" class="input-material">
+                <label for="register-password" class="label-material active">업체 상세 정보  </label>
+              </div>
+
+              
+              
+             
+              <div class="form-group text-center">
+                <input id="register" type="submit" value="등록" class="btn btn-primary">
+              </div>
+           <small>Already have an account? </small><a href="login.html" class="signup">Login</a>
+          </div>
+          <div class="copyrights text-center">
+            <p>Design by <a href="https://bootstrapious.com" class="external">Bootstrapious</a></p>
+            <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <% include ./common/footerScript.ejs %>
+  </body>
+</html>

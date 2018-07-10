@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+  <% include ../common/head.ejs %>
+  <style>
+      .th-style{
+        background-color: #eee !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        width: 20% !important;
+      }
+      .th-input-p{
+        width : 30%;background-color: #fff
+      }
+      .th-input-c{
+        width : 100%; height: 35px;border: none;outline: none;
+      }
+
+  </style>
+  <body>
+        <% include ../common/sidebar.ejs %>
+        <div class="page">
+                <% include ../common/header.ejs %>
+          <!-- Counts Section -->
+          <section class="dashboard-counts section-padding">
+            <div class="container-fluid">
+                <!-- Main content -->
+            <section class="content">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+               <div class="box-header with-border">
+                 
+                 <div class="row" style="margin-top : 30px;">
+                   <div class="col-xs-6"><h3 class="box-title" style="border-left : 5px solid #333;font-weight : 700;margin-left: 10px;">&nbsp
+                     
+                     매물 상품 등록
+                   
+                   </h3></div>
+                  
+                 </div>
+                 <hr style="border : 1px solid #000;">
+                 <br/>
+               
+                        <table class="table table-bordered" style="width : 100%">
+                            <tbody>
+                
+                                <tr>
+                                    <th class='th-style' scope="col"> 건물번호
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' name='place_code' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 건물형태
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' name='place_shape' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 건물위치
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' name='place_address' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 건물구조
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                            <input class='th-input-c' name='place_structure' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 건물층수
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' name='place_floor' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 면적
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' name='place_width' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col">  사용료
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                            <input class='th-input-c' name='place_fee' type="text"/>
+                                    </th>
+                                   <th class='th-style' scope="col"> 특징
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input class='th-input-c' name='place_feature' type="text"/>
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <th class='th-style' scope="col"> 등록일
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                            <input type="text" class="form-control" id="registAt" name='place_regist_date' placeholder="2000-00-00" value=""/>
+                                    </th>
+                                    <th class='th-style' scope="col"> 입실 가능일
+                                        </th>
+                                        <th class='th-input-p' scope="col">
+                                            <input type="text" class="form-control" id="startAt" name='place_checkin' placeholder="2000-00-00" value=""/>
+                                        </th>
+                                </tr>
+
+                                <tr>
+                                    
+                                   <th class='th-style' scope="col"> 퇴실 가능일
+                                    </th>
+                                    <th class='th-input-p' scope="col">
+                                        <input type="text" class="form-control" id="endAt" name='place_checkout' placeholder="2000-00-00" value=""/>
+                                    </th>
+                                    <th class='th-style' scope="col"> 이용가능 상태
+                                        </th>
+                                        <th class='th-input-p' scope="col">
+                                                <select id="inputType" name="place_status" id="label" style="margin-top: 7px;">
+                                                        <option value="Y">이용가능</option>
+                                                        <option value="N">이용불가</option>
+                                                </select>
+                                        </th>
+                                </tr>
+
+                                
+                            
+                            </tbody>
+                             
+                        </table>
+
+                        
+                
+               
+               
+                 
+               </div>
+               <!-- /.box-header -->
+               
+             </div>
+             <!-- /.error-page -->
+           </section>
+
+           <section>
+                <div class="row" style="margin-top : 30px;">
+                        <div class="col-xs-6"><h3 class="box-title" style="border-left : 5px solid #333;font-weight : 700;margin-left: 10px;">&nbsp
+                          
+                          매물 이미지 등록
+                        
+                        </h3></div>
+                       
+                      </div>
+                      <hr style="border : 1px solid #000;">
+                      <!-- <input class='th-input-c' name='P_IMAGE' type="text"/> -->
+                      <input type="text" class="form-control" id="P_IMAGE" name='P_IMAGE' style="margin-left : 15px; width: 150px;height: 40px;;display: inline;" disabled/>
+                      <button type="button" class="btn btn-default btn-flat" onclick="Util.upload('P_IMAGE')" style="display: inline;height: 40px;margin-top: -2px;margin-left: -5px;">파일찾기</button><br/>
+
+                      <div class="imageList" style="padding: 20px;">
+
+                      </div>
+
+           </section>
+           <button class="btn btn-success" style="width: 100%;" onclick="Util.placeRegist()">매물 등록</button>
+           <!-- /.content --><br/><br/><br/><br/><br/><br/>
+            </div>
+        </section>
+       
+        </div>
+        <form id="uploadForm" action="/ADMIN/IMAGE_UPLOAD" method="POST" enctype="multipart/form-data" hidden>
+            <input type="file" name="file" id="file" onchange="Util.fileTagChange()">
+         
+        </form>
+        <div class="loader" style="display : none;"></div>
+        
+    <% include ../common/footerScript.ejs %>
+    <script>
+         $(function() {
+            $("#startAt, #endAt, #registAt").datepicker({ dateFormat: 'yy-mm-dd' });
+            
+        })
+    </script>
+  </body>
+</html>

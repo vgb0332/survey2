@@ -103,6 +103,8 @@ require('./router/admin/bookingManage.js')(app,loggerAdmin);
 require('./router/admin/placeManage.js')(app,loggerAdmin);
 require('./router/admin/serviceManage.js')(app,loggerAdmin);
 require('./router/admin/userManage.js')(app,loggerAdmin);
+require('./router/admin/mainRoutes.js')(app,loggerAdmin);
+require('./router/admin/imageRoutes.js')(app,loggerAdmin);
 
 require('./router/client/listRoutes.js')(app,loggerClient);
 require('./router/client/loginRoutes.js')(app,loggerClient);

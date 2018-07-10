@@ -55,6 +55,11 @@ if (env === 'production') {
 var db = {};
 
 db.places = sequelize.import(__dirname + '/model/places.js');
+db.users = sequelize.import(__dirname + '/model/users.js');
+db.services = sequelize.import(__dirname + '/model/services.js');
+db.bookings = sequelize.import(__dirname + '/model/bookings.js');
+db.checkoutAsks = sequelize.import(__dirname + '/model/checkoutAsks.js');
+db.fees = sequelize.import(__dirname + '/model/fees.js');
 
 
 
