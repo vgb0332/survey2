@@ -40,8 +40,8 @@ if (env === 'production') {
   });
   */
 
-  sequelize = new Sequelize('ushouse','ushouse01','ushouse', {
-    host :'1.201.141.91',
+  sequelize = new Sequelize('survey','survey','survey2018', {
+    host :'survey.cgztrrgzxvdq.us-east-2.rds.amazonaws.com',
     dialect : 'mysql',
     port : 3306,
     define: {
@@ -54,12 +54,10 @@ if (env === 'production') {
 
 var db = {};
 
-db.places = sequelize.import(__dirname + '/model/places.js');
+db.mainQuestions = sequelize.import(__dirname + '/model/mainQuestions.js');
+db.introQuestions = sequelize.import(__dirname + '/model/introQuestions.js');
 db.users = sequelize.import(__dirname + '/model/users.js');
-db.services = sequelize.import(__dirname + '/model/services.js');
-db.bookings = sequelize.import(__dirname + '/model/bookings.js');
-db.checkoutAsks = sequelize.import(__dirname + '/model/checkoutAsks.js');
-db.fees = sequelize.import(__dirname + '/model/fees.js');
+
 
 
 

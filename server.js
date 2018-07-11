@@ -3,29 +3,13 @@ var bodyParser = require('body-parser');
 
 var session = require('express-session');
 var passport = require('passport');
-var log4js = require('log4js');
-var schedule = require('node-schedule');
 
-var auth = require('./config/jwtValidator.js');
+var schedule = require('node-schedule');
 
 var storageRef;
 // var storage = firebaseApp.storage();
 var db = require('./db.js');
-log4js.configure({
-  appenders: {
-    out : { type: 'console' },
-    adminLog : { type: 'file', filename: 'logs/admin/admin.log',"maxLogSize": 1000000,"backups": 10},
-    clientLog : { type: 'file', filename: 'logs/client/client.log',"maxLogSize": 1000000,"backups": 10}
-  },
-  categories : {
-    admin : {appenders : ['adminLog'],level : 'info'},
-    client : {appenders : ['clientLog'],level : 'info'},
-    default : {appenders : ['adminLog','clientLog'],level : 'info'}
-  }
-});
 
-var loggerAdmin = log4js.getLogger('admin');
-var loggerClient = log4js.getLogger('client');
 // var Strategy = require('passport-facebook').Strategy;
 var _ = require('underscore');
 
@@ -99,19 +83,10 @@ passport.deserializeUser(function(user, done) {
 
 // require('./api/apidoc.js')(app);
 
-require('./router/admin/bookingManage.js')(app,loggerAdmin);
-require('./router/admin/placeManage.js')(app,loggerAdmin);
-require('./router/admin/serviceManage.js')(app,loggerAdmin);
-require('./router/admin/userManage.js')(app,loggerAdmin);
-require('./router/admin/mainRoutes.js')(app,loggerAdmin);
-require('./router/admin/imageRoutes.js')(app,loggerAdmin);
+require('./router/service/mainRoutes.js')(app);
+require('./router/service/serviceManage.js')(app);
+require('./router/service/userManage.js')(app);
 
-require('./router/client/listRoutes.js')(app,loggerClient);
-require('./router/client/loginRoutes.js')(app,loggerClient);
-require('./router/client/mainRoutes.js')(app,loggerClient);
-require('./router/client/mypageRoutes.js')(app,loggerClient);
-require('./router/client/registRoutes.js')(app,loggerClient);
-require('./router/client/serviceRoutes.js')(app,loggerClient);
 
 
 

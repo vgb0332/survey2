@@ -2,7 +2,7 @@ module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
     
-    return sequelize.define('fees', {
+    return sequelize.define('introQuestions', {
       id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
@@ -13,27 +13,7 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
-      name : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      email : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      phonenumber : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      fee_image : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      payment : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      create_date : {
+      datas : {
         type: DataTypes.STRING,
         allowNull: true
       },

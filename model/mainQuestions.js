@@ -2,70 +2,62 @@ module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
     
-    return sequelize.define('options', {
+    return sequelize.define('mainQuestions', {
       id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      place_code : {
+      uid : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_shape : {
+      phonenumber : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_address : {
+      day : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_x : {
+      startTime : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_y : {
+      endTime : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_structure : {
+      title : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_floor : {
+      anger : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_width : {
+      anxiety : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_fee : {
+      depression : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_feature : {
+      fatigue : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_regist_date : {
+      happy : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_status : {
+      location : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      place_checkin : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      place_checkout : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      place_pre_checkout_ : {
+      satisfation : {
         type: DataTypes.STRING,
         allowNull: true
       },

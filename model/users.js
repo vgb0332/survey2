@@ -9,15 +9,11 @@ module.exports = function(sequelize, DataTypes){
         primaryKey: true,
         allowNull: false
       },
-      uid : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       name : {
         type: DataTypes.STRING,
         allowNull: true
       },
-      email : {
+      password : {
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -25,8 +21,9 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
-      grade : {
+      introQuestion : {
         type: DataTypes.STRING,
+        defaultValue : 'no',
         allowNull: true
       },
       option01 : {
