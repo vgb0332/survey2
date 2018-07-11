@@ -12,13 +12,13 @@ module.exports = (app,logger)=>{
 
     //로그인 페이지 - 첫페이지
     app.get("/",async (req,res)=>{
-        
+      res.render('client/login');
     })
 
     //회원가입 페이지
-    app.get("/regist", async (req,res)=>{
-
+    app.get("/register", async (req,res)=>{
+      res.render('client/register');
     })
 
-    
+
 }
