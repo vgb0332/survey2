@@ -14,4 +14,38 @@ module.exports = (app,logger)=>{
       res.render('client/main');
     })
 
+    app.post("/main", async (req,res)=>{
+      await db.mainQuestions.create(req.body.data).then((result)=>{
+        res.send({
+          succes : 200,
+          message : "저장 완료"
+        })
+      })
+    })
+
+    app.put("/main", async (req,res)=>{
+      await db.mainQuestions.update(req.body.data,{
+        where : {
+          id : req.body.id
+        }
+      });
+      res.send({
+        succes : 200,
+        message : "변경 완료"
+      })
+    })
+
+    app.delete("/main", async (req,res)=>{
+        await db.mainQuestions.destroy({
+          where : {
+            id : req.body.id
+          }
+        })
+
+        res.send({
+          succes : 200,
+          message : "삭제 완료"
+        })
+    })
+
 }
