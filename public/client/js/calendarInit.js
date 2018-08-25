@@ -212,6 +212,8 @@ $(document).ready(function() {
       console.log('dayclick', date, jsEvent, view);
       if(!start) {
         start = date;
+        console.log('[START DATE]');
+        console.log(start)
         $("#startMessage").slideUp();
         $(jsEvent.target).css('background-color', getRandomColor());
         var time = date.format('hh:mm:ss');
@@ -227,6 +229,8 @@ $(document).ready(function() {
         $.each( events, function(index, event) {
           console.log(event);
           var e_start = moment(event.start);
+          console.log("e_start")
+          console.log(e_start)
           var e_end = moment(event.end);
           console.log(date);
           if( start < e_start && date > e_end ) { alert('중복된 이벤트를 기입할 수 없습니다!\n다시 선택해 주세요'); isInclude = true; return false;}

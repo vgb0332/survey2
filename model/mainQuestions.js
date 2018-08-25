@@ -9,15 +9,20 @@ module.exports = function(sequelize, DataTypes){
         primaryKey: true,
         allowNull: false
       },
-      uid : {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       phonenumber : {
         type: DataTypes.STRING,
         allowNull: true
       },
+      //첫쨋날, 둘쨋날
       day : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      color : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      testColor : {
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -41,7 +46,7 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
-      depression : {
+      agitation : {
         type: DataTypes.STRING,
         allowNull: true
       },

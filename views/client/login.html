@@ -16,8 +16,8 @@
     		<h1>Welcome</h1>
 
     		<form class="form">
-    			<input type="text" placeholder="아이디(핸드폰 번호)">
-    			<input type="password" placeholder="비밀번호">
+    			<input type="text" id="phonenumber" placeholder="아이디(핸드폰 번호)">
+    			<input type="password" id="password" placeholder="비밀번호">
     			<button type="submit" id="login-button">로그인</button>
           <button type="register" id="register-button">회원가입</button>
     		</form>
@@ -42,11 +42,35 @@
     $("#login-button").click(function(event){
        event.preventDefault();
        //check if user exists, if user logins the FIRST TIME, redirect accordingly
-       $('form').fadeOut(500,  function(e) {
-         $('.wrapper').addClass('form-success');
+      
+         
          console.log('login');
-         window.location.href = "index.html";
-       });
+        //  window.location.href = "index.html";
+        let phonenumber = $("#phonenumber").val();
+        let password = $("#password").val();
+        $.ajax({
+              type: "POST",
+              url: '/login',
+              data: {phonenumber : phonenumber, password : password},
+              timeout: 1000000,
+              success: function (json) {
+                  console.log(json)
+                  if(json.success == 200){
+                    console.log(json);
+
+                    $('form').fadeOut(500,  function(e) {
+                      $('.wrapper').addClass('form-success');
+                      location.href = '/intro'
+                    })
+                  }else{
+                    alert(json.message)
+                  }
+              },
+              error: function (e) {
+                  console.log(e);
+              }
+          });
+    
 
     });
 
@@ -56,7 +80,7 @@
        $('form').fadeOut(500,  function(e) {
          $('.wrapper').addClass('form-success');
          console.log('register');
-         window.location.href = "register.html";
+         window.location.href = "/register";
        });
 
     });
