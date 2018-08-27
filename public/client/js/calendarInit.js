@@ -213,7 +213,8 @@ $(document).ready(function() {
       if(!start) {
         start = date;
         console.log('[START DATE]');
-        console.log(start)
+        console.log(start.format());
+        console.log(new Date(start.format()));
         $("#startMessage").slideUp();
         $(jsEvent.target).css('background-color', getRandomColor());
         var time = date.format('hh:mm:ss');
