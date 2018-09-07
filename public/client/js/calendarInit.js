@@ -8,9 +8,9 @@ $(document).ready(function() {
     themeSystem: 'standard',
     defaultView: 'firstday',
     groupByResource: true,
-    resources: [
-      { id: '01062610332', title: '정용석' },
-    ],
+    // resources: [
+    //   { id: '01062610332', title: '정용석' },
+    // ],
     allDaySlot: false,
     slotDuration: '00:10:00',
     slotLabelFormat: 'a h:mm',
@@ -23,7 +23,15 @@ $(document).ready(function() {
     defaultDate: moment(),
     eventRender: function(event, element) {
       console.log('over here!!!!!!1');
-      console.log(element, event);
+      //console.log(element, event);
+      console.log(event);
+      console.log(event.end._d)
+      var startDate = new Date(event.start._d);
+      var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
+      console.log(fullStartDate)
+      var endDate = new Date(event.end._d);
+      var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
+      console.log(fullEndDate)
       var minutes = moment.duration(event.end.diff(event.start)).get("minutes");
       if(minutes === 10) {
         $(element).find('.fc-time').text( event.title);

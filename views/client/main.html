@@ -621,65 +621,65 @@
     });
     
     //저장
-    $.ajax({
-              type: "post",
-              url: '/main',
-              data: {data : data},
-              timeout: 1000000,
-              success: function (json) {
-                  console.log(json)
-                  if(json.success == 200){
-                    console.log(json);
-                    alert(json.message)
-                  }else{
-                    alert(json.message)
-                  }
-              },
-              error: function (e) {
-                  console.log(e);
-              }
-      });
+    // $.ajax({
+    //           type: "post",
+    //           url: '/main',
+    //           data: {data : data},
+    //           timeout: 1000000,
+    //           success: function (json) {
+    //               console.log(json)
+    //               if(json.success == 200){
+    //                 console.log(json);
+    //                 alert(json.message)
+    //               }else{
+    //                 alert(json.message)
+    //               }
+    //           },
+    //           error: function (e) {
+    //               console.log(e);
+    //           }
+    //   });
 
 
       //수정
-      $.ajax({
-              type: "put",
-              url: '/main',
-              data: {data : data,id : id},
-              timeout: 1000000,
-              success: function (json) {
-                  console.log(json)
-                  if(json.success == 200){
-                    console.log(json);
-                    alert(json.message)
-                  }else{
-                    alert(json.message)
-                  }
-              },
-              error: function (e) {
-                  console.log(e);
-              }
-      });
+      // $.ajax({
+      //         type: "put",
+      //         url: '/main',
+      //         data: {data : data,id : id},
+      //         timeout: 1000000,
+      //         success: function (json) {
+      //             console.log(json)
+      //             if(json.success == 200){
+      //               console.log(json);
+      //               alert(json.message)
+      //             }else{
+      //               alert(json.message)
+      //             }
+      //         },
+      //         error: function (e) {
+      //             console.log(e);
+      //         }
+      // });
 
       //삭제
-      $.ajax({
-              type: "delete",
-              url: '/main',
-              data: {id : id},
-              timeout: 1000000,
-              success: function (json) {
-                  console.log(json)
-                  if(json.success == 200){
-                    console.log(json);
-                    alert(json.message)
-                  }else{
-                    alert(json.message)
-                  }
-              },
-              error: function (e) {
-                  console.log(e);
-              }
-      });
+      // $.ajax({
+      //         type: "delete",
+      //         url: '/main',
+      //         data: {id : id},
+      //         timeout: 1000000,
+      //         success: function (json) {
+      //             console.log(json)
+      //             if(json.success == 200){
+      //               console.log(json);
+      //               alert(json.message)
+      //             }else{
+      //               alert(json.message)
+      //             }
+      //         },
+      //         error: function (e) {
+      //             console.log(e);
+      //         }
+      // });
 
   </script>
 
