@@ -21,12 +21,14 @@ $(document).ready(function() {
     },
     header: false,
     defaultDate: moment(),
+    timezone: 'local',
     eventRender: function(event, element) {
       console.log('over here!!!!!!1');
       //console.log(element, event);
       console.log(event);
       console.log(event.end._d)
       var startDate = new Date(event.start._d);
+      console.log(startDate);
       var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
       console.log(fullStartDate)
       var endDate = new Date(event.end._d);
@@ -221,6 +223,8 @@ $(document).ready(function() {
       if(!start) {
         start = date;
         console.log('[START DATE]');
+        console.log(date);
+        console.log(start);
         console.log(start.format());
         console.log(new Date(start.format()));
         $("#startMessage").slideUp();
@@ -248,6 +252,11 @@ $(document).ready(function() {
         console.log(isInclude);
         if(isInclude) return false;
         end = date;
+        console.log('[END DATE]');
+        console.log(date);
+        console.log(end);
+        console.log(end.format());
+        console.log(new Date(end.format()));
 
         $("#endMessage").slideUp();
         $(jsEvent.target).css('background-color', getRandomColor());
@@ -258,7 +267,7 @@ $(document).ready(function() {
         setTimeout( function() {
           if(confirm('시간: ' + startDate + ' ~ ' + endDate + '\n계속 진행하시겠습니까?')){
             // calendar.fullCalendar('option', 'unselectAuto', true);
-
+            console.log(start, end);
             $('#addBlockModal').on('show.bs.modal', function () {
               $("#addBlockModal .modal-title").text(moment(start).format('a hh:mm') + ' - ' + moment(end).add(10, 'minutes').format('a hh:mm'));
               $('#addBlockModal #addContent').focus()
@@ -321,10 +330,13 @@ $(document).ready(function() {
                     color: getRandomColor(),
                     textColor: '#333',
                     overlap: false,
+                    timezone: 'local'
                   }, true);
               }
 
-              console.log(calendar.fullCalendar( 'clientEvents' ))
+              console.log('이벤트들', calendar.fullCalendar( 'clientEvents' ));
+              console.log(calendar.fullCalendar('getView').type);
+
               $("#cancelAddBlockButton, #addBlockButton").off('click');
               calendar.fullCalendar('option', 'selectable', false);
               $("#addButton").removeClass('active');
