@@ -28,6 +28,7 @@ module.exports = (app,logger)=>{
       if(user){
         console.log(user);
         req.session.phonenumber = phonenumber;
+        req.session.name = user.dataValues.name;
         console.log("[session check]");
         console.log(req.session)
         res.send({
@@ -62,6 +63,24 @@ module.exports = (app,logger)=>{
           })
         })
       }
+
+    })
+
+    app.get("/getUserData", async (req,res)=>{
+      console.log("USER DATA:::");
+      console.log(req.session);
+
+      if(req.session.name){
+        res.send({
+          success : 200,
+          data : req.session
+        })
+      }else{
+        res.send({
+          success : 400
+        })
+      }
+      
 
     })
 

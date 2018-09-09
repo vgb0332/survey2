@@ -22,16 +22,24 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
-      testColor : {
+      textColor : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      startTimeFormat : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      endTimeFormat : {
         type: DataTypes.STRING,
         allowNull: true
       },
       startTime : {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: true
       },
       endTime : {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: true
       },
       title : {

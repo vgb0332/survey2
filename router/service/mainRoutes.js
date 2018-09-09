@@ -6,15 +6,37 @@ const multiparty = require('multiparty');
 var responseHelper = require('../../lib/responseHelper')
 var functions = require('../../lib/functions')
 var FileUpload = require('../../lib/aws/fileUpload');
+var json2xls = require('json2xls');
 
 module.exports = (app,logger)=>{
-
+  	app.use(json2xls.middleware);
     //메인 질문 페이지
     app.get("/main", async (req,res)=>{
       res.render('client/main');
     })
 
+    app.get("/getData", async (req,res)=>{
+
+      if(req.session.phonenumber){
+        let data = await db.mainQuestions.findAll({where : {phonenumber : req.session.phonenumber}}).then((result)=>{
+          return functions.makeArray(result);
+        })
+        console.log(data);
+        res.send({
+          success : 200,
+          data : data
+        })
+      }else{
+        res.send({
+          success : 400
+        })
+      }
+      
+    })
+
     app.post("/main", async (req,res)=>{
+      console.log(req.body)
+      req.body.data.phonenumber = req.session.phonenumber;
       await db.mainQuestions.create(req.body.data).then((result)=>{
         res.send({
           succes : 200,
@@ -26,7 +48,8 @@ module.exports = (app,logger)=>{
     app.put("/main", async (req,res)=>{
       await db.mainQuestions.update(req.body.data,{
         where : {
-          id : req.body.id
+          id : req.body.id,
+          phonenumber :req.session.phonenumber
         }
       });
       res.send({
@@ -41,11 +64,64 @@ module.exports = (app,logger)=>{
             id : req.body.id
           }
         })
-
+        
         res.send({
           succes : 200,
           message : "삭제 완료"
         })
     })
+
+    app.get("/downloadUser", async (req,res)=>{
+
+      let data = await db.users.findAll().then((result)=>{
+        return functions.makeArray(result);
+      });
+      let allData = [];
+      for(var i=0; i<data.length; i++){
+        let tempData = {
+          "No" : data[i].id,
+          "휴대폰번호" : data[i].phonenumber,
+          "이름" : data[i].name
+        }
+        allData.push(tempData);
+      }
+      res.xls('data.xlsx', allData);
+    })
+
+    app.get("/downloadIntro", async (req,res)=>{
+
+      let data = await db.introQuestions.findAll().then((result)=>{
+        return functions.makeArray(result);
+      });
+      let allData = [];
+      for(var i=0; i<data.length; i++){
+        let tempData = {
+          "No" : data[i].id,
+          "휴대폰번호" : data[i].phonenumber,
+          "이름" : data[i].name
+        }
+        allData.push(tempData);
+      }
+      res.xls('data.xlsx', allData);
+    })
+
+    app.get("/downloadMain", async (req,res)=>{
+
+      let data = await db.mainQuestions.findAll().then((result)=>{
+        return functions.makeArray(result);
+      });
+      let allData = [];
+      for(var i=0; i<data.length; i++){
+        let tempData = {
+          "No" : data[i].id,
+          "휴대폰번호" : data[i].phonenumber,
+          "이름" : data[i].name
+        }
+        allData.push(tempData);
+      }
+      res.xls('data.xlsx', allData);
+    })
+
+    
 
 }
