@@ -7,6 +7,9 @@ var responseHelper = require('../../lib/responseHelper')
 var functions = require('../../lib/functions')
 var FileUpload = require('../../lib/aws/fileUpload');
 var json2xls = require('json2xls');
+var fs = require("fs");
+var introLabels = fs.readFileSync("intro.json");
+var mainLabels = fs.readFileSync("main.json");
 
 module.exports = (app,logger)=>{
   	app.use(json2xls.middleware);
@@ -31,7 +34,7 @@ module.exports = (app,logger)=>{
           success : 400
         })
       }
-      
+
     })
 
     app.post("/main", async (req,res)=>{
@@ -64,7 +67,7 @@ module.exports = (app,logger)=>{
             id : req.body.id
           }
         })
-        
+
         res.send({
           succes : 200,
           message : "삭제 완료"
@@ -77,6 +80,7 @@ module.exports = (app,logger)=>{
         return functions.makeArray(result);
       });
       let allData = [];
+      console.log(data);
       for(var i=0; i<data.length; i++){
         let tempData = {
           "No" : data[i].id,
@@ -94,11 +98,21 @@ module.exports = (app,logger)=>{
         return functions.makeArray(result);
       });
       let allData = [];
+
+      var labels = JSON.parse(introLabels);
+
       for(var i=0; i<data.length; i++){
         let tempData = {
           "No" : data[i].id,
           "휴대폰번호" : data[i].phonenumber,
-          "이름" : data[i].name
+          "이름" : data[i].name,
+        }
+
+        for ( key  in data[i] ) {
+          if(labels[key]){
+            var label = labels[key];
+            tempData[label] = data[i][key];
+          }
         }
         allData.push(tempData);
       }
@@ -106,22 +120,33 @@ module.exports = (app,logger)=>{
     })
 
     app.get("/downloadMain", async (req,res)=>{
-
+      //건희야 agitation 항목 없애도 된다
       let data = await db.mainQuestions.findAll().then((result)=>{
         return functions.makeArray(result);
       });
       let allData = [];
+
+      var labels = JSON.parse(mainLabels);
+
       for(var i=0; i<data.length; i++){
         let tempData = {
           "No" : data[i].id,
           "휴대폰번호" : data[i].phonenumber,
           "이름" : data[i].name
         }
+
+        for ( key  in data[i] ) {
+          if(labels[key]){
+            var label = labels[key];
+            tempData[label] = data[i][key];
+          }
+        }
+
         allData.push(tempData);
       }
       res.xls('data.xlsx', allData);
     })
 
-    
+
 
 }

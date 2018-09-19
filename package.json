@@ -32,6 +32,7 @@
     "node-schedule": "^1.2.5",
     "passport": "^0.4.0",
     "pbkdf2-password": "^1.2.1",
+    "pm2": "^3.1.2",
     "sequelize": "^4.32.3",
     "server.js": "^1.0.0",
     "sharp": "^0.20.3",
