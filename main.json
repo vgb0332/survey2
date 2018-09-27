@@ -6,5 +6,8 @@
   "happy" : "즐거움",
   "location" : "장소",
   "satisfation" : "만족감/성취감",
-  "anger" : "분노"
+  "anger" : "분노",
+  "day" : "작성날짜",
+  "startTime" : "작성 시작 시간",
+  "endTime" : "작성 끝 시간"
 }
