@@ -41,7 +41,7 @@ if (env === 'production') {
   */
 
   sequelize = new Sequelize('survey','survey','survey2018', {
-    host :'survey.cgztrrgzxvdq.us-east-2.rds.amazonaws.com',
+    host :'survey.cqi0x7hhzgqq.ap-northeast-2.rds.amazonaws.com',
     dialect : 'mysql',
     port : 3306,
     define: {
