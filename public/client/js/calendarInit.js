@@ -7,6 +7,7 @@ $(document).ready(function() {
   var phonenumber = '';
   var dayType = '';
   var globalEvent = {};
+  var startDate = new moment('2018-09-29');
   $.ajax({
               type: "GET",
               url: '/getData',
@@ -14,7 +15,7 @@ $(document).ready(function() {
               success: function (json) {
                   console.log(json)
                   if(json.success == 200){
-                    
+
                     let eventDatas = json.data;
                     console.log(eventDatas);
                     var tempArray = []
@@ -35,7 +36,7 @@ $(document).ready(function() {
                           "satisfaction" : eventDatas[i].satisfation
                         },
                         "textColor" : eventDatas[i].textColor,
-                        "color" : eventDatas[i].color,       
+                        "color" : eventDatas[i].color,
                         "className":"customEventsClass",
                         "type":1
                       }
@@ -60,18 +61,13 @@ $(document).ready(function() {
                         return $(window).outerHeight() - $(".fixed-top").height() - 10;
                       },
                       header: false,
-                      defaultDate: moment(),
+                      defaultDate: startDate,
                       timezone: 'local',
+                      // validRange: {
+                      //   start: '2017-05-01'
+                      // },
                       events : tempArray,
                       eventRender: function(event, element) {
-                        console.log('over here!!!!!!1');
-                        //console.log(element, event);\
-                        console.log(dayType)
-                        console.log(event);
-                        
-                        
-                        
-                        
                         var minutes = moment.duration(event.end.diff(event.start)).get("minutes");
                         if(minutes === 10) {
                           $(element).find('.fc-time').text( event.title);
@@ -82,7 +78,7 @@ $(document).ready(function() {
                       viewRender: function(view) {
                           var title = view.title;
                           $("#title").html( title );
-                          // console.log(calendar.fullCalendar( 'getView' ));
+                          console.log(calendar.fullCalendar( 'getView' ));
                           var view = calendar.fullCalendar('getView');
                           var curDate = view.start.format('DD');
                           var type = view.type;
@@ -98,20 +94,20 @@ $(document).ready(function() {
                             totTime[date] += diff;
                             totTime['total'] += diff;
                           });
-                  
+
                           if(!events.length) {
                             $("#spent-time-hm").html('-');
                           }
                           else {
                             var curHour = Math.floor(totTime[curDate] / 60).toFixed(0);
                             var curMin = (totTime[curDate]) % 60;
-                  
+
                             curHour = isNaN(curHour) ? 0 : curHour;
                             curMin = isNaN(curMin) ? 0 : curMin;
-                  
+
                             var totHour = Math.floor(totTime['total'] / 60).toFixed(0);
                             var totMin =  totTime['total'] % 60;
-                  
+
                             totHour = isNaN(totHour) ? 0 : totHour;
                             totMin = isNaN(totMin) ? 0 : totMin;
                             $("#spent-time-hm").html(
@@ -119,8 +115,8 @@ $(document).ready(function() {
                                                   totHour + '시간 ' + totMin + '분'
                             );
                           }
-                  
-                  
+
+
                           $("#remaining-time").html (
                             type !== 'bothday' ? '/ 24시간' : '/ 48시간'
                           );
@@ -148,11 +144,11 @@ $(document).ready(function() {
                         $('#eventBlockModal').on('show.bs.modal', function () {
                           $('#startTime').timepicker('remove');
                           $('#endTime').timepicker('remove');
-                  
+
                           var startDate = event.start.format('a h:mm');
                           var endDate = event.end.format('a h:mm');
                           // $("#timeEditButton, #contentEditButton, #locationEditButton, #emotionEditButton").removeClass('active');
-                  
+
                           $("#eventContent").attr('contenteditable', true);
                           $('#locationContent input[type=radio]').prop('disabled', false);
                           $('#happyContent input[type=radio]').prop('disabled', false);
@@ -161,12 +157,12 @@ $(document).ready(function() {
                           $('#anxietyContent input[type=radio]').prop('disabled', false);
                           $('#angerContent input[type=radio]').prop('disabled', false);
                           $('#fatigueContent input[type=radio]').prop('disabled', false);
-                  
+
                           // $("#eventBlockModal .modal-title").text(startDate + ' - ' + endDate);
                           $("#eventBlockModal .modal-title .start-time").text(startDate);
                           $("#eventBlockModal .modal-title .end-time").text(endDate);
                           $('#eventBlockModal #eventContent').text(event.title);
-                  
+
                           $('#eventBlockModal #locationContent input[type=radio][value=' + event.content.location + ']').attr("checked", true);
                           $('#eventBlockModal #happyContent input[type=radio][value=' + event.content.happy + ']').attr("checked", true);
                           $('#eventBlockModal #satisfactionContent input[type=radio][value=' + event.content.satisfaction + ']').attr("checked", true);
@@ -174,7 +170,7 @@ $(document).ready(function() {
                           $('#eventBlockModal #anxietyContent input[type=radio][value=' + event.content.anxiety + ']').attr("checked", true);
                           $('#eventBlockModal #angerContent input[type=radio][value=' + event.content.anger + ']').attr("checked", true);
                           $('#eventBlockModal #fatigueContent input[type=radio][value=' + event.content.fatigue + ']').attr("checked", true);
-                  
+
                           var options = {
                             timeFormat: 'a h:i',
                             step: 10,
@@ -192,7 +188,7 @@ $(document).ready(function() {
                               target_index = index;
                             }
                           })
-                  
+
                           if(events.length === 0) {
                             options.minTime = moment(event.start).startOf('day').toDate();
                             options.maxTime = moment(event.start).endOf('day').toDate();
@@ -209,48 +205,48 @@ $(document).ready(function() {
                             options.minTime = events[target_index-1] ? moment(events[target_index-1].end).format('a h:mm') : undefined;
                             options.maxTime = events[target_index+1] ? moment(events[target_index+1].start).format('a h:mm') : undefined;
                           }
-                  
+
                           $('#startTime').val(moment(event.start).format('a h:mm'));
                           $('#endTime').val(moment(event.end).format('a h:mm'));
-                  
+
                           $('#startTime').timepicker(options);
                           $('#endTime').timepicker(options);
-                  
+
                           $('#endTime').timepicker('option', 'minTime', moment(event.start).format('a h:mm'));
-                  
+
                           $('#startTime').on('selectTime', function(e) {
                             var s_time = $('#startTime').timepicker('getTime');
                             var e_time = $('#endTime').timepicker('getTime');
                             console.log(s_time, e_time);
                             $('#startTime').text(moment(s_time).format('a h:mm'));
                             $('#startTime').val(s_time);
-                  
+
                             $('#endTime').text(moment(e_time).format('a h:mm'));
                             $('#endTime').val(e_time);
-                  
+
                             if(moment(s_time).isAfter(moment(e_time)) || moment(s_time).isSame(moment(e_time))){
                               console.log('after');
                               $("#endTime").text(moment(s_time).add(10, 'minutes').format('a h:mm'));
                               $("#endTime").val(moment(s_time).add(10, 'minutes').toDate());
                             }
                             $('#endTime').timepicker('option', 'minTime', moment(s_time).add(10, 'minutes').format('a h:mm'));
-                  
+
                           })
-                  
+
                           $('#endTime').on('selectTime', function(e) {
                             var s_time = $('#startTime').timepicker('getTime');
                             var e_time = $('#endTime').timepicker('getTime');
                             $('#startTime').text(moment(s_time).format('a h:mm'));
                             $('#startTime').val(s_time);
-                  
+
                             $('#endTime').text(moment(e_time).format('a h:mm'));
                             $('#endTime').val(e_time);
                           })
                         });
-                  
+
                         $("#eventBlockModal").modal();
                         currentEvent = event;
-                  
+
                       },
                       selectHelper: true,
                       selectOverlap: false,
@@ -271,10 +267,10 @@ $(document).ready(function() {
                           $("#endMessage").slideDown();
                           return false;
                         }
-                  
+
                         if(!end) {
                           if( date < start ) { alert('시작 시간 보다 끝 시간이 더 빠를 수 없습니다\n다시 선택해 주세요'); return false; }
-                  
+
                           var events = calendar.fullCalendar( 'clientEvents' );
                           var isInclude = false;
                           $.each( events, function(index, event) {
@@ -295,7 +291,7 @@ $(document).ready(function() {
                           console.log(end);
                           console.log(end.format());
                           console.log(new Date(end.format()));
-                  
+
                           $("#endMessage").slideUp();
                           $(jsEvent.target).css('background-color', getRandomColor());
                           $(".fc-widget-content").css('background-color', '');
@@ -310,12 +306,12 @@ $(document).ready(function() {
                                 $("#addBlockModal .modal-title").text(moment(start).format('a hh:mm') + ' - ' + moment(end).add(10, 'minutes').format('a hh:mm'));
                                 $('#addBlockModal #addContent').focus()
                               });
-                  
+
                               $('#addBlockModal').on('hidden.bs.modal', function () {
                                 console.log('bye');
                                 $("#locationSel input[type=radio]").removeAttr("checked");
                                 $(".button-wrap input[type=radio]").removeAttr("checked");
-                  
+
                                 $("#addContent").val("");
                                 $("#locationSel label:first").trigger('click');
                                 $("#happySel label:first").trigger('click');
@@ -324,11 +320,11 @@ $(document).ready(function() {
                                 $("#anxietySel label:first").trigger('click');
                                 $("#angerSel label:first").trigger('click');
                                 $("#fatigueSel label:first").trigger('click');
-                  
+
                               });
-                  
+
                               $("#addBlockModal").modal();
-                  
+
                               $("#cancelAddBlockButton").click(function(e) {
                                 console.log('cancel clicked');
                                 $("#cancelAddBlockButton, #addBlockButton").off('click');
@@ -336,7 +332,7 @@ $(document).ready(function() {
                                 isAdd = false;
                                 // calendar.fullCalendar('option', 'selectable', false);
                               });
-                  
+
                               $("#addBlockButton").click( function(e) {
                                 var location = $("#addBlockModal #locationSel input[type=radio]:checked").val();
                                 var title = $("#addContent").val();
@@ -350,8 +346,8 @@ $(document).ready(function() {
                                 var textColor = '#333';
                                 var calendarStart = moment(start);
                                 var calendarEnd = moment(end).add(10, 'minutes');
-                                 
-                  
+
+
                                 if( confirm('추가 하시겠습니까?') ){
                                     calendar.fullCalendar( 'renderEvent', {
                                       // id: '01062610332',
@@ -375,13 +371,13 @@ $(document).ready(function() {
                                       overlap: false,
                                       timezone: 'local'
                                     }, true);
-                  
+
                                     console.log('이벤트들', calendar.fullCalendar( 'clientEvents' ));
                                     console.log(calendar.fullCalendar('getView').type);
                                     dayType = calendar.fullCalendar('getView').type;
                                     console.log(dayType)
                                     let tempData = {};
-                  
+
                                       var startDate = new Date(calendarStart._d);
                                       console.log(startDate);
                                       var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
@@ -389,9 +385,9 @@ $(document).ready(function() {
                                       var endDate = new Date(calendarEnd._d);
                                       var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
                                       console.log(fullEndDate)
-                                     
-                                      
-                      
+
+
+
                                         tempData['day'] = dayType;
                                         tempData['color'] = color;
                                         tempData['textColor'] = textColor;
@@ -420,19 +416,19 @@ $(document).ready(function() {
                                                     console.log(json);
                                                     dayType = '';
                                                   }else{
-                                                    
+
                                                   }
                                               },
                                               error: function (e) {
                                                   console.log(e);
                                               }
                                       });
-                                    
-                  
+
+
                                 }
-                  
-                                  
-                  
+
+
+
                                 $("#cancelAddBlockButton, #addBlockButton").off('click');
                                 calendar.fullCalendar('option', 'selectable', false);
                                 $("#addButton").removeClass('active');
@@ -449,7 +445,7 @@ $(document).ready(function() {
                       snapDuration: "00:10:00",
                     });
 
-                    
+
                   }else{
                     alert("로그인을 해주세요");
                     location.href = '/'
@@ -459,21 +455,21 @@ $(document).ready(function() {
                   console.log(e);
               }
       });
-  
+
 
   $("#dayDisplay").click( function(e) {
     calendar.fullCalendar('changeView', 'firstday');
-    calendar.fullCalendar( 'gotoDate', moment() );
+    calendar.fullCalendar( 'gotoDate', startDate );
   });
 
   $("#nextdayDisplay").click( function(e) {
     calendar.fullCalendar('changeView', 'secondday');
-    calendar.fullCalendar( 'gotoDate', moment().add('1', 'day') );
+    calendar.fullCalendar( 'gotoDate', startDate.add('1', 'day') );
   });
 
   $("#bothdayDisplay").click( function(e) {
     calendar.fullCalendar('changeView', 'bothday');
-    calendar.fullCalendar( 'gotoDate', moment() );
+    calendar.fullCalendar( 'gotoDate', startDate );
   });
 
   $("#addButton").click( function(e) {
@@ -513,7 +509,7 @@ $(document).ready(function() {
   $("#updateBlockButton").click ( function(e) {
 
 
-    var view = calendar.fullCalendar('getView');  
+    var view = calendar.fullCalendar('getView');
     //check if there any changes
     var start_time = $("#startTime").timepicker('getTime');
     var end_time = $("#endTime").timepicker('getTime');
@@ -565,7 +561,7 @@ $(document).ready(function() {
         dayType = calendar.fullCalendar('getView').type;
         console.log(dayType)
         let tempData = {};
-                  
+
         var startDate = new Date(currentEvent.start._d);
         console.log(startDate);
         var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
@@ -573,9 +569,9 @@ $(document).ready(function() {
         var endDate = new Date(currentEvent.end._d);
         var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
         console.log(fullEndDate)
-                                     
-                                      
-                      
+
+
+
         // tempData['day'] = dayType;
         // tempData['color'] = color;
         // tempData['textColor'] = textColor;
@@ -662,7 +658,7 @@ $(document).ready(function() {
   });
 
   $("#deleteBlockButton").click( function(e) {
-  
+
     console.log(currentEvent);
     console.log(currentEvent._id);
     if(confirm('삭제하시겠습니까?')) {
