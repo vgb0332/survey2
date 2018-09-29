@@ -28,20 +28,6 @@
   <script src="public/client/dependencies/ko.js"></script>
   <script src="public/client/dependencies/jquery.timepicker.min.js"></script>
 
-  <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyBdluskFvMrgOc8YGZE13m1JAQ6puq2KZc",
-      authDomain: "fir-test-7a644.firebaseapp.com",
-      databaseURL: "https://fir-test-7a644.firebaseio.com",
-      projectId: "fir-test-7a644",
-      storageBucket: "fir-test-7a644.appspot.com",
-      messagingSenderId: "925146310984"
-    };
-    firebase.initializeApp(config);
-  </script>
-
 
   <body>
     <div class="fixed-top">
@@ -614,11 +600,6 @@
 
 
   <script type="text/javascript">
-    var database = firebase.database();
-    var user = firebase.database().ref('user/');
-    user.on('value', function(snapshot) {
-      console.log(snapshot);
-    });
     
     //저장
     // $.ajax({
