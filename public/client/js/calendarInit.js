@@ -23,8 +23,8 @@ $(document).ready(function() {
                       let tempObject = {
                         "id":eventDatas[i].id,
                         "title":eventDatas[i].title,
-                        "start":eventDatas[i].startTimeFormat,
-                        "end":eventDatas[i].endTimeFormat,
+                        "start":new Date(eventDatas[i].startTimeFormat),
+                        "end":new Date(eventDatas[i].endTimeFormat),
                         "content" : {
                           "location":eventDatas[i].location,
                           "anger" : eventDatas[i].anger,
