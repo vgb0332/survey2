@@ -8,7 +8,7 @@ $(document).ready(function() {
   var dayType = '';
   var globalEvent = {};
   var testDate = new moment('2018-09-29');
-  var testNextDate = new moment('2018-10-01');
+  var testNextDate = new moment('2018-09-30');
   $.ajax({
               type: "GET",
               url: '/getData',
