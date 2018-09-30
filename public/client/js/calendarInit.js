@@ -7,6 +7,8 @@ $(document).ready(function() {
   var phonenumber = '';
   var dayType = '';
   var globalEvent = {};
+  var startTestDate = '2018-09-29';
+  var endTestDate = '2018-09-30';
   var testDate = new moment('2018-09-29');
   var testNextDate = new moment('2018-09-30');
   $.ajax({
@@ -212,7 +214,6 @@ $(document).ready(function() {
 
                           $('#startTime').timepicker(options);
                           $('#endTime').timepicker(options);
-
                           $('#endTime').timepicker('option', 'minTime', moment(event.start).format('a h:mm'));
 
                           $('#startTime').on('selectTime', function(e) {
@@ -532,8 +533,8 @@ $(document).ready(function() {
 
     var newEvent = {};
 
-    newEvent.start = view.type === 'secondday' ? moment(start_time).add(1,'days') : moment(start_time);
-    newEvent.end = view.type === 'secondday' ? moment(end_time).add(1,'days') : moment(end_time);
+    newEvent.start = view.type === 'secondday' ? moment(endTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00') : moment(startTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00');
+    newEvent.end = view.type === 'secondday' ? moment(endTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00') : moment(startTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00');
     newEvent.title = title;
     newEvent.content = {};
     newEvent.content.title = title;
@@ -544,16 +545,33 @@ $(document).ready(function() {
     newEvent.content.anxiety = anxiety;
     newEvent.content.anger = anger;
     newEvent.content.fatigue = fatigue;
-
-    if( JSON.stringify(newEvent.content) === JSON.stringify(currentEvent.content) && newEvent.start.format('a h:mm') === currentEvent.start.format('a h:mm') && newEvent.end.format('a h:mm') === currentEvent.end.format('a h:mm')){
+    console.log((view.type === 'secondday' || (moment(start_time).format('DD') === moment(currentEvent.start).format('DD')) ));
+    if(newEvent.start.format('a h:mm') === currentEvent.start.format('a h:mm')
+        && newEvent.end.format('a h:mm') === currentEvent.end.format('a h:mm')
+        && newEvent.content.location === currentEvent.content.location
+        && newEvent.content.happy === currentEvent.content.happy
+        && newEvent.content.satisfaction === currentEvent.content.satisfaction
+        && newEvent.content.agitation === currentEvent.content.agitation
+        && newEvent.content.anxiety === currentEvent.content.anxiety
+        && newEvent.content.anger === currentEvent.content.anger
+        && newEvent.content.fatigue === currentEvent.content.fatigue
+        && newEvent.title === currentEvent.title
+      ){
       if(confirm('수정사항이 없습니다. 진행하시겠습니까?')){
         $("#eventBlockModal").modal('hide');
       }
     }
     else {
       if ( confirm('수정사항이 있습니다. 진행하시겠습니까?') ){
-        currentEvent.start = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(start_time).add(1,'days') : moment(start_time);
-        currentEvent.end = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(end_time).add(1,'days') : moment(end_time);
+
+        // currentEvent.start = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(start_time).add(1,'days') : moment(start_time);
+        // currentEvent.end = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(end_time).add(1,'days') : moment(end_time);
+        currentEvent.start = (view.type === 'secondday' || (moment(start_time).format('DD') === moment(currentEvent.start).format('DD')) ) ?
+                                        moment(endTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00')
+                                      : moment(startTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00');
+        currentEvent.end = (view.type === 'secondday' || (moment(start_time).format('DD') === moment(currentEvent.start).format('DD'))) ?
+                                       moment(endTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00')
+                                      : moment(startTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00');
         currentEvent.title = title;
         currentEvent.content.title = title;
         currentEvent.content.location = location;
@@ -565,20 +583,17 @@ $(document).ready(function() {
         currentEvent.content.fatigue = fatigue;
 
         calendar.fullCalendar( 'updateEvent', currentEvent );
-
         dayType = calendar.fullCalendar('getView').type;
-        console.log(dayType)
         let tempData = {};
 
-        var startDate = new Date(currentEvent.start._d);
-        console.log(startDate);
+        var startDate = new Date(currentEvent.start);
         var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
-        console.log(fullStartDate)
-        var endDate = new Date(currentEvent.end._d);
+        var endDate = new Date(currentEvent.end);
         var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
-        console.log(fullEndDate)
 
-
+        console.log(view.type);
+        console.log(start_time, end_time);
+        console.log(currentEvent.start, currentEvent.end);
 
         // tempData['day'] = dayType;
         // tempData['color'] = color;
