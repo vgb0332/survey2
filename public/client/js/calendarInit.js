@@ -7,7 +7,8 @@ $(document).ready(function() {
   var phonenumber = '';
   var dayType = '';
   var globalEvent = {};
-  var startDate = new moment('2018-09-29');
+  var testDate = new moment('2018-09-29');
+  var testNextDate = new moment('2018-10-01');
   $.ajax({
               type: "GET",
               url: '/getData',
@@ -23,8 +24,8 @@ $(document).ready(function() {
                       let tempObject = {
                         "id":eventDatas[i].id,
                         "title":eventDatas[i].title,
-                        "start":new Date(eventDatas[i].startTimeFormat),
-                        "end":new Date(eventDatas[i].endTimeFormat),
+                        "start":new Date(eventDatas[i].startTime),
+                        "end":new Date(eventDatas[i].endTime),
                         "content" : {
                           "location":eventDatas[i].location,
                           "anger" : eventDatas[i].anger,
@@ -61,7 +62,7 @@ $(document).ready(function() {
                         return $(window).outerHeight() - $(".fixed-top").height() - 10;
                       },
                       header: false,
-                      defaultDate: startDate,
+                      defaultDate: testDate,
                       timezone: 'local',
                       // validRange: {
                       //   start: '2017-05-01'
@@ -379,10 +380,16 @@ $(document).ready(function() {
                                     let tempData = {};
 
                                       var startDate = new Date(calendarStart._d);
-                                      console.log(startDate);
-                                      var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
+                                      console.log('startDate', startDate);
+                                      var fullStartDate = startDate.getFullYear() + "-"
+                                                        + Number(startDate.getMonth() + 1) + "-"
+                                                        + startDate.getDate() + " "
+                                                        + startDate.getHours() + ":"
+                                                        + startDate.getMinutes() + ":"
+                                                        + startDate.getSeconds();
                                       console.log(fullStartDate)
                                       var endDate = new Date(calendarEnd._d);
+                                      console.log('endDate', endDate);
                                       var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
                                       console.log(fullEndDate)
 
@@ -459,17 +466,18 @@ $(document).ready(function() {
 
   $("#dayDisplay").click( function(e) {
     calendar.fullCalendar('changeView', 'firstday');
-    calendar.fullCalendar( 'gotoDate', startDate );
+    calendar.fullCalendar( 'gotoDate', testDate );
   });
 
   $("#nextdayDisplay").click( function(e) {
+    console.log(testNextDate);
     calendar.fullCalendar('changeView', 'secondday');
-    calendar.fullCalendar( 'gotoDate', startDate.add('1', 'day') );
+    calendar.fullCalendar( 'gotoDate',  testNextDate);
   });
 
   $("#bothdayDisplay").click( function(e) {
     calendar.fullCalendar('changeView', 'bothday');
-    calendar.fullCalendar( 'gotoDate', startDate );
+    calendar.fullCalendar( 'gotoDate', testDate );
   });
 
   $("#addButton").click( function(e) {
