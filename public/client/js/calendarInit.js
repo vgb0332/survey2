@@ -7,6 +7,9 @@ $(document).ready(function() {
   var phonenumber = '';
   var dayType = '';
   var globalEvent = {};
+  var testMonth = 9;
+  var testStartDate = 29;
+  var testEndDate = 30;
   var startTestDate = '2018-09-29';
   var endTestDate = '2018-09-30';
   var testDate = new moment('2018-09-29');
@@ -41,6 +44,7 @@ $(document).ready(function() {
                         "textColor" : eventDatas[i].textColor,
                         "color" : eventDatas[i].color,
                         "className":"customEventsClass",
+                        'timezone': 'local',
                         "type":1
                       }
                       tempArray.push(tempObject);
@@ -516,8 +520,7 @@ $(document).ready(function() {
   },60000);
 
   $("#updateBlockButton").click ( function(e) {
-
-
+    console.log(calendar.fullCalendar( 'clientEvents' ));
     var view = calendar.fullCalendar('getView');
     //check if there any changes
     var start_time = $("#startTime").timepicker('getTime');
@@ -530,11 +533,35 @@ $(document).ready(function() {
     var anxiety = $("#eventBlockModal #anxietyContent input[type=radio]:checked").val();
     var anger = $("#eventBlockModal #angerContent input[type=radio]:checked").val();
     var fatigue = $("#eventBlockModal #fatigueContent input[type=radio]:checked").val();
-
+    if(view.type === 'firstday'){
+      console.log('firstday');
+      start_time.setMonth( testMonth - 1 );
+      start_time.setDate( testStartDate );
+      end_time.setMonth( testMonth - 1);
+      end_time.setDate( testStartDate );
+    }
+    else if(view.type === 'secondday'){
+      console.log('secondday');
+      start_time.setMonth( testMonth - 1 );
+      start_time.setDate( testEndDate );
+      end_time.setMonth( testMonth - 1);
+      end_time.setDate( testEndDate );
+    }
+    else{
+      console.log(view.type);
+      // console.log(currentEvent.start.getDate());
+      // console.log(currentEvent.start.toDate().getDate());
+      start_time.setMonth( testMonth - 1 );
+      start_time.setDate( currentEvent.start.toDate().getDate() );
+      end_time.setMonth( testMonth - 1);
+      end_time.setDate( currentEvent.end.toDate().getDate() );
+    }
     var newEvent = {};
-
-    newEvent.start = view.type === 'secondday' ? moment(endTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00') : moment(startTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00');
-    newEvent.end = view.type === 'secondday' ? moment(endTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00') : moment(startTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00');
+    console.log(start_time, end_time);
+    // newEvent.start = view.type === 'secondday' ? moment(endTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00') : moment(startTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00');
+    // newEvent.end = view.type === 'secondday' ? moment(endTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00') : moment(startTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00');
+    newEvent.start = moment(start_time);
+    newEvent.end = moment(end_time);
     newEvent.title = title;
     newEvent.content = {};
     newEvent.content.title = title;
@@ -545,7 +572,6 @@ $(document).ready(function() {
     newEvent.content.anxiety = anxiety;
     newEvent.content.anger = anger;
     newEvent.content.fatigue = fatigue;
-
     if(newEvent.start.format('a h:mm') === currentEvent.start.format('a h:mm')
         && newEvent.end.format('a h:mm') === currentEvent.end.format('a h:mm')
         && newEvent.content.location === currentEvent.content.location
@@ -562,122 +588,178 @@ $(document).ready(function() {
       }
     }
     else {
-      if ( confirm('수정사항이 있습니다. 진행하시겠습니까?') ){
+      if(confirm('수정사항이 있습니다. 진행하시겠습니까?')) {
+            currentEvent.start = moment(start_time);
+            currentEvent.end = moment(end_time);
+            currentEvent.title = title;
+            currentEvent.content.title = title;
+            currentEvent.content.location = location;
+            currentEvent.content.happy = happy;
+            currentEvent.content.satisfaction = satisfaction;
+            currentEvent.content.agitation = agitation;
+            currentEvent.content.anxiety = anxiety;
+            currentEvent.content.anger = anger;
+            currentEvent.content.fatigue = fatigue;
+            console.log(currentEvent);
+            calendar.fullCalendar( 'updateEvent', currentEvent );
 
-        // currentEvent.start = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(start_time).add(1,'days') : moment(start_time);
-        // currentEvent.end = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(end_time).add(1,'days') : moment(end_time);
-        currentEvent.start = (view.type === 'secondday' || (moment(endTestDate).format('DD') === moment(currentEvent.start).format('DD')) ) ?
-                                        moment(endTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00')
-                                      : moment(startTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00');
-        currentEvent.end = (view.type === 'secondday' || (moment(endTestDate).format('DD') === moment(currentEvent.start).format('DD'))) ?
-                                       moment(endTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00')
-                                      : moment(startTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00');
-        currentEvent.title = title;
-        currentEvent.content.title = title;
-        currentEvent.content.location = location;
-        currentEvent.content.happy = happy;
-        currentEvent.content.satisfaction = satisfaction;
-        currentEvent.content.agitation = agitation;
-        currentEvent.content.anxiety = anxiety;
-        currentEvent.content.anger = anger;
-        currentEvent.content.fatigue = fatigue;
 
-        calendar.fullCalendar( 'updateEvent', currentEvent );
-        dayType = calendar.fullCalendar('getView').type;
-        let tempData = {};
-
-        var startDate = new Date(currentEvent.start);
-        var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
-        var endDate = new Date(currentEvent.end);
-        var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
-
-        // tempData['day'] = dayType;
-        // tempData['color'] = color;
-        // tempData['textColor'] = textColor;
-        tempData['startTime'] = startDate;
-        tempData['endTime'] = endDate;
-        tempData['startTimeFormat'] = fullStartDate;
-        tempData['endTimeFormat'] = fullEndDate;
-        tempData['title'] = title;
-        tempData['anger'] = anger;
-        tempData['anxiety'] = anxiety;
-        tempData['agitation'] = agitation;
-        tempData['fatigue'] = fatigue;
-        tempData['happy'] = happy;
-        tempData['location'] = location;
-        tempData['satisfation'] = satisfaction;
-
-        //수정
-        $.ajax({
-                type: "put",
-                url: '/main',
-                data: {data : tempData, id: currentEvent.id},
-                timeout: 1000000,
-                success: function (json) {
-                    console.log(json)
-                    if(json.success == 200){
-                      console.log(json);
-                      alert(json.message)
-                    }else{
-                      alert(json.message)
+            let tempData = {};
+            console.log(currentEvent.start.toDate());
+            console.log(new Date(currentEvent.start));
+            tempData['startTime'] = currentEvent.start.toDate();
+            tempData['endTime'] = currentEvent.end.toDate();
+            tempData['startTimeFormat'] = currentEvent.start.toDate();
+            tempData['endTimeFormat'] = currentEvent.end.toDate();
+            tempData['title'] = title;
+            tempData['anger'] = anger;
+            tempData['anxiety'] = anxiety;
+            tempData['agitation'] = agitation;
+            tempData['fatigue'] = fatigue;
+            tempData['happy'] = happy;
+            tempData['location'] = location;
+            tempData['satisfation'] = satisfaction;
+            console.log(tempData);
+            //수정
+            $.ajax({
+                    type: "put",
+                    url: '/main',
+                    data: {data : tempData, id: currentEvent.id},
+                    timeout: 1000000,
+                    success: function (json) {
+                        console.log('success', json)
+                        if(json.success == 200){
+                          console.log(json);
+                          alert(json.message)
+                        }else{
+                          alert(json.message)
+                        }
+                    },
+                    error: function (e) {
+                        console.log('error', e);
                     }
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-        });
+            });
 
-        var view = calendar.fullCalendar('getView');
-        var curDate = view.start.format('DD');
-        var type = view.type;
-        var events = calendar.fullCalendar( 'clientEvents' );
-        var totTime = {
-          total: 0,
-        };
-        $.each(events, function( index, event ) {
-          var diff = moment.duration( event.end.diff(event.start) ).asMinutes();
-          var date = event.start.format('DD');
-          //if no key, initialize by 0
-          if( !(date in totTime) ) totTime[date] = 0;
-          totTime[date] += diff;
-          totTime['total'] += diff;
-        });
-
-        if(!events.length) {
-          $("#spent-time-hm").html('-');
-        }
-        else {
-          var curHour = Math.floor(totTime[curDate] / 60).toFixed(0);
-          var curMin = (totTime[curDate]) % 60;
-
-          curHour = isNaN(curHour) ? 0 : curHour;
-          curMin = isNaN(curMin) ? 0 : curMin;
-
-          var totHour = Math.floor(totTime['total'] / 60).toFixed(0);
-          var totMin =  totTime['total'] % 60;
-
-          totHour = isNaN(totHour) ? 0 : totHour;
-          totMin = isNaN(totMin) ? 0 : totMin;
-          $("#spent-time-hm").html(
-            type !== 'bothday' ? curHour  + '시간 ' + curMin + '분' :
-                                totHour + '시간 ' + totMin + '분'
-          );
-        }
-
-
-        $("#remaining-time").html (
-          type !== 'bothday' ? '/ 24시간' : '/ 48시간'
-        );
-
-        $("#eventBlockModal").modal('hide');
+            updateTotTime();
+            $("#eventBlockModal").modal('hide');
       }
     }
+    // else {
+    //   if ( confirm('수정사항이 있습니다. 진행하시겠습니까?') ){
+    //
+    //     // currentEvent.start = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(start_time).add(1,'days') : moment(start_time);
+    //     // currentEvent.end = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(end_time).add(1,'days') : moment(end_time);
+    //     currentEvent.start = (view.type === 'secondday' || (moment(endTestDate).format('DD') === moment(currentEvent.start).format('DD')) ) ?
+    //                                     moment(endTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00')
+    //                                   : moment(startTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00');
+    //     currentEvent.end = (view.type === 'secondday' || (moment(endTestDate).format('DD') === moment(currentEvent.start).format('DD'))) ?
+    //                                    moment(endTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00')
+    //                                   : moment(startTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00');
+    //     currentEvent.title = title;
+    //     currentEvent.content.title = title;
+    //     currentEvent.content.location = location;
+    //     currentEvent.content.happy = happy;
+    //     currentEvent.content.satisfaction = satisfaction;
+    //     currentEvent.content.agitation = agitation;
+    //     currentEvent.content.anxiety = anxiety;
+    //     currentEvent.content.anger = anger;
+    //     currentEvent.content.fatigue = fatigue;
+    //     console.log('2');
+    //     calendar.fullCalendar( 'updateEvent', currentEvent );
+    //     dayType = calendar.fullCalendar('getView').type;
+    //     let tempData = {};
+    //
+    //     var startDate = new Date(currentEvent.start);
+    //     var fullStartDate = startDate.getFullYear() + "-" + Number(startDate.getMonth() + 1) + "-" + startDate.getDate() + " " + startDate.getHours() + ":"+ startDate.getMinutes() + ":"+ startDate.getSeconds();
+    //     var endDate = new Date(currentEvent.end);
+    //     var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
+    //
+    //     // tempData['day'] = dayType;
+    //     // tempData['color'] = color;
+    //     // tempData['textColor'] = textColor;
+    //     tempData['startTime'] = startDate;
+    //     tempData['endTime'] = endDate;
+    //     tempData['startTimeFormat'] = fullStartDate;
+    //     tempData['endTimeFormat'] = fullEndDate;
+    //     tempData['title'] = title;
+    //     tempData['anger'] = anger;
+    //     tempData['anxiety'] = anxiety;
+    //     tempData['agitation'] = agitation;
+    //     tempData['fatigue'] = fatigue;
+    //     tempData['happy'] = happy;
+    //     tempData['location'] = location;
+    //     tempData['satisfation'] = satisfaction;
+    //
+    //     //수정
+    //     $.ajax({
+    //             type: "put",
+    //             url: '/main',
+    //             data: {data : tempData, id: currentEvent.id},
+    //             timeout: 1000000,
+    //             success: function (json) {
+    //                 console.log(json)
+    //                 if(json.success == 200){
+    //                   console.log(json);
+    //                   alert(json.message)
+    //                 }else{
+    //                   alert(json.message)
+    //                 }
+    //             },
+    //             error: function (e) {
+    //                 console.log(e);
+    //             }
+    //     });
+    //
+    //     var view = calendar.fullCalendar('getView');
+    //     var curDate = view.start.format('DD');
+    //     var type = view.type;
+    //     var events = calendar.fullCalendar( 'clientEvents' );
+    //     var totTime = {
+    //       total: 0,
+    //     };
+    //     console.log('3');
+    //     $.each(events, function( index, event ) {
+    //       var diff = moment.duration( event.end.diff(event.start) ).asMinutes();
+    //       var date = event.start.format('DD');
+    //       //if no key, initialize by 0
+    //       if( !(date in totTime) ) totTime[date] = 0;
+    //       totTime[date] += diff;
+    //       totTime['total'] += diff;
+    //     });
+    //     console.log('4');
+    //     if(!events.length) {
+    //       $("#spent-time-hm").html('-');
+    //     }
+    //     else {
+    //       var curHour = Math.floor(totTime[curDate] / 60).toFixed(0);
+    //       var curMin = (totTime[curDate]) % 60;
+    //
+    //       curHour = isNaN(curHour) ? 0 : curHour;
+    //       curMin = isNaN(curMin) ? 0 : curMin;
+    //
+    //       var totHour = Math.floor(totTime['total'] / 60).toFixed(0);
+    //       var totMin =  totTime['total'] % 60;
+    //
+    //       totHour = isNaN(totHour) ? 0 : totHour;
+    //       totMin = isNaN(totMin) ? 0 : totMin;
+    //       $("#spent-time-hm").html(
+    //         type !== 'bothday' ? curHour  + '시간 ' + curMin + '분' :
+    //                             totHour + '시간 ' + totMin + '분'
+    //       );
+    //     }
+    //
+    //
+    //     $("#remaining-time").html (
+    //       type !== 'bothday' ? '/ 24시간' : '/ 48시간'
+    //     );
+    //
+    //     $("#eventBlockModal").modal('hide');
+    //   }
+    // }
   });
 
   $("#deleteBlockButton").click( function(e) {
 
-    console.log(currentEvent);
-    console.log(currentEvent._id);
     if(confirm('삭제하시겠습니까?')) {
       calendar.fullCalendar('removeEvents', function(event) {
         return (event._id === currentEvent._id);
@@ -703,10 +785,51 @@ $(document).ready(function() {
               }
       });
 
-      console.log(calendar.fullCalendar( 'clientEvents' ))
+      updateTotTime();
       $("#eventBlockModal").modal("hide");
     }
   });
+
+  function updateTotTime() {
+    var view = calendar.fullCalendar('getView');
+    var events = calendar.fullCalendar( 'clientEvents' );
+    var totTime = { total: 0, };
+    var curDate = view.start.format('DD');
+    var type = view.type;
+    $.each( events, function( index, event ) {
+      var diff = moment.duration( event.end.diff(event.start) ).asMinutes()
+      var date = event.start.format('DD');
+      if( !(date in totTime) ) totTime[date] = 0;
+      totTime[date] += diff;
+      totTime['total'] += diff;
+    })
+
+      if(!events.length) {
+        $("#spent-time-hm").html('-');
+      }
+      else {
+        var curHour = Math.floor(totTime[curDate] / 60).toFixed(0);
+        var curMin = (totTime[curDate]) % 60;
+
+        curHour = isNaN(curHour) ? 0 : curHour;
+        curMin = isNaN(curMin) ? 0 : curMin;
+
+        var totHour = Math.floor(totTime['total'] / 60).toFixed(0);
+        var totMin =  totTime['total'] % 60;
+
+        totHour = isNaN(totHour) ? 0 : totHour;
+        totMin = isNaN(totMin) ? 0 : totMin;
+        $("#spent-time-hm").html(
+          type !== 'bothday' ? curHour  + '시간 ' + curMin + '분' :
+                              totHour + '시간 ' + totMin + '분'
+        );
+      }
+
+
+      $("#remaining-time").html (
+        type !== 'bothday' ? '/ 24시간' : '/ 48시간'
+      );
+  }
 });
 
 
