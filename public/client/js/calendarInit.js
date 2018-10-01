@@ -545,7 +545,7 @@ $(document).ready(function() {
     newEvent.content.anxiety = anxiety;
     newEvent.content.anger = anger;
     newEvent.content.fatigue = fatigue;
-    console.log((view.type === 'secondday' || (moment(start_time).format('DD') === moment(currentEvent.start).format('DD')) ));
+
     if(newEvent.start.format('a h:mm') === currentEvent.start.format('a h:mm')
         && newEvent.end.format('a h:mm') === currentEvent.end.format('a h:mm')
         && newEvent.content.location === currentEvent.content.location
@@ -566,10 +566,10 @@ $(document).ready(function() {
 
         // currentEvent.start = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(start_time).add(1,'days') : moment(start_time);
         // currentEvent.end = view.type === 'secondday' || moment(start_time).format('DD') !== moment(currentEvent.start).format('DD') ? moment(end_time).add(1,'days') : moment(end_time);
-        currentEvent.start = (view.type === 'secondday' || (moment(start_time).format('DD') === moment(currentEvent.start).format('DD')) ) ?
+        currentEvent.start = (view.type === 'secondday' || (moment(endTestDate).format('DD') === moment(currentEvent.start).format('DD')) ) ?
                                         moment(endTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00')
                                       : moment(startTestDate + ' ' + start_time.getHours() + ':' + start_time.getMinutes() + ':00');
-        currentEvent.end = (view.type === 'secondday' || (moment(start_time).format('DD') === moment(currentEvent.start).format('DD'))) ?
+        currentEvent.end = (view.type === 'secondday' || (moment(endTestDate).format('DD') === moment(currentEvent.start).format('DD'))) ?
                                        moment(endTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00')
                                       : moment(startTestDate + ' ' + end_time.getHours() + ':' + end_time.getMinutes() + ':00');
         currentEvent.title = title;
@@ -591,10 +591,6 @@ $(document).ready(function() {
         var endDate = new Date(currentEvent.end);
         var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
 
-        console.log(view.type);
-        console.log(start_time, end_time);
-        console.log(currentEvent.start, currentEvent.end);
-
         // tempData['day'] = dayType;
         // tempData['color'] = color;
         // tempData['textColor'] = textColor;
@@ -610,8 +606,6 @@ $(document).ready(function() {
         tempData['happy'] = happy;
         tempData['location'] = location;
         tempData['satisfation'] = satisfaction;
-        console.log("[수정 최종 데이터]")
-        console.log(tempData);
 
         //수정
         $.ajax({
