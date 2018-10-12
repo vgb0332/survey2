@@ -31,7 +31,8 @@ module.exports = (app,logger)=>{
         })
       }else{
         res.send({
-          success : 400
+          success : 400,
+          message: '재로그인 하셔야 됩니다',
         })
       }
 
@@ -39,29 +40,46 @@ module.exports = (app,logger)=>{
 
     app.post("/main", async (req,res)=>{
       console.log(req.body)
-      req.body.data.phonenumber = req.session.phonenumber;
-      await db.mainQuestions.create(req.body.data).then((result)=>{
-        res.send({
-          succes : 200,
-          message : "저장 완료"
+      if(req.session.phonenumber){
+        req.body.data.phonenumber = req.session.phonenumber;
+        await db.mainQuestions.create(req.body.data).then((result)=>{
+          res.send({
+            succes : 200,
+            message : "저장 완료"
+          })
         })
-      })
+      } else{
+        res.send({
+          success : 400,
+          message: '재로그인 하셔야 됩니다',
+        })
+      }
+
     })
 
     app.put("/main", async (req,res)=>{
-      await db.mainQuestions.update(req.body.data,{
-        where : {
-          id : req.body.id,
-          phonenumber :req.session.phonenumber
-        }
-      });
-      res.send({
-        succes : 200,
-        message : "변경 완료"
-      })
+      if(req.session.phonenumber){
+        await db.mainQuestions.update(req.body.data,{
+          where : {
+            id : req.body.id,
+            phonenumber :req.session.phonenumber
+          }
+        });
+        res.send({
+          succes : 200,
+          message : "변경 완료"
+        })
+      } else{
+        res.send({
+          success : 400,
+          message: '재로그인 하셔야 됩니다',
+        })
+      }
+
     })
 
     app.delete("/main", async (req,res)=>{
+      if(req.session.phonenumber){
         await db.mainQuestions.destroy({
           where : {
             id : req.body.id
@@ -72,6 +90,13 @@ module.exports = (app,logger)=>{
           succes : 200,
           message : "삭제 완료"
         })
+      } else{
+        res.send({
+          success : 400,
+          message: '재로그인 하셔야 됩니다',
+        })
+      }
+
     })
 
     app.get("/downloadUser", async (req,res)=>{

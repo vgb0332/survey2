@@ -428,7 +428,8 @@ $(document).ready(function() {
                                                     console.log(json);
                                                     dayType = '';
                                                   }else{
-
+                                                    alert(json.message);
+                                                    location.href = '/';
                                                   }
                                               },
                                               error: function (e) {
@@ -630,9 +631,10 @@ $(document).ready(function() {
                         console.log('success', json)
                         if(json.success == 200){
                           console.log(json);
-                          alert(json.message)
+                          alert(json.message);
                         }else{
-                          alert(json.message)
+                          alert(json.message);
+                          location.href = '/';
                         }
                     },
                     error: function (e) {
@@ -775,9 +777,10 @@ $(document).ready(function() {
                   console.log(json)
                   if(json.success == 200){
                     console.log(json);
-                    alert(json.message)
+                    alert(json.message);
                   }else{
-                    alert(json.message)
+                    alert(json.message);
+                    location.href = '/';
                   }
               },
               error: function (e) {
