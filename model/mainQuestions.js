@@ -1,6 +1,7 @@
 module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
+    var moment = require('moment-timezone');
     
     return sequelize.define('mainQuestions', {
       id: {
@@ -82,6 +83,6 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       }
-      
+
     });
   }

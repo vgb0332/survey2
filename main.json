@@ -7,6 +7,6 @@
   "anxiety" : "걱정/불안/우울감",
   "anger" : "분노",
   "fatigue" : "피곤함/힘듬",
-  "startTimeFormat" : "시작 시간",
-  "endTimeFormat" : "끝 시간"
+  "startTime" : "시작 시간",
+  "endTime" : "끝 시간"
 }

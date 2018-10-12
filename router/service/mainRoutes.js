@@ -138,7 +138,7 @@ module.exports = (app,logger)=>{
         for ( key  in data[i] ) {
           if(labels[key]){
             var label = labels[key];
-            if(key == 'startTimeFormat' || key == 'endTimeFormat'){
+            if(key == 'startTime' || key == 'endTime'){
               console.log(data[i]['title'], data[i]['location'], new Date(data[i]['startTimeFormat']).toLocaleString('ko-KR'));
 
               let timeFormat = functions.getTimeFormat(data[i][key]);
