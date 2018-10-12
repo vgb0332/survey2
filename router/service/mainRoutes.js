@@ -138,13 +138,14 @@ module.exports = (app,logger)=>{
         for ( key  in data[i] ) {
           if(labels[key]){
             var label = labels[key];
-            if(key == 'startTime' || key == 'endTime'){
+            if(key == 'startTimeFormat' || key == 'endTimeFormat'){
               let timeFormat = functions.getTimeFormat(data[i][key]);
+              // let timeFormat = data[i][key];
               tempData[label] = timeFormat;
             }else{
               tempData[label] = data[i][key];
             }
-            
+
           }
         }
 
