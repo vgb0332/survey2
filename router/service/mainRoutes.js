@@ -139,6 +139,7 @@ module.exports = (app,logger)=>{
           if(labels[key]){
             var label = labels[key];
             if(key == 'startTimeFormat' || key == 'endTimeFormat'){
+              // console.log(data[i]['title'], data[i]['location'])
               let timeFormat = functions.getTimeFormat(data[i][key]);
               // let timeFormat = data[i][key];
               tempData[label] = timeFormat;
