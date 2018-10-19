@@ -80,6 +80,7 @@ $(document).ready(function() {
                           $(element).find('.fc-time').text( event.title);
                           $(element).find('.fc-title').remove();
                         }
+                        console.log('event', event);
                         console.log(moment.duration(event.end.diff(event.start)).get("minutes"));
                       },
                       viewRender: function(view) {
@@ -147,8 +148,9 @@ $(document).ready(function() {
                       },
                       eventBorderColor: '#333',
                       eventClick: function(event, element) {
+                        console.log(event);
                         if(isAdd) return false;
-                        $('#eventBlockModal').on('show.bs.modal', function () {
+                        $('#eventBlockModal').off('show.bs.modal').on('show.bs.modal', function () {
                           $('#startTime').timepicker('remove');
                           $('#endTime').timepicker('remove');
 
@@ -169,6 +171,14 @@ $(document).ready(function() {
                           $("#eventBlockModal .modal-title .start-time").text(startDate);
                           $("#eventBlockModal .modal-title .end-time").text(endDate);
                           $('#eventBlockModal #eventContent').text(event.title);
+                          console.log(event.content);
+                          $('#eventBlockModal #locationContent input[type=radio]').attr("checked", false);
+                          $('#eventBlockModal #happyContent input[type=radio]').attr("checked", false);
+                          $('#eventBlockModal #satisfactionContent input[type=radio]').attr("checked", false);
+                          $('#eventBlockModal #agitationContent input[type=radio]').attr("checked", false);
+                          $('#eventBlockModal #anxietyContent input[type=radio]').attr("checked", false);
+                          $('#eventBlockModal #angerContent input[type=radio]').attr("checked", false);
+                          $('#eventBlockModal #fatigueContent input[type=radio]').attr("checked", false);
 
                           $('#eventBlockModal #locationContent input[type=radio][value=' + event.content.location + ']').attr("checked", true);
                           $('#eventBlockModal #happyContent input[type=radio][value=' + event.content.happy + ']').attr("checked", true);
@@ -252,7 +262,7 @@ $(document).ready(function() {
 
                         $("#eventBlockModal").modal();
                         currentEvent = event;
-
+                        console.log('triggered');
                       },
                       selectHelper: true,
                       selectOverlap: false,
