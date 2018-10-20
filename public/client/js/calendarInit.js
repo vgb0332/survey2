@@ -167,6 +167,7 @@ $(document).ready(function() {
                           $('#angerContent input[type=radio]').prop('disabled', false);
                           $('#fatigueContent input[type=radio]').prop('disabled', false);
 
+
                           $('#eventBlockModal #locationContent input[type=radio]').attr("checked", false);
                           $('#eventBlockModal #happyContent input[type=radio]').attr("checked", false);
                           $('#eventBlockModal #satisfactionContent input[type=radio]').attr("checked", false);
@@ -175,6 +176,7 @@ $(document).ready(function() {
                           $('#eventBlockModal #angerContent input[type=radio]').attr("checked", false);
                           $('#eventBlockModal #fatigueContent input[type=radio]').attr("checked", false);
 
+                          $("#eventContent").text( event.title );
                           $('#eventBlockModal #locationContent input[type=radio][value=' + event.content.location + ']').attr("checked", true);
                           $('#eventBlockModal #happyContent input[type=radio][value=' + event.content.happy + ']').attr("checked", true);
                           $('#eventBlockModal #satisfactionContent input[type=radio][value=' + event.content.satisfaction + ']').attr("checked", true);
@@ -229,7 +231,7 @@ $(document).ready(function() {
 
                             var s_time = $('#startTime').timepicker('getTime');
                             var e_time = $('#endTime').timepicker('getTime');
-                            
+
                             $('#startTime').text(moment(s_time).format('a h:mm'));
                             $('#startTime').val(s_time);
 
