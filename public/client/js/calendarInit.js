@@ -167,11 +167,6 @@ $(document).ready(function() {
                           $('#angerContent input[type=radio]').prop('disabled', false);
                           $('#fatigueContent input[type=radio]').prop('disabled', false);
 
-                          // $("#eventBlockModal .modal-title").text(startDate + ' - ' + endDate);
-                          $("#eventBlockModal .modal-title .start-time").text(startDate);
-                          $("#eventBlockModal .modal-title .end-time").text(endDate);
-                          $('#eventBlockModal #eventContent').text(event.title);
-                          console.log(event.content);
                           $('#eventBlockModal #locationContent input[type=radio]').attr("checked", false);
                           $('#eventBlockModal #happyContent input[type=radio]').attr("checked", false);
                           $('#eventBlockModal #satisfactionContent input[type=radio]').attr("checked", false);
@@ -230,10 +225,11 @@ $(document).ready(function() {
                           $('#endTime').timepicker(options);
                           $('#endTime').timepicker('option', 'minTime', moment(event.start).format('a h:mm'));
 
-                          $('#startTime').on('selectTime', function(e) {
+                          $('#startTime').off('selectTime').on('selectTime', function(e) {
+
                             var s_time = $('#startTime').timepicker('getTime');
                             var e_time = $('#endTime').timepicker('getTime');
-                            console.log(s_time, e_time);
+                            
                             $('#startTime').text(moment(s_time).format('a h:mm'));
                             $('#startTime').val(s_time);
 
@@ -249,7 +245,7 @@ $(document).ready(function() {
 
                           })
 
-                          $('#endTime').on('selectTime', function(e) {
+                          $('#endTime').off('selectTime').on('selectTime', function(e) {
                             var s_time = $('#startTime').timepicker('getTime');
                             var e_time = $('#endTime').timepicker('getTime');
                             $('#startTime').text(moment(s_time).format('a h:mm'));
@@ -262,7 +258,7 @@ $(document).ready(function() {
 
                         $("#eventBlockModal").modal();
                         currentEvent = event;
-                        console.log('triggered');
+
                       },
                       selectHelper: true,
                       selectOverlap: false,
