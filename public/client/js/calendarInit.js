@@ -10,10 +10,11 @@ $(document).ready(function() {
   var testMonth = 9;
   var testStartDate = 29;
   var testEndDate = 30;
-  var startTestDate = '2018-09-29';
-  var endTestDate = '2018-09-30';
-  var testDate = new moment('2018-09-29');
-  var testNextDate = new moment('2018-09-30');
+  var startTestDate = '2018-10-24';
+  var endTestDate = '2018-10-25';
+  var testDate = new moment('2018-10-24');
+  var testNextDate = new moment('2018-10-25');
+  var startHour = 7;
   $.ajax({
               type: "GET",
               url: '/getData',
@@ -63,12 +64,15 @@ $(document).ready(function() {
                       slotDuration: '00:10:00',
                       slotLabelFormat: 'a h:mm',
                       nowIndicator: true,
+                      now: moment().subtract(startHour, 'hours'),
                       scrollTime: new Date().getHours()-1+':'+Math.floor(new Date().getMinutes()/10)*10+':'+new Date().getSeconds(),
                       height: function() {
                         return $(window).outerHeight() - $(".fixed-top").height() - 10;
                       },
                       header: false,
                       defaultDate: testDate,
+                      // minTime: "07:00:00",
+                      // maxTime: "06:00:00",
                       timezone: 'local',
                       // validRange: {
                       //   start: '2017-05-01'
@@ -77,17 +81,63 @@ $(document).ready(function() {
                       eventRender: function(event, element) {
                         var minutes = moment.duration(event.end.diff(event.start)).get("minutes");
                         if(minutes === 10) {
-                          $(element).find('.fc-time').text( event.title);
+                          $(element).find('.fc-time').text( event.title );
                           $(element).find('.fc-title').remove();
                         }
-                        console.log('event', event);
-                        console.log(moment.duration(event.end.diff(event.start)).get("minutes"));
+                        console.log(moment(event.start), moment(event.end));
+                        event.start = moment(event.start).subtract(startHour, 'hours');
+                        event.end = moment(event.end).subtract(startHour, 'hours');
+
+                        console.log( calendar.fullCalendar( 'clientEvents' ) );
+                        // calendar.fullCalendar( 'updateEvent', event );
                       },
-                      viewRender: function(view) {
+                      slotLabelFormat:"HH mm",
+                      viewRender: function(view, element) {
                           var title = view.title;
-                          $("#title").html( title );
-                          console.log(calendar.fullCalendar( 'getView' ));
+
+                          console.log(view);
+                          if(view.type === 'firstday'){
+
+                            var curText = $(".fc-day-header").text();
+                            $(".fc-day-header").text( curText + ' / 목요일' );
+                            $("#title").html( '2018년 10월 24/25일' );
+
+                          }
+                          else if(view.type === 'secondday') {
+
+                            var curText = $(".fc-day-header").text();
+                            $(".fc-day-header").text( curText + ' / 금요일' );
+                            $("#title").html( '2018년 10월 25/26일' );
+                          }
+                          else {
+                            $("#title").html( '2018년 10월 24~26일' );
+                            var headers = $(".fc-day-header");
+                            $(headers[0]).text( '수/목' );
+                            $(headers[1]).text( '목/금' );
+
+                          }
+
+                          // console.log(calendar.fullCalendar( 'getView' ));
                           var view = calendar.fullCalendar('getView');
+
+                          var timeLabels = $(element).find('.fc-time');
+                          for(var i = 0; i < timeLabels.length; ++i){
+                            // console.log(timeLabels[i]);
+                            if( $( timeLabels[i] ).find('span') ){
+                              var text = $( timeLabels[i] ).find('span').text();
+
+                              if( text.split( ' ' ).length > 1) {
+
+                                var hour = text.split(' ')[0];
+                                var mins = text.split(' ')[1];
+
+                                $( timeLabels[i] ).find('span').text( (Number(hour) + startHour) % 24 + ':' + mins );
+                              }
+                            }
+
+
+                          }
+                          // $(element).find('.fc-time').text(testDate.format('hh:mm a') + ' - ' + testDate.format('hh:mm a'));
                           var curDate = view.start.format('DD');
                           var type = view.type;
                           var events = calendar.fullCalendar( 'clientEvents' );
@@ -269,55 +319,52 @@ $(document).ready(function() {
                         if(!isAdd) return false;
                         console.log('dayclick', date, jsEvent, view);
                         if(!start) {
+                          // console.log(date);
+                          // start = moment(date).subtract(startHour, 'hours');
+                          // console.log( start );
                           start = date;
                           console.log('[START DATE]');
-                          console.log(date);
-                          console.log(start);
-                          console.log(start.format());
-                          console.log(new Date(start.format()));
+
                           $("#startMessage").slideUp();
                           $(jsEvent.target).css('background-color', getRandomColor());
-                          var time = date.format('hh:mm:ss');
+                          // var time = date.format('hh:mm:ss');
                           $("#endMessage").slideDown();
                           return false;
                         }
 
                         if(!end) {
-                          if( date < start ) { alert('시작 시간 보다 끝 시간이 더 빠를 수 없습니다\n다시 선택해 주세요'); return false; }
+                          if( moment(date) < start ) { alert('시작 시간 보다 끝 시간이 더 빠를 수 없습니다\n다시 선택해 주세요'); return false; }
 
                           var events = calendar.fullCalendar( 'clientEvents' );
                           var isInclude = false;
                           $.each( events, function(index, event) {
-                            console.log(event);
                             var e_start = moment(event.start);
-                            console.log("e_start")
-                            console.log(e_start)
                             var e_end = moment(event.end);
-                            console.log(date);
                             if( start < e_start && date > e_end ) { alert('중복된 이벤트를 기입할 수 없습니다!\n다시 선택해 주세요'); isInclude = true; return false;}
                             isInclude = false;
                           });
-                          console.log(isInclude);
                           if(isInclude) return false;
+                          // end = moment(date).subtract(startHour, 'hours');
                           end = date;
                           console.log('[END DATE]');
-                          console.log(date);
-                          console.log(end);
-                          console.log(end.format());
-                          console.log(new Date(end.format()));
+                          // console.log(date);
+                          // console.log(end);
+                          // console.log(end.format());
+                          // console.log(new Date(end.format()));
 
                           $("#endMessage").slideUp();
                           $(jsEvent.target).css('background-color', getRandomColor());
                           $(".fc-widget-content").css('background-color', '');
-                          calendar.fullCalendar( 'select', moment(start), moment(end).add(10, 'minutes') );
-                          var startDate = moment(start).format('a hh:mm');
-                          var endDate = moment(end).add(10, 'minutes').format('a hh:mm');
+                          calendar.fullCalendar( 'select', start, end.add(10, 'minutes') );
+                          var startDate = moment(start).add(startHour, 'hours').format('a hh:mm');
+                          var endDate = moment(end).add(startHour, 'hours').format('a hh:mm');
+                          $(".fc-content .fc-time").text( startDate + '-' + endDate );
                           setTimeout( function() {
                             if(confirm('시간: ' + startDate + ' ~ ' + endDate + '\n계속 진행하시겠습니까?')){
                               // calendar.fullCalendar('option', 'unselectAuto', true);
                               console.log(start, end);
                               $('#addBlockModal').on('show.bs.modal', function () {
-                                $("#addBlockModal .modal-title").text(moment(start).format('a hh:mm') + ' - ' + moment(end).add(10, 'minutes').format('a hh:mm'));
+                                $("#addBlockModal .modal-title").text( startDate + ' - ' + endDate );
                                 $('#addBlockModal #addContent').focus()
                               });
 
@@ -347,7 +394,7 @@ $(document).ready(function() {
                                 // calendar.fullCalendar('option', 'selectable', false);
                               });
 
-                              $("#addBlockButton").click( function(e) {
+                              $("#addBlockButton").off('click').click( function(e) {
                                 var location = $("#addBlockModal #locationSel input[type=radio]:checked").val();
                                 var title = $("#addContent").val();
                                 var happy = $("#addBlockModal #happySel input[type=radio]:checked").val();
@@ -358,8 +405,8 @@ $(document).ready(function() {
                                 var fatigue = $("#addBlockModal #fatigueSel input[type=radio]:checked").val();
                                 var color = getRandomColor();
                                 var textColor = '#333';
-                                var calendarStart = moment(start);
-                                var calendarEnd = moment(end).add(10, 'minutes');
+                                var calendarStart = moment(start).add(startHour, 'hours');
+                                var calendarEnd = moment(end).add(startHour, 'hours');
 
 
                                 if( confirm('추가 하시겠습니까?') ){
@@ -377,8 +424,8 @@ $(document).ready(function() {
                                         anger: anger,
                                         fatigue: fatigue,
                                       },
-                                      start: calendarStart,
-                                      end: calendarEnd,
+                                      start: calendarStart.subtract(startHour, 'hours'),
+                                      end: calendarEnd.subtract(startHour, 'hours'),
                                       allDay: false,
                                       color: color,
                                       textColor: textColor,
@@ -392,7 +439,7 @@ $(document).ready(function() {
                                     console.log(dayType)
                                     let tempData = {};
 
-                                      var startDate = new Date(calendarStart._d);
+                                      var startDate = new Date(calendarStart);
                                       console.log('startDate', startDate);
                                       var fullStartDate = startDate.getFullYear() + "-"
                                                         + Number(startDate.getMonth() + 1) + "-"
@@ -401,7 +448,7 @@ $(document).ready(function() {
                                                         + startDate.getMinutes() + ":"
                                                         + startDate.getSeconds();
                                       console.log(fullStartDate)
-                                      var endDate = new Date(calendarEnd._d);
+                                      var endDate = new Date(calendarEnd);
                                       console.log('endDate', endDate);
                                       var fullEndDate = endDate.getFullYear() + "-" + Number(endDate.getMonth() + 1) + "-" + endDate.getDate() + " " + endDate.getHours() + ":"+ endDate.getMinutes() + ":"+ endDate.getSeconds();
                                       console.log(fullEndDate)
@@ -783,7 +830,7 @@ $(document).ready(function() {
               timeout: 1000000,
               success: function (json) {
                   console.log(json)
-                  if(json.success == 200){
+                  if(json.succes == 200){
                     console.log(json);
                     alert(json.message);
                   }else{
