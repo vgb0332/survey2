@@ -219,20 +219,21 @@ $( document ).ready( function() {
                             .format('HH:mm') : (startHour - 1) + ':40';
             $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
             $('#startTime').timepicker(options);
-
-            options.maxTime = (startHour - 1) + ':50';
-            options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm') : '06:50';
+            options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').add(10, 'minutes').format('HH:mm');
+            options.maxTime = target_events[target_index + 1] ?
+                              target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm')
+                              : (startHour - 1) + ':50';
             $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
             $('#endTime').timepicker(options);
           }
-          else if( target_index === events.length - 1) { //last
+          else if( target_index === target_events.length - 1) { //last
             console.log('last');
             options.minTime = target_events[target_index - 1].end.clone().add( startHour, 'hours').format('HH:mm');
             options.maxTime = (startHour - 1) + ':40';
             $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
             $('#startTime').timepicker(options);
 
-            options.minTime = target_events[target_index].end.clone().add( startHour, 'hours').format('HH:mm');
+            options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').format('HH:mm');
             options.maxTime = (startHour - 1) + ':50';
             $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
             $('#endTime').timepicker(options);
@@ -240,12 +241,13 @@ $( document ).ready( function() {
           else { //middle
             console.log('middle somewhere');
             options.minTime = target_events[target_index - 1].end.clone().add( startHour, 'hours').format('HH:mm');
-            options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm') : (startHour - 1) + ':40';
+            options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').subtract(10, 'minutes').format('HH:mm') : (startHour - 1) + ':40';
             $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
             $('#startTime').timepicker(options);
 
-            options.minTime = target_events[target_index].end.clone().add( startHour, 'hours').format('HH:mm');
+            options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').add(10, 'minutes').format('HH:mm');
             options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm') : (startHour - 1) + ':50';
+            console.log(options.minTime, options.maxTime);
             $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
             $('#endTime').timepicker(options);
           }
@@ -634,7 +636,9 @@ $( document ).ready( function() {
       $('#endTime').timepicker('option', 'minTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
     }
     else {
-      if( moment(s_time).add(10, 'minutes').format('HH:mm') === '06:50'){
+      var minutes = moment.duration(moment(e_time).diff(moment(s_time))).get("minutes");
+      console.log(minutes);
+      if( minutes === 10 ){
         $("#endTime").val(moment(s_time).add(10, 'minutes').format('HH:mm'));
         $('#endTime').timepicker('option', 'minTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
         $('#endTime').timepicker('option', 'maxTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
