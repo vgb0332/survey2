@@ -46,8 +46,8 @@ $( document ).ready( function() {
       tempArray.push({
         "id":eventDatas[i].id,
         "title":eventDatas[i].title,
-        "start":new Date(eventDatas[i].startTime).setHours( new Date(eventDatas[i].startTime).getHours() - startHour ),
-        "end":new Date(eventDatas[i].endTime).setHours( new Date(eventDatas[i].endTime).getHours() - startHour ),
+        "start": moment(eventDatas[i].startTimeFormat).subtract( startHour, 'hours' ),
+        "end": moment(eventDatas[i].endTimeFormat).subtract( startHour, 'hours' ),
         "content" : {
           "location":eventDatas[i].location,
           "anger" : eventDatas[i].anger,
