@@ -44,7 +44,7 @@ module.exports = (app,logger)=>{
         req.body.data.phonenumber = req.session.phonenumber;
         await db.mainQuestions.create(req.body.data).then((result)=>{
           res.send({
-            succes : 200,
+            success : 200,
             message : "저장 완료"
           })
         })
@@ -61,12 +61,12 @@ module.exports = (app,logger)=>{
       if(req.session.phonenumber){
         await db.mainQuestions.update(req.body.data,{
           where : {
-            id : req.body.id,
+            _id : req.body.id,
             phonenumber :req.session.phonenumber
           }
         });
         res.send({
-          succes : 200,
+          success : 200,
           message : "변경 완료"
         })
       } else{
@@ -82,12 +82,13 @@ module.exports = (app,logger)=>{
       if(req.session.phonenumber){
         await db.mainQuestions.destroy({
           where : {
-            id : req.body.id
+            _id : req.body.id,
+            phonenumber :req.session.phonenumber
           }
         })
 
         res.send({
-          succes : 200,
+          success : 200,
           message : "삭제 완료"
         })
       } else{

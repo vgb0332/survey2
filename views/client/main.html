@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>FIREBASE DATABASE TEST</title>
+    <title>설문 메인</title>
   </head>
 
   <script
@@ -30,19 +30,21 @@
 
 
   <body>
+    <div id="loader">
+    </div>
     <div class="fixed-top">
       <span id="title"> </span>
 
-      <div>
+      <div class="fixed-top-current-time">
         현재시간: <span id="time"> </span>
       </div>
-      <div>
-        작성시간/필요작성시간: <span id="spent-time-hm"> </span> <span id="remaining-time"></span>
+      <div class="fixed-top-left-time">
+        작성시간/필요작성시간: <span id="spent-time-hm">- </span> / <span id="remaining-time"> -</span>
       </div>
 
       <div id="startMessage" class="alert alert-info"><strong>시작시간을 선택해주세요!</strong></div>
       <div id="endMessage" class="alert alert-info"><strong>끝시간을 선택해주세요!</strong></div>
-      <div>
+      <div class="fixed-top-buttons">
         <button id="dayDisplay" data-type='today' type="button" class="btn btn-default">첫째날</button>
         <button id="nextdayDisplay" data-type='nextday' type="button" class="btn btn-default">둘째날</button>
         <button id="bothdayDisplay" data-type='both' type="button" class="btn btn-default">같이보기</button>
@@ -586,13 +588,16 @@
                   </label>
                 </div>
             </div>
+
+            <div class="modal-footer">
+              <button id="deleteBlockButton" type="button" class="btn btn-default">삭제</button>
+              <button id="updateBlockButton" type="button" class="btn btn-default">수정</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
             </div>
+            </div>
+
           </div>
-          <div class="modal-footer">
-            <button id="deleteBlockButton" type="button" class="btn btn-default">삭제</button>
-            <button id="updateBlockButton" type="button" class="btn btn-default">수정</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-          </div>
+
         </div>
       </div>
     </div>
@@ -662,30 +667,14 @@
       //         }
       // });
 
-      // window.onbeforeunload = function(){
-      //   console.log('leaving?');
-      //   alert('leaving?');
-      //   return '페이지를 떠나시면 재로그인하셔야됩니다';
-      //   // if(!confirm('페이지를 떠나시면 재로그인하셔야됩니다')){
-      //   //   return false;
-      //   // }
-      // };
-      // window.addEventListener('popstate', function(){
-      //   alert('where u going');
-      // });
-
       history.pushState(null, null, location.href);
           window.onpopstate = function () {
               history.go(1);
       };
-
-      // window.addEventListener("pagehide", functon(){
-      //   if(!confirm('페이지를 나가면 재 로그인하셔야 됩니다')){
-      //     return false;
-      //   }
-      // });
   </script>
 
 
-  <script src="public/client/js/calendarInit.js"></script>
+  <!-- <script src="public/client/js/calendarInit.js"></script> -->
+  <script src="public/client/js/init.js"></script>
+  <script src="public/client/js/getRandomColor.js"></script>
 </html>

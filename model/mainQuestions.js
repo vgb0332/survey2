@@ -2,11 +2,16 @@ module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
     var moment = require('moment-timezone');
-    
+
     return sequelize.define('mainQuestions', {
       id: {
         type : DataTypes.INTEGER,
         autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+      },
+      _id: {
+        type : DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false
       },
