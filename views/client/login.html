@@ -48,6 +48,16 @@
         //  window.location.href = "index.html";
         let phonenumber = $("#phonenumber").val();
         let password = $("#password").val();
+        if(!phonenumber){
+          alert('아이디(핸드폰번호)를 입력하세요');
+          $("#phonenumber").focus();
+          return false;
+        }
+        if(!password){
+          alert('비밀번호를 입력하세요');
+          $("#password").focus();
+          return false;
+        }
         $.ajax({
               type: "POST",
               url: '/login',
@@ -63,7 +73,7 @@
                       location.href = '/intro'
                     })
                   }else{
-                    alert(json.message)
+                    alert('잘못 입력하셨습니다. 회원가입/혹은 올바른 정보를 입력해주세요');
                   }
               },
               error: function (e) {
