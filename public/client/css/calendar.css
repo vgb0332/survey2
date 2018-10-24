@@ -20,6 +20,22 @@
     background-color: #A5D6A7;
 }
 
+.dayDivider {
+  background: pink;
+  text-align: center;
+  font-weight: bold;
+}
+
+.dayDivider .bothday{
+  width: 100%;
+  display: table;
+}
+
+.dayDivider .bothday span {
+  display: table-cell;
+  width: 50%;
+}
+
 .fixed-top {
   width: 100%;
   /* height: 100px; */
@@ -52,7 +68,7 @@
   padding: 10px 0;
   color: black;
   margin: 0 1%;
-  font-size: 2.5vw;
+  font-size: 2.7vw;
   border-radius: 10px;
   border: 1px solid #9dffc7;
 }

@@ -7,8 +7,8 @@ $( document ).ready( function() {
   var username = '';
   var dayType = '';
   var globalEvent = {};
-  var startDateString = '2018-10-24';
-  var endDateString = '2018-10-25';
+  var startDateString = '2018-10-25';
+  var endDateString = '2018-10-26';
   var startDate = new moment( startDateString );
   var endDate = new moment( endDateString );
   var startHour = 7;
@@ -114,13 +114,46 @@ $( document ).ready( function() {
           var mins = time.split(':')[1];
 
           var alteredHour = (Number(hour) + startHour) % 24 ;
-          var prefix = alteredHour <= 12 ? '오전' : '오후';
+          var prefix = alteredHour < 12 ? '오전' : '오후';
 
           // alteredHour = alteredHour == 0 ? 24 : alteredHour;
-          var alteredTime = prefix + '' + alteredHour + ':' + mins;
+          var alteredTime = prefix + ' ' + alteredHour + ':' + mins;
 
-          $( timeLabels[i] ).text( alteredTime + '(' + time + ')');
+          // $( timeLabels[i] ).text( alteredTime + '(' + time + ')');
+          $( timeLabels[i] ).text( alteredTime );
         }
+
+        if(type === 'firstday'){
+          $(element).find('.fc-slats tr[data-time="16:50:00"]')
+                    .after('<tr class="dayDivider">'
+                              + '<td>'  + '</td>'
+                              + '<td >' + '<span>' + endDate.format('MM/DD(dd)') + '</span>'
+                              + '</td>'
+                          + '</tr>'
+                    );
+          $(element).find('.fc-day-header').text( startDate.format('MM/DD(dd)') );
+        } else if(type === 'secondday') {
+          $(element).find('.fc-slats tr[data-time="16:50:00"]')
+                    .after('<tr class="dayDivider">'
+                              + '<td>'  + '</td>'
+                              + '<td >' + '<span>' + endDate.clone().add(1, 'day').format('MM/DD(dd)') + '</span>'
+                              + '</td>'
+                          + '</tr>'
+                    );
+          $(element).find('.fc-day-header').text( endDate.format('MM/DD(dd)') );
+        } else {
+          $(element).find('.fc-slats tr[data-time="16:50:00"]')
+                    .after('<tr class="dayDivider">'
+                              + '<td>'  + '</td>'
+                              + '<td class="bothday">' + '<span>' + endDate.format('MM/DD(dd)') + '</span>'
+                              +           '<span>' + endDate.clone().add(1, 'day').format('MM/DD(dd)') + '</span>'
+                              + '</td>'
+                          + '</tr>'
+                    );
+          // $(element).find('.fc-day-header').text( startDate.format('MM/DD(dd)') );
+        }
+
+
         calendar.fullCalendar('updateViewSize');
         updateTotTime();
       },
