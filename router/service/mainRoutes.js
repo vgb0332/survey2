@@ -169,7 +169,7 @@ module.exports = (app,logger)=>{
 
               // let timeFormat = functions.getTimeFormat(data[i][key]);
               // let timeFormat = data[i][key];
-              tempData[label] = data[i]['startTimeFormat'];
+              tempData[label] = data[i][key];
             }else{
               tempData[label] = data[i][key];
             }
