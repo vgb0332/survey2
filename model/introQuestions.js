@@ -1,7 +1,7 @@
 module.exports = function(sequelize, DataTypes){
 
     var date = new Date();
-    
+
     return sequelize.define('introQuestions', {
       id: {
         type : DataTypes.INTEGER,
@@ -81,7 +81,23 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
+      question14_b_i1 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      question14_b_i2 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       question14_c : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      question14_c_i1 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      question14_c_i2 : {
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -89,7 +105,23 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
+      question14_d_i1 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      question14_d_i2 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       question14_e : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      question14_e_i1 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      question14_e_i2 : {
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -149,6 +181,6 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       }
-      
+
     });
   }

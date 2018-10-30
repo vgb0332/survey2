@@ -124,7 +124,7 @@ module.exports = (app,logger)=>{
         return functions.makeArray(result);
       });
       let allData = [];
-
+      console.log(data);
       var labels = JSON.parse(introLabels);
 
       for(var i=0; i<data.length; i++){
@@ -135,7 +135,9 @@ module.exports = (app,logger)=>{
         }
 
         for ( key  in data[i] ) {
+
           if(labels[key]){
+            console.log(labels[key]);
             var label = labels[key];
             tempData[label] = data[i][key];
           }

@@ -12,7 +12,7 @@ $(document).ready(function() {
   var testEndDate = 30;
   var startTestDate = '2018-10-24';
   var endTestDate = '2018-10-25';
-  var testDate = new moment('2018-10-24');
+  var testDate = new moment('2018-10-25');
   var testNextDate = new moment('2018-10-25');
   var startHour = 7;
   $.ajax({

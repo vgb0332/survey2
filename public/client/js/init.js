@@ -14,6 +14,14 @@ $( document ).ready( function() {
   var startHour = 7;
   var fromCurrent = false;
   var _id = 1;
+  var current = moment(new Date());
+  var defaultDate = startDate;
+  var defaultView = 'firstday';
+
+  if( current.isAfter(endDate.clone().add(7, 'hours')) ){
+    defaultDate = endDate;
+    defaultView = 'secondday';
+  }
   //initialize with user data
   $.ajax ( {
     type: 'GET',
@@ -44,7 +52,7 @@ $( document ).ready( function() {
     var tempArray = [];
     for( var i = 0; i < eventDatas.length; ++i){
       tempArray.push({
-        "id":eventDatas[i].id,
+        "id":eventDatas[i]._id,
         "title":eventDatas[i].title,
         "start": moment(eventDatas[i].startTimeFormat).subtract( startHour, 'hours' ),
         "end": moment(eventDatas[i].endTimeFormat).subtract( startHour, 'hours' ),
@@ -79,13 +87,15 @@ $( document ).ready( function() {
       nowIndicator: true,
       timezone: 'local',
       header: false,
-      defaultDate: startDate,
+      defaultDate: defaultDate,
+      defaultView: defaultView,
       events : tempArray,
       eventBorderColor: '#333',
       selectHelper: true,
       selectOverlap: false,
       eventOverlap: false,
       snapDuration: "00:10:00",
+
       now: moment().subtract(startHour, 'hours'),
       scrollTime: new Date().getHours()-1+':'+Math.floor(new Date().getMinutes()/10)*10+':'+new Date().getSeconds(),
       height: function() {
@@ -123,42 +133,16 @@ $( document ).ready( function() {
           $( timeLabels[i] ).text( alteredTime );
         }
 
-        if(type === 'firstday'){
-          $(element).find('.fc-slats tr[data-time="16:50:00"]')
-                    .after('<tr class="dayDivider">'
-                              + '<td>'  + '</td>'
-                              + '<td >' + '<span>' + endDate.format('MM/DD(dd)') + '</span>'
-                              + '</td>'
-                          + '</tr>'
-                    );
-          $(element).find('.fc-day-header').text( startDate.format('MM/DD(dd)') );
-        } else if(type === 'secondday') {
-          $(element).find('.fc-slats tr[data-time="16:50:00"]')
-                    .after('<tr class="dayDivider">'
-                              + '<td>'  + '</td>'
-                              + '<td >' + '<span>' + endDate.clone().add(1, 'day').format('MM/DD(dd)') + '</span>'
-                              + '</td>'
-                          + '</tr>'
-                    );
-          $(element).find('.fc-day-header').text( endDate.format('MM/DD(dd)') );
-        } else {
-          $(element).find('.fc-slats tr[data-time="16:50:00"]')
-                    .after('<tr class="dayDivider">'
-                              + '<td>'  + '</td>'
-                              + '<td class="bothday">' + '<span>' + endDate.format('MM/DD(dd)') + '</span>'
-                              +           '<span>' + endDate.clone().add(1, 'day').format('MM/DD(dd)') + '</span>'
-                              + '</td>'
-                          + '</tr>'
-                    );
+
           // $(element).find('.fc-day-header').text( startDate.format('MM/DD(dd)') );
-        }
 
 
-        calendar.fullCalendar('updateViewSize');
+
+        // calendar.fullCalendar('updateViewSize');
         updateTotTime();
       },
 
-      eventClick:  function( event, element ) {
+      eventClick:  function( event, element, view ) {
         console.log( event );
         if(isAdd) return false;
         $('#eventBlockModal').off('show.bs.modal').on('show.bs.modal', function () {
@@ -199,101 +183,99 @@ $( document ).ready( function() {
             useSelect: true,
           };
           var events = calendar.fullCalendar( 'clientEvents' );
-          events.sort(function(a,b) {return a.start - b.start});
-          var target_index = -1;
-          var target_date;
-
-          var firstdayEvents = events.filter( function( value, index ) {
-            return moment(value.start).format('DD') === startDate.format('DD');
-          });
-
-          var seconddayEvents = events.filter( function( value, index ) {
-            return moment(value.start).format('DD') === endDate.format('DD');
-          });
-
-          console.log(firstdayEvents, seconddayEvents);
-
-          $.each( events, function( index, value ) {
-            if(moment(value.start).isSame(moment(event.start))){
-              target_index = index;
-              target_date = moment(value.start).format('DD');
-            }
-          })
-
-          console.log(target_date);
-          if(target_date === startDate.format('DD')){
-            //첫날
-            $.each( firstdayEvents, function( index, value ) {
-              if(moment(value.start).isSame(moment(event.start))){
-                target_index = index;
-                target_events = firstdayEvents;
-              }
-            })
-          }
-          else {
-            //둘째날
-            $.each( seconddayEvents, function( index, value ) {
-              if(moment(value.start).isSame(moment(event.start))){
-                target_index = index;
-                target_events = seconddayEvents;
-              }
-            })
-          }
-          console.log(target_events);
-          console.log('ey', startHour + ':00');
-
-          if(target_index === 0){ //first
-            console.log('first');
-            options.minTime = startHour + ':00';
-            options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1]
-                            .start.clone()
-                            .add( startHour, 'hours')
-                            .subtract( 10, 'minutes')
-                            .format('HH:mm') : (startHour - 1) + ':40';
-            $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
-            $('#startTime').timepicker(options);
-            options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').add(10, 'minutes').format('HH:mm');
-            options.maxTime = target_events[target_index + 1] ?
-                              target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm')
-                              : (startHour - 1) + ':50';
-            $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
-            $('#endTime').timepicker(options);
-          }
-          else if( target_index === target_events.length - 1) { //last
-            console.log('last');
-            options.minTime = target_events[target_index - 1].end.clone().add( startHour, 'hours').format('HH:mm');
-            options.maxTime = (startHour - 1) + ':40';
-            $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
-            $('#startTime').timepicker(options);
-
-            options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').format('HH:mm');
-            options.maxTime = (startHour - 1) + ':50';
-            $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
-            $('#endTime').timepicker(options);
-          }
-          else { //middle
-            console.log('middle somewhere');
-            options.minTime = target_events[target_index - 1].end.clone().add( startHour, 'hours').format('HH:mm');
-            options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').subtract(10, 'minutes').format('HH:mm') : (startHour - 1) + ':40';
-            $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
-            $('#startTime').timepicker(options);
-
-            options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').add(10, 'minutes').format('HH:mm');
-            options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm') : (startHour - 1) + ':50';
-            console.log(options.minTime, options.maxTime);
-            $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
-            $('#endTime').timepicker(options);
-          }
-
-          // options.minTime = '07:00';
-          // options.maxTime = event.end.clone().add( startHour, 'hours').subtract(10, 'minutes').format('HH:mm');
-          // $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
-          // $('#startTime').timepicker(options);
+          // events.sort(function(a,b) {return a.start - b.start});
+          // var target_index = -1;
+          // var target_date;
           //
-          // options.minTime = event.start.clone().add( startHour, 'hours').add( 10 , 'minutes' ).format('HH:mm');
-          // options.maxTime = '06:50';
-          // $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
-          // $('#endTime').timepicker(options);
+          // var firstdayEvents = events.filter( function( value, index ) {
+          //   return moment(value.start).format('DD') === startDate.format('DD');
+          // });
+          //
+          // var seconddayEvents = events.filter( function( value, index ) {
+          //   return moment(value.start).format('DD') === endDate.format('DD');
+          // });
+          //
+          // console.log(firstdayEvents, seconddayEvents);
+          //
+          // $.each( events, function( index, value ) {
+          //   if(moment(value.start).isSame(moment(event.start))){
+          //     target_index = index;
+          //     target_date = moment(value.start).format('DD');
+          //   }
+          // })
+          //
+          // console.log(target_date);
+          // if(target_date === startDate.format('DD')){
+          //   //첫날
+          //   $.each( firstdayEvents, function( index, value ) {
+          //     if(moment(value.start).isSame(moment(event.start))){
+          //       target_index = index;
+          //       target_events = firstdayEvents;
+          //     }
+          //   })
+          // }
+          // else {
+          //   //둘째날
+          //   $.each( seconddayEvents, function( index, value ) {
+          //     if(moment(value.start).isSame(moment(event.start))){
+          //       target_index = index;
+          //       target_events = seconddayEvents;
+          //     }
+          //   })
+          // }
+
+          // if(target_index === 0){ //first
+          //   console.log('first');
+          //   options.minTime = startHour + ':00';
+          //   options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1]
+          //                   .start.clone()
+          //                   .add( startHour, 'hours')
+          //                   .subtract( 10, 'minutes')
+          //                   .format('HH:mm') : (startHour - 1) + ':50';
+          //   $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
+          //   $('#startTime').timepicker(options);
+          //   options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').add(10, 'minutes').format('HH:mm');
+          //   options.maxTime = target_events[target_index + 1] ?
+          //                     target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm')
+          //                     : (startHour) + ':00';
+          //   $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
+          //   $('#endTime').timepicker(options);
+          // }
+          // else if( target_index === target_events.length - 1) { //last
+          //   console.log('last');
+          //   options.minTime = target_events[target_index - 1].end.clone().add( startHour, 'hours').format('HH:mm');
+          //   options.maxTime = (startHour - 1) + ':40';
+          //   $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
+          //   $('#startTime').timepicker(options);
+          //
+          //   options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').format('HH:mm');
+          //   options.maxTime = (startHour) + ':00';
+          //   $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
+          //   $('#endTime').timepicker(options);
+          // }
+          // else { //middle
+          //   console.log('middle somewhere');
+          //   options.minTime = target_events[target_index - 1].end.clone().add( startHour, 'hours').format('HH:mm');
+          //   options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').subtract(10, 'minutes').format('HH:mm') : (startHour - 1) + ':40';
+          //   $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
+          //   $('#startTime').timepicker(options);
+          //
+          //   options.minTime = target_events[target_index].start.clone().add( startHour, 'hours').add(10, 'minutes').format('HH:mm');
+          //   options.maxTime = target_events[target_index + 1] ? target_events[target_index + 1].start.clone().add( startHour, 'hours').format('HH:mm') : (startHour - 1) + ':50';
+          //   console.log(options.minTime, options.maxTime);
+          //   $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
+          //   $('#endTime').timepicker(options);
+          // }
+
+          options.minTime = '07:00';
+          options.maxTime = '06:50';
+          $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
+          $('#startTime').timepicker(options);
+
+          options.minTime = event.start.clone().add( startHour, 'hours').format('HH:mm');
+          options.maxTime = '07:01';
+          $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
+          $('#endTime').timepicker(options);
         });
 
         $("#eventBlockModal").modal();
@@ -301,8 +283,38 @@ $( document ).ready( function() {
         console.log(currentEvent);
       },
 
-      eventAfterAllRender : function() {
+      eventAfterAllRender : function( view ) {
+        var type = view.type;
         $("#loader").fadeOut();
+        // if(type === 'firstday'){
+        //   $(".fc-slats").find('.fc-slats tr[data-time="16:50:00"]')
+        //             .after('<tr class="dayDivider">'
+        //                       + '<td>'  + '</td>'
+        //                       + '<td >' + '<span>' + endDate.format('MM/DD(dd)') + '</span>'
+        //                       + '</td>'
+        //                   + '</tr>'
+        //             );
+        //   // $(element).find('.fc-day-header').text( startDate.format('MM/DD(dd)') );
+        // } else if(type === 'secondday') {
+        //   $(".fc-slats").find('.fc-slats tr[data-time="16:50:00"]')
+        //             .after('<tr class="dayDivider">'
+        //                       + '<td>'  + '</td>'
+        //                       + '<td >' + '<span>' + endDate.clone().add(1, 'day').format('MM/DD(dd)') + '</span>'
+        //                       + '</td>'
+        //                   + '</tr>'
+        //             );
+        //   // $(element).find('.fc-day-header').text( endDate.format('MM/DD(dd)') );
+        // } else {
+        //   $(".fc-slats").find('.fc-slats tr[data-time="16:50:00"]')
+        //             .after('<tr class="dayDivider">'
+        //                       + '<td>'  + '</td>'
+        //                       + '<td class="bothday">' + '<span>' + endDate.format('MM/DD(dd)') + '</span>'
+        //                       +           '<span>' + endDate.clone().add(1, 'day').format('MM/DD(dd)') + '</span>'
+        //                       + '</td>'
+        //                   + '</tr>'
+        //             );
+        // }
+        calendar.fullCalendar('updateViewSize');
       },
 
       eventRender: function( event, element ) {
@@ -333,7 +345,7 @@ $( document ).ready( function() {
           // 시간 가능 여부 체크
           if ( date < start ) {
             alert('시작 시간 보다 끝 시간이 더 빠를 수 없습니다\n다시 선택해 주세요');
-            return false;
+            return;
           }
 
           // 중복 체크
@@ -344,6 +356,7 @@ $( document ).ready( function() {
             var e_end = moment(event.end);
             if( start < e_start && date > e_end ) {
               alert('중복된 이벤트를 기입할 수 없습니다!\n다시 선택해 주세요');
+              isInclude = true;
               return false;
             }
             isInclude = false;
@@ -352,6 +365,7 @@ $( document ).ready( function() {
 
           // lets git it
           end = date;
+          console.log(end);
           $("#endMessage").slideUp();
           $(jsEvent.target).css('background-color', getRandomColor());
           $(".fc-widget-content").css('background-color', '');
@@ -581,6 +595,7 @@ $( document ).ready( function() {
     var anxiety = $("#eventBlockModal #anxietyContent input[type=radio]:checked").val();
     var anger = $("#eventBlockModal #angerContent input[type=radio]:checked").val();
     var fatigue = $("#eventBlockModal #fatigueContent input[type=radio]:checked").val();
+    var events = calendar.fullCalendar( 'clientEvents' );
 
     if( start_time !== currentEvent.start.clone().add( startHour, 'hours').format('HH:mm') || end_time !== currentEvent.end.clone().add( startHour, 'hours').format('HH:mm')
       || location !== currentEvent.content.location || title !== currentEvent.title
@@ -589,14 +604,40 @@ $( document ).ready( function() {
       || anger !== currentEvent.content.anger || fatigue !== currentEvent.content.fatigue ) {
         if(confirm('수정사항이 있습니다. 진행하시겠습니까?')) {
 
-
-            console.log(currentEvent.start);
             var start_hour = moment( $("#startTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('HH');
             var start_min = moment( $("#startTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('mm');
 
             var end_hour = moment( $("#endTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('HH');
             var end_min = moment( $("#endTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('mm');
+            console.log(currentEvent);
+            if( currentEvent.start.clone().subtract(startHour, 'hours').format('DD') === startDate.format('DD')
+              && currentEvent.end.clone().subtract(startHour, 'hours').format('DD') === startDate.format('DD')
+            ) {
+              var currentDate = startDate;
+              var startDate2Compare = moment($("#startTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( startDate.format('DD') );
+              var endDate2Compare = moment($("#endTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( startDate.format('DD') );
+            }
+            else {
+              var currentDate = endDate;
+              var startDate2Compare = moment($("#startTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( endDate.format('DD') );
+              var endDate2Compare = moment($("#endTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( endDate.format('DD') );
+            }
 
+            if( start_hour === end_hour && start_min === end_min){
+              alert('동일 시간대로 설정하실 수 없습니다!');
+              return false;
+            }
+            // console.log( date2Compare.format('DD HH:mm') );
+            console.log(startDate2Compare, endDate2Compare);
+            var isOverlap = false;
+            $.each( events, function(index, event){
+              if( startDate2Compare.isBetween(event.start, event.end) || endDate2Compare.isBetween(event.start, event.end)) {
+                alert('겹치는 시간대로 설정하실 수 없습니다!');
+                isOverlap = true;
+                return false;
+              }
+            });
+            if(isOverlap) return false;
             currentEvent.start.set({ hour: start_hour, minute: start_min });
             currentEvent.end.set({ hour: end_hour, minute: end_min });
             currentEvent.title = title;
@@ -674,7 +715,7 @@ $( document ).ready( function() {
       if( minutes === 10 ){
         $("#endTime").val(moment(s_time).add(10, 'minutes').format('HH:mm'));
         $('#endTime').timepicker('option', 'minTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
-        $('#endTime').timepicker('option', 'maxTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
+        // $('#endTime').timepicker('option', 'maxTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
         return false;
       }
       $('#endTime').timepicker('option', 'minTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
@@ -736,5 +777,7 @@ $( document ).ready( function() {
         type !== 'bothday' ? '24시간' : '48시간'
       );
   }
+
+
 
 }); // end of document ready

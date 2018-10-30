@@ -381,10 +381,10 @@
           <span>(4) 졸업</span>
         </label>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_b" id="question14_b_5" placeholder="출신학교">
+          <input type="text" class="form-control" name="question14_b_i1" id="question14_b_b1" placeholder="출신학교">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_b" id="question14_b_6" placeholder="출신학과">
+          <input type="text" class="form-control" name="question14_b_i2" id="question14_b_b2" placeholder="출신학과">
         </div>
 
         <p class="sub-question">다. 4년제 대학교 : </p>
@@ -405,10 +405,10 @@
           <span>(4) 졸업</span>
         </label>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_c" id="question14_c_5" placeholder="출신학교">
+          <input type="text" class="form-control" name="question14_c_i1" id="question14_c_c1" placeholder="출신학교">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_c" id="question14_c_6" placeholder="출신학과">
+          <input type="text" class="form-control" name="question14_c_i2" id="question14_c_c2" placeholder="출신학과">
         </div>
 
 
@@ -430,10 +430,10 @@
           <span>(4) 졸업</span>
         </label>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_d" id="question14_d_5" placeholder="출신학교">
+          <input type="text" class="form-control" name="question14_d_i1" id="question14_d_d1" placeholder="출신학교">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_d" id="question14_d_6" placeholder="출신학과">
+          <input type="text" class="form-control" name="question14_d_i2" id="question14_d_d2" placeholder="출신학과">
         </div>
 
         <p class="sub-question">마.대학원(박사) : </p>
@@ -454,10 +454,10 @@
           <span>(4) 졸업</span>
         </label>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_e" id="question14_e_5" placeholder="출신학교">
+          <input type="text" class="form-control" name="question14_e_i1" id="question14_e_e1" placeholder="출신학교">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" name="question14_e" id="question14_e_6" placeholder="출신학과">
+          <input type="text" class="form-control" name="question14_e_i2" id="question14_e_e2" placeholder="출신학과">
         </div>
       </div>
 
@@ -668,7 +668,7 @@
         let value = $(input).val();
         let label = $(input).attr('name');
 
-        data[label] = value
+        data[label] = value;
     });
 
     $.each(radio_group,function(index,input){
@@ -676,7 +676,7 @@
         let label = $(input).attr('name');
         let value = $(":input:radio[name="+label+"]:checked").val() == undefined ? '' : $(":input:radio[name="+label+"]:checked").val()
 
-        data[label] = value
+        data[label] = value;
     });
     console.log(data);
 
