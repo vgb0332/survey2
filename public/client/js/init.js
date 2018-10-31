@@ -95,7 +95,7 @@ $( document ).ready( function() {
       selectOverlap: false,
       eventOverlap: false,
       snapDuration: "00:10:00",
-
+      // maxTime: '23:50:00',
       now: moment().subtract(startHour, 'hours'),
       scrollTime: new Date().getHours()-1+':'+Math.floor(new Date().getMinutes()/10)*10+':'+new Date().getSeconds(),
       height: function() {
@@ -114,6 +114,7 @@ $( document ).ready( function() {
       },
 
       viewRender: function( view, element ) {
+
         var title = view.title;
         var type = view.type;
         var view = calendar.fullCalendar( 'getView' );
@@ -182,7 +183,47 @@ $( document ).ready( function() {
             lang: {am: '오전', pm: '오후'},
             useSelect: true,
           };
-          var events = calendar.fullCalendar( 'clientEvents' );
+
+
+
+          // var events = calendar.fullCalendar( 'clientEvents' );
+          //
+          //
+          //             var start_hour = moment( $("#startTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('HH');
+          //             var start_min = moment( $("#startTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('mm');
+          //
+          //             var end_hour = moment( $("#endTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('HH');
+          //             var end_min = moment( $("#endTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('mm');
+          //             console.log(currentEvent);
+          //             if( currentEvent.start.clone().subtract(startHour, 'hours').format('DD') === startDate.format('DD')
+          //               && currentEvent.end.clone().subtract(startHour, 'hours').format('DD') === startDate.format('DD')
+          //             ) {
+          //               var currentDate = startDate;
+          //               var startDate2Compare = moment($("#startTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( startDate.format('DD') );
+          //               var endDate2Compare = moment($("#endTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( startDate.format('DD') );
+          //             }
+          //             else {
+          //               var currentDate = endDate;
+          //               var startDate2Compare = moment($("#startTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( endDate.format('DD') );
+          //               var endDate2Compare = moment($("#endTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( endDate.format('DD') );
+          //             }
+          //
+          //             if( start_hour === end_hour && start_min === end_min){
+          //               alert('동일 시간대로 설정하실 수 없습니다!');
+          //               return false;
+          //             }
+          //             // console.log( date2Compare.format('DD HH:mm') );
+          //             console.log(startDate2Compare, endDate2Compare);
+          //             var isOverlap = false;
+          //             $.each( events, function(index, event){
+          //               if( startDate2Compare.isBetween(event.start, event.end) || endDate2Compare.isBetween(event.start, event.end)) {
+          //                 alert('겹치는 시간대로 설정하실 수 없습니다!');
+          //                 isOverlap = true;
+          //                 return false;
+          //               }
+          //             });
+          //             if(isOverlap) return false;
+          //
           // events.sort(function(a,b) {return a.start - b.start});
           // var target_index = -1;
           // var target_date;
@@ -272,7 +313,7 @@ $( document ).ready( function() {
           $("#startTime").val(event.start.clone().add( startHour, 'hours').format('HH:mm'));
           $('#startTime').timepicker(options);
 
-          options.minTime = event.start.clone().add( startHour, 'hours').format('HH:mm');
+          options.minTime = event.start.clone().add( startHour, 'hours').add(10, 'minutes').format('HH:mm');
           options.maxTime = '07:01';
           $("#endTime").val(event.end.clone().add( startHour, 'hours').format('HH:mm'));
           $('#endTime').timepicker(options);
@@ -286,6 +327,7 @@ $( document ).ready( function() {
       eventAfterAllRender : function( view ) {
         var type = view.type;
         $("#loader").fadeOut();
+
         // if(type === 'firstday'){
         //   $(".fc-slats").find('.fc-slats tr[data-time="16:50:00"]')
         //             .after('<tr class="dayDivider">'
@@ -319,6 +361,7 @@ $( document ).ready( function() {
 
       eventRender: function( event, element ) {
         console.log('rendering?');
+        console.log(event);
         var time = event.start.add( startHour , 'hours').format('a HH:mm') + ' ~ ' + event.end.add( startHour , 'hours').format('a HH:mm');
         $(element).find('.fc-time').text( time );
         var hours = moment.duration(event.end.diff(event.start)).get("hours");
@@ -583,6 +626,28 @@ $( document ).ready( function() {
     }
   });
 
+  function isSameOrBefore( event ) {
+    if( event.start.toDate().getTime() === event.end.toDate().getTime() )
+      return true;
+
+    return false;
+  }
+  function isOverlapping( event ) {
+      var array = calendar.fullCalendar('clientEvents');
+      for(i in array){
+
+          if(array[i].id != event.id){
+              if(array[i].start.format('DD') === event.start.format('DD')){
+                if (event.end > array[i].start && event.start < array[i].end){
+                   return true;
+                }
+              }
+
+          }
+      }
+      return false;
+  }
+
   $("#updateBlockButton").click ( function(e) {
     var view = calendar.fullCalendar('getView');
     var start_time = moment( $("#startTime").timepicker('getTime') ).format('HH:mm');
@@ -609,37 +674,18 @@ $( document ).ready( function() {
 
             var end_hour = moment( $("#endTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('HH');
             var end_min = moment( $("#endTime").timepicker('getTime') ).clone().subtract( startHour, 'hours' ).format('mm');
-            console.log(currentEvent);
-            if( currentEvent.start.clone().subtract(startHour, 'hours').format('DD') === startDate.format('DD')
-              && currentEvent.end.clone().subtract(startHour, 'hours').format('DD') === startDate.format('DD')
-            ) {
-              var currentDate = startDate;
-              var startDate2Compare = moment($("#startTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( startDate.format('DD') );
-              var endDate2Compare = moment($("#endTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( startDate.format('DD') );
+            console.log(end_hour);
+            currentEvent.start.hour(start_hour).minutes(start_min);
+            currentEvent.end.hour(end_hour).minutes(end_min);
+            if(currentEvent.start.format('DD') !== currentEvent.end.format('DD')){
+              currentEvent.end.date( Number(currentEvent.start.format('DD')));
+
             }
-            else {
-              var currentDate = endDate;
-              var startDate2Compare = moment($("#startTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( endDate.format('DD') );
-              var endDate2Compare = moment($("#endTime").timepicker('getTime')).clone().subtract( startHour, 'hours' ).date( endDate.format('DD') );
+            if( end_hour === '00'){
+              console.log('its');
+              currentEvent.end.date( Number(currentEvent.start.clone().add(1, 'day').format('DD')));
             }
 
-            if( start_hour === end_hour && start_min === end_min){
-              alert('동일 시간대로 설정하실 수 없습니다!');
-              return false;
-            }
-            // console.log( date2Compare.format('DD HH:mm') );
-            console.log(startDate2Compare, endDate2Compare);
-            var isOverlap = false;
-            $.each( events, function(index, event){
-              if( startDate2Compare.isBetween(event.start, event.end) || endDate2Compare.isBetween(event.start, event.end)) {
-                alert('겹치는 시간대로 설정하실 수 없습니다!');
-                isOverlap = true;
-                return false;
-              }
-            });
-            if(isOverlap) return false;
-            currentEvent.start.set({ hour: start_hour, minute: start_min });
-            currentEvent.end.set({ hour: end_hour, minute: end_min });
             currentEvent.title = title;
             currentEvent.content.title = title;
             currentEvent.content.location = location;
@@ -649,6 +695,15 @@ $( document ).ready( function() {
             currentEvent.content.anxiety = anxiety;
             currentEvent.content.anger = anger;
             currentEvent.content.fatigue = fatigue;
+            console.log(currentEvent.start.format('HH:mm'), currentEvent.end.format('HH:mm'));
+            if(isOverlapping( currentEvent )){
+              alert('중복된 시간입니다');
+              return false;
+            }
+            if(isSameOrBefore( currentEvent )) {
+              alert('시작과 끝이 동일한 시간일 수 없습니다');
+              return false;
+            }
             calendar.fullCalendar( 'updateEvent', currentEvent );
 
             var tempData = {};
@@ -711,7 +766,6 @@ $( document ).ready( function() {
     }
     else {
       var minutes = moment.duration(moment(e_time).diff(moment(s_time))).get("minutes");
-      console.log(minutes);
       if( minutes === 10 ){
         $("#endTime").val(moment(s_time).add(10, 'minutes').format('HH:mm'));
         $('#endTime').timepicker('option', 'minTime', moment(s_time).add(10, 'minutes').format('HH:mm'));
@@ -745,7 +799,6 @@ $( document ).ready( function() {
     $.each( events, function( index, event ) {
       var diff = moment.duration( event.end.diff(event.start) ).asMinutes()
       var date = event.start.format('DD');
-      console.log(diff);
       if( !(date in totTime) ) totTime[date] = 0;
       totTime[date] += diff;
       totTime['total'] += diff;
