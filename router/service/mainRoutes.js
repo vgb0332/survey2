@@ -123,6 +123,8 @@ module.exports = (app,logger)=>{
       let data = await db.introQuestions.findAll().then((result)=>{
         return functions.makeArray(result);
       });
+
+      console.log(data);
       let allData = [];
       console.log(data);
       var labels = JSON.parse(introLabels);

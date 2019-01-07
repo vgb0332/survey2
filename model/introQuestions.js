@@ -173,6 +173,10 @@ module.exports = function(sequelize, DataTypes){
         type: DataTypes.STRING,
         allowNull: true
       },
+      question24 : {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       option01 : {
         type: DataTypes.STRING,
         allowNull: true

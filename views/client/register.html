@@ -16,7 +16,7 @@
     		<h1>회원가입</h1>
 
     		<form class="form">
-    			<input id="phonenumber" type="text" placeholder="아이디(핸드폰 번호)">
+    			<input id="phonenumber" type="text" placeholder="핸드폰 번호">
           <input id="name" type="text" placeholder="이름">
     			<input id="password" type="password" placeholder="비밀번호">
           <input id="passwordcheck" type="password" placeholder="비밀번호 확인">
@@ -41,6 +41,16 @@
   </body>
 
   <script type="text/javascript">
+    function isCellPhone(p) {
+
+      p = p.split('-').join('');
+
+      var regPhone = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+
+      return regPhone.test(p);
+
+    }
+
     $("#register-button").click(function(event){
        event.preventDefault();
        //check for empty inputs
@@ -51,10 +61,17 @@
        console.log(phonenumber, name, password, passwordcheck);
 
        if(!phonenumber) {
-         alert('아이디(핸드폰 번호)를 입력해주세요!');
+         alert('핸드폰 번호를 입력해주세요!');
          $("#phonenumber").focus();
          return false;
        }
+
+       if(!isCellPhone(phonenumber)){
+         alert('핸드폰 번호를 확인해주세요!');
+         $("#phonenumber").focus();
+         return false;
+       }
+       
        if(!name) {
          alert('이름를 입력해주세요!');
          $("#name").focus();
