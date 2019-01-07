@@ -44,6 +44,7 @@ if (env === 'production') {
     host :'survey.cqi0x7hhzgqq.ap-northeast-2.rds.amazonaws.com',
     dialect : 'mysql',
     port : 3306,
+    operatorsAliases: false,
     define: {
       charset: 'utf8',
       collate: 'utf8_general_ci',
