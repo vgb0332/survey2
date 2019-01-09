@@ -17,9 +17,9 @@
 
     		<form class="form">
     			<input id="phonenumber" type="text" placeholder="핸드폰 번호">
-          <input id="name" type="text" placeholder="이름">
-    			<input id="password" type="password" placeholder="비밀번호">
-          <input id="passwordcheck" type="password" placeholder="비밀번호 확인">
+          <!-- <input id="name" type="text" placeholder="이름"> -->
+    			<input id="password" type="password" minlength="4" maxlength="4" placeholder="비밀번호(네자리숫자)">
+          <input id="passwordcheck" type="password" minlength="4" maxlength="4" placeholder="비밀번호 확인">
     			<!-- <button type="submit" id="login-button">로그인</button> -->
           <button type="register" id="register-button">회원가입</button>
     		</form>
@@ -55,7 +55,8 @@
        event.preventDefault();
        //check for empty inputs
        var phonenumber = $("#phonenumber").val();
-       var name = $("#name").val();
+       // var name = $("#name").val();
+       var name = '';
        var password = $("#password").val();
        var passwordcheck = $("#passwordcheck").val();
        console.log(phonenumber, name, password, passwordcheck);
@@ -71,17 +72,24 @@
          $("#phonenumber").focus();
          return false;
        }
-       
-       if(!name) {
-         alert('이름를 입력해주세요!');
-         $("#name").focus();
-         return false;
-       }
+
+       // if(!name) {
+       //   alert('이름를 입력해주세요!');
+       //   $("#name").focus();
+       //   return false;
+       // }
        if(!password) {
          alert('비밀번호를 입력해주세요!');
          $("#password").focus();
          return false;
        }
+
+       if(password.length < 4){
+         alert('비밀번호 4자리로 입력해주세요!');
+         $("#password").focus();
+         return false;
+       }
+       
        if(!passwordcheck) {
          alert('비밀번호 확인을 입력해주세요!');
          $("#passwordcheck").focus();
