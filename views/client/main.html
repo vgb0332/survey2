@@ -37,6 +37,16 @@
 
       <div class="fixed-top-current-time">
         현재시간: <span id="time"> </span>
+
+        <div id="manualButton" class="" style="display:inline-block;position:absolute;right:10px;    line-height: 8vw;">
+          <img style="width:20px;height:20px;" src="public/client/images/manual.png" alt="메뉴얼" ></img> 메뉴얼
+        </div>
+
+        <script type="text/javascript">
+          $("#manualButton").click(function(){
+            window.location.href = "/manual";
+          })
+        </script>
       </div>
       <div class="fixed-top-left-time">
         작성시간/필요작성시간: <span id="spent-time-hm">- </span> / <span id="remaining-time"> -</span>
@@ -52,7 +62,9 @@
 
     </div>
 
-    <div id='calendar'></div>
+    <div id='calendar'>
+
+    </div>
 
     <img src="public/client/images/add.png" alt="addButton" id="addButton"></img>
     <img src="public/client/images/current.png" alt="currentButton" id="currentButton"></img>

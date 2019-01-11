@@ -13,11 +13,11 @@
   <body>
     <div class="wrapper">
     	<div class="container">
-    		<h1>회원가입</h1>
+    		<h1 id="name" value="<%= locals.name %>">회원가입</h1>
 
     		<form class="form">
     			<input id="phonenumber" type="text" placeholder="핸드폰 번호">
-          <!-- <input id="name" type="text" placeholder="이름"> -->
+          <!-- <input id="name" type="text" placeholder="이름" > -->
     			<input id="password" type="password" minlength="4" maxlength="4" placeholder="비밀번호(네자리숫자)">
           <input id="passwordcheck" type="password" minlength="4" maxlength="4" placeholder="비밀번호 확인">
     			<!-- <button type="submit" id="login-button">로그인</button> -->
@@ -55,11 +55,9 @@
        event.preventDefault();
        //check for empty inputs
        var phonenumber = $("#phonenumber").val();
-       // var name = $("#name").val();
-       var name = '';
+       var name = $("#name").attr('value');
        var password = $("#password").val();
        var passwordcheck = $("#passwordcheck").val();
-       console.log(phonenumber, name, password, passwordcheck);
 
        if(!phonenumber) {
          alert('핸드폰 번호를 입력해주세요!');
@@ -89,7 +87,7 @@
          $("#password").focus();
          return false;
        }
-       
+
        if(!passwordcheck) {
          alert('비밀번호 확인을 입력해주세요!');
          $("#passwordcheck").focus();

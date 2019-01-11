@@ -15,9 +15,19 @@ module.exports = (app,logger)=>{
       res.render('client/login');
     })
 
+    //앱 사용설명서 페이지
+    app.get("/manual", async (req,res)=>{
+      res.render('client/manual', { register: req.query.name ? 1: 0, name: req.query.name });
+    })
+
+    //회원가입 동의 페이지
+    app.get("/agreement", async (req,res)=>{
+      res.render('client/agreement');
+    })
+
     //회원가입 페이지
     app.get("/register", async (req,res)=>{
-      res.render('client/register');
+      res.render('client/register', { name: req.query.name });
     })
 
     app.post("/login", async (req,res)=>{
@@ -45,7 +55,7 @@ module.exports = (app,logger)=>{
 
 
     app.post("/register", async (req,res)=>{
-      
+
       let user = await db.users.findOne({where : {phonenumber : req.body.phonenumber}});
       if(user){
         console.log(user)
@@ -53,7 +63,7 @@ module.exports = (app,logger)=>{
           success : 400,
           message : "이미 가입되어 있는 회원입니다."
         })
-      }else{ 
+      }else{
         await db.users.create(req.body).then((result)=>{
           console.log("[회원가입 완료]")
           console.log(result);
@@ -80,7 +90,7 @@ module.exports = (app,logger)=>{
           success : 400
         })
       }
-      
+
 
     })
 

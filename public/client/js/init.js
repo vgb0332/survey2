@@ -7,8 +7,8 @@ $( document ).ready( function() {
   var username = '';
   var dayType = '';
   var globalEvent = {};
-  var startDateString = '2018-11-05';
-  var endDateString = '2018-11-06';
+  var startDateString = '2019-01-14';
+  var endDateString = '2019-01-15';
   var startDate = new moment( startDateString );
   var endDate = new moment( endDateString );
   var startHour = 7;
