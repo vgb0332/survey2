@@ -354,11 +354,11 @@
       </p>
       <div class="button-wrap" style="text-align: center;">
         <p class="sub-question">가. 고졸 이하: </p>
-        <input class="hidden radio-label" type="radio" name="question14_a" id="question14_a_1" value="예"/>
+        <input class="hidden radio-label" type="radio" name="question14_a" id="question14_a_1" value="예" status="false"/>
         <label class="button-label" for="question14_a_1">
           <span>(1) 예</span>
         </label>
-        <input class="hidden radio-label" type="radio" name="question14_a" id="question14_a_2" value="아니오"/>
+        <input class="hidden radio-label" type="radio" name="question14_a" id="question14_a_2" value="아니오" status="false"/>
         <label class="button-label" for="question14_a_2">
           <span>(2) 아니오</span>
         </label>
@@ -380,12 +380,12 @@
         <label class="button-label" for="question14_b_4">
           <span>(4) 졸업</span>
         </label>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <input type="text" class="form-control" name="question14_b_i1" id="question14_b_b1" placeholder="출신학교">
         </div>
         <div class="form-group">
           <input type="text" class="form-control" name="question14_b_i2" id="question14_b_b2" placeholder="출신학과">
-        </div>
+        </div> -->
 
         <p class="sub-question">다. 4년제 대학교 : </p>
         <input class="hidden radio-label" type="radio" name="question14_c" id="question14_c_1" value="자퇴/퇴학"/>
@@ -404,12 +404,12 @@
         <label class="button-label" for="question14_c_4">
           <span>(4) 졸업</span>
         </label>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <input type="text" class="form-control" name="question14_c_i1" id="question14_c_c1" placeholder="출신학교">
         </div>
         <div class="form-group">
           <input type="text" class="form-control" name="question14_c_i2" id="question14_c_c2" placeholder="출신학과">
-        </div>
+        </div> -->
 
 
         <p class="sub-question">라. 대학원(석사) : </p>
@@ -429,39 +429,98 @@
         <label class="button-label" for="question14_d_4">
           <span>(4) 졸업</span>
         </label>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <input type="text" class="form-control" name="question14_d_i1" id="question14_d_d1" placeholder="출신학교">
         </div>
         <div class="form-group">
           <input type="text" class="form-control" name="question14_d_i2" id="question14_d_d2" placeholder="출신학과">
-        </div>
+        </div> -->
 
         <p class="sub-question">마.대학원(박사) : </p>
         <input class="hidden radio-label" type="radio" name="question14_e" id="question14_e_1" value="자퇴/퇴학"/>
         <label class="button-label" for="question14_e_1">
           <span>(1) 자퇴/퇴학</span>
         </label>
-        <input class="hidden radio-label" type="radio" name="question14_d" id="question14_e_2" value="휴학"/>
+        <input class="hidden radio-label" type="radio" name="question14_e" id="question14_e_2" value="휴학"/>
         <label class="button-label" for="question14_e_2">
           <span>(2) 휴학</span>
         </label>
-        <input class="hidden radio-label" type="radio" name="question14_d" id="question14_e_3" value="수료"/>
+        <input class="hidden radio-label" type="radio" name="question14_e" id="question14_e_3" value="수료"/>
         <label class="button-label" for="question14_e_3">
           <span>(3) 수료</span>
         </label>
-        <input class="hidden radio-label" type="radio" name="question14_d" id="question14_e_4" value="졸업"/>
+        <input class="hidden radio-label" type="radio" name="question14_e" id="question14_e_4" value="졸업"/>
         <label class="button-label" for="question14_e_4">
           <span>(4) 졸업</span>
         </label>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <input type="text" class="form-control" name="question14_e_i1" id="question14_e_e1" placeholder="출신학교">
         </div>
         <div class="form-group">
           <input type="text" class="form-control" name="question14_e_i2" id="question14_e_e2" placeholder="출신학과">
-        </div>
+        </div> -->
       </div>
 
     </div>
+    <script type="text/javascript">
+      var curQuestion14a, curQuestion14b, curQuestion14c, curQuestion14d, curQuestion14e;
+      $("input:radio[name=question14_a]").click( function() {
+        var value = $("input:radio[name=question14_a]:checked").val();
+        if( curQuestion14a === value) {
+          $(this).attr('checked', false);
+          curQuestion14a = null;
+        } else {
+          $(this).attr('checked', true);
+          curQuestion14a = value;
+        }
+      });
+
+      $("input:radio[name=question14_b]").click( function() {
+        var value = $("input:radio[name=question14_b]:checked").val();
+        if( curQuestion14b === value) {
+          $(this).attr('checked', false);
+          curQuestion14b = null;
+        } else {
+          $(this).attr('checked', true);
+          curQuestion14b = value;
+        }
+      });
+
+      $("input:radio[name=question14_c]").click( function() {
+        var value = $("input:radio[name=question14_c]:checked").val();
+        if( curQuestion14c === value) {
+          $(this).attr('checked', false);
+          curQuestion14c = null;
+        } else {
+          $(this).attr('checked', true);
+          curQuestion14c = value;
+        }
+      });
+
+      $("input:radio[name=question14_d]").click( function() {
+        console.log('d');
+        var value = $("input:radio[name=question14_d]:checked").val();
+        if( curQuestion14d === value) {
+          $(this).attr('checked', false);
+          curQuestion14d = null;
+        } else {
+          $(this).attr('checked', true);
+          curQuestion14d = value;
+        }
+      });
+
+      $("input:radio[name=question14_e]").click( function() {
+        console.log('e');
+        var value = $("input:radio[name=question14_e]:checked").val();
+        if( curQuestion14e === value) {
+          $(this).attr('checked', false);
+          curQuestion14e = null;
+        } else {
+          $(this).attr('checked', true);
+          curQuestion14e = value;
+        }
+      });
+    </script>
 
     <div class="check-container" style="border:0">
       <p class="question">
