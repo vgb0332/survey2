@@ -22,7 +22,7 @@
     "fs": "0.0.1-security",
     "gm": "^1.23.0",
     "json2xls": "^0.1.2",
-    "jsonwebtoken": "^8.1.0",
+    "jsonwebtoken": "^9.0.0",
     "log4js": "^2.3.12",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
